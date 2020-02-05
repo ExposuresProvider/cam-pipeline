@@ -1,0 +1,9 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX lego: <http://geneontology.org/lego/>
+
+SELECT DISTINCT ?source_graph
+WHERE {
+  GRAPH ?source_graph { ?s ?p ?o . }
+  FILTER(?source_graph NOT IN (<http://reasoner.renci.org/ontology>, <http://reasoner.renci.org/ontology/closure>, <http://reasoner.renci.org/nonredundant>, <http://reasoner.renci.org/redundant>))
+}
