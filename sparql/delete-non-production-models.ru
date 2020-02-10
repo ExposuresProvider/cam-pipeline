@@ -8,15 +8,12 @@ DELETE {
   }
 }
 WHERE {
-  GRAPH ?model {
-    ?s ?p ?o .
-    FILTER EXISTS {
-      ?model rdf:type owl:Ontology .
-      # A hacky way to choose Noctua model graphs
-      ?model lego:modelstate ?modelstate .
+  {
+    ?model rdf:type owl:Ontology .
+    # A hacky way to choose Noctua model graphs
+    ?model lego:modelstate ?modelstate .
+    FILTER(?modelstate != "production"^^xsd:string)
+    GRAPH ?model {
+     ?s ?p ?o .
     }
-    FILTER NOT EXISTS {
-      ?model lego:modelstate "production"^^xsd:string .
-    }
-  }
 }
