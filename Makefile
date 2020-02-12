@@ -8,7 +8,6 @@ NOCTUA_MODELS_DEV_REPO=../noctua-models-dev
 all: cam-db-reasoned.jnl
 
 noctua-models.jnl: $(NOCTUA_MODELS_REPO)/models/*.ttl
-	cp $< $@ &&\
 	blazegraph-runner load --journal=$@ --properties=blazegraph.properties --informat=turtle --use-ontology-graph=true $(patsubst %, "%", $^) &&\
 	blazegraph-runner update --journal=$@ --properties=blazegraph.properties sparql/delete-non-production-models.ru
 
@@ -34,7 +33,7 @@ ontologies-merged.ttl: ontologies.ofn mirror
 	remove --term 'owl:Nothing' --trim true --preserve-structure false \
 	reason -r ELK -D debug.ofn -o $@
 
-subclass_closure.ttl: ontologies-merged.ttl subclass-closure.rq
+subclass_closure.ttl: ontologies-merged.ttl sparql/subclass-closure.rq
 	robot query -i $< --construct sparql/subclass-closure.rq $@
 
 is_defined_by.ttl: ontologies-merged.ttl
