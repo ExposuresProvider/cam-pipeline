@@ -8,7 +8,6 @@ DELETE {
   }
 }
 WHERE {
-  {
     ?model rdf:type owl:Ontology .
     # A hacky way to choose Noctua model graphs
     ?model lego:modelstate ?modelstate .
