@@ -34,10 +34,10 @@ ontologies-merged.ttl: ontologies.ofn mirror
 	reason -r ELK -D debug.ofn -o $@
 
 subclass_closure.ttl: ontologies-merged.ttl sparql/subclass-closure.rq
-	robot query -i $< --construct sparql/subclass-closure.rq $@
+	arq --data=$< --query=sparql/subclass-closure.rq --results=ttl --optimize=off >$@
 
 is_defined_by.ttl: ontologies-merged.ttl
-	robot query -i $< --construct sparql/isDefinedBy.rq $@
+	arq --data=$< --query=sparql/isDefinedBy.rq --results=ttl >$@
 
 properties-nonredundant.ttl: ontologies-merged.ttl
 	ncit-utils materialize-property-expressions ontologies-merged.ttl properties-nonredundant.ttl properties-redundant.ttl &&\
@@ -55,12 +55,13 @@ opposites.ttl: antonyms_HP.txt
 biolink-model.ttl:
 	curl -L 'https://raw.githubusercontent.com/biolink/biolink-model/master/biolink-model.ttl' -o $@
 
-noctua-reactome-ctd-models-ubergraph.jnl: noctua-reactome-ctd-models.jnl ontologies-merged.ttl subclass_closure.ttl is_defined_by.ttl properties-nonredundant.ttl properties-redundant.ttl opposites.ttl
+# Removed dependencies properties-nonredundant.ttl properties-redundant.ttl due to the build time they require
+noctua-reactome-ctd-models-ubergraph.jnl: noctua-reactome-ctd-models.jnl ontologies-merged.ttl subclass_closure.ttl is_defined_by.ttl opposites.ttl
 	rm -f $@ &&\
 	blazegraph-runner load --journal=$@ --properties=blazegraph.properties --informat=turtle --graph='http://reasoner.renci.org/ontology' ontologies-merged.ttl &&\
 	blazegraph-runner load --journal=$@ --properties=blazegraph.properties --informat=turtle --graph='http://reasoner.renci.org/ontology' opposites.ttl &&\
 	blazegraph-runner load --journal=$@ --properties=blazegraph.properties --informat=turtle --graph='http://reasoner.renci.org/ontology' biolink-model.ttl &&\
 	blazegraph-runner load --journal=$@ --properties=blazegraph.properties --informat=turtle --graph='http://reasoner.renci.org/ontology/closure' subclass_closure.ttl &&\
-	blazegraph-runner load --journal=$@ --properties=blazegraph.properties --informat=turtle --graph='http://reasoner.renci.org/ontology' is_defined_by.ttl &&\
-	blazegraph-runner load --journal=$@ --properties=blazegraph.properties --informat=turtle --graph='http://reasoner.renci.org/nonredundant' properties-nonredundant.ttl &&\
-	blazegraph-runner load --journal=$@ --properties=blazegraph.properties --informat=turtle --graph='http://reasoner.renci.org/redundant' properties-redundant.ttl
+	blazegraph-runner load --journal=$@ --properties=blazegraph.properties --informat=turtle --graph='http://reasoner.renci.org/ontology' is_defined_by.ttl #&&\
+#	blazegraph-runner load --journal=$@ --properties=blazegraph.properties --informat=turtle --graph='http://reasoner.renci.org/nonredundant' properties-nonredundant.ttl &&\
+#	blazegraph-runner load --journal=$@ --properties=blazegraph.properties --informat=turtle --graph='http://reasoner.renci.org/redundant' properties-redundant.ttl
