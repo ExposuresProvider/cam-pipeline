@@ -15,9 +15,9 @@ noctua-reactome-models.jnl: noctua-models.jnl $(NOCTUA_MODELS_DEV_REPO)/models/r
 	cp $< $@ &&\
 	blazegraph-runner load --journal=$@ --properties=blazegraph.properties --informat=turtle --use-ontology-graph=true $(patsubst %, "%", $(filter-out $<, $^))
 
-noctua-reactome-ctd-models.jnl: noctua-reactome-models.jnl CTD_chem_gene_ixns_structured.xml
+noctua-reactome-ctd-models.jnl: noctua-reactome-models.jnl CTD_chem_gene_ixns_structured.xml chebi_mesh.tsv
 	cp $< $@ &&\
-	ctd-to-owl CTD_chem_gene_ixns_structured.xml $@ blazegraph.properties
+	ctd-to-owl CTD_chem_gene_ixns_structured.xml $@ blazegraph.properties chebi_mesh.tsv
 
 cam-db-reasoned.jnl: noctua-reactome-ctd-models-ubergraph.jnl
 	cp $< $@ &&\
