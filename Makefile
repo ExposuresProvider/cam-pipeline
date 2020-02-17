@@ -24,7 +24,7 @@ cam-db-reasoned.jnl: noctua-reactome-ctd-models-ubergraph.jnl
 	blazegraph-runner reason --journal=$@ --properties=blazegraph.properties --reasoner=arachne --append-graph-name='#inferred' --ontology='http://reasoner.renci.org/ontology' --source-graphs-query=sparql/find-asserted-models.rq
 
 ncbi-gene-classes.ttl: noctua-reactome-ctd-models.jnl
-	blazegraph-runner construct --journal=$< --properties=blazegraph.properties --outformat=turtle construct-ncbi-gene-classes.rq $@
+	blazegraph-runner construct --journal=$< --properties=blazegraph.properties --outformat=turtle sparql/construct-ncbi-gene-classes.rq $@
 
 mirror: ontologies.ofn
 	rm -rf $@ &&\
