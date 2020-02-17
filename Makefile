@@ -31,6 +31,7 @@ ontologies-merged.ttl: ontologies.ofn mirror
 	robot merge --catalog mirror/catalog-v001.xml --include-annotations true -i $< -i ubergraph-axioms.ofn \
 	remove --axioms 'disjoint' --trim true --preserve-structure false \
 	remove --term 'owl:Nothing' --trim true --preserve-structure false \
+	remove --term 'http://purl.obolibrary.org/obo/caro#part_of' --term 'http://purl.obolibrary.org/obo/caro#develops_from' --trim true --preserve-structure false \
 	reason -r ELK -D debug.ofn -o $@
 
 subclass_closure.ttl: ontologies-merged.ttl sparql/subclass-closure.rq
