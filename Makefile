@@ -23,12 +23,15 @@ cam-db-reasoned.jnl: noctua-reactome-ctd-models-ubergraph.jnl
 	cp $< $@ &&\
 	blazegraph-runner reason --journal=$@ --properties=blazegraph.properties --reasoner=arachne --append-graph-name='#inferred' --ontology='http://reasoner.renci.org/ontology' --source-graphs-query=sparql/find-asserted-models.rq
 
+ncbi-gene-classes.ttl: noctua-reactome-ctd-models.jnl
+	blazegraph-runner construct --journal=$< --properties=blazegraph.properties --outformat=turtle construct-ncbi-gene-classes.rq $@
+
 mirror: ontologies.ofn
 	rm -rf $@ &&\
 	robot mirror -i $< -d $@ -o $@/catalog-v001.xml
 
-ontologies-merged.ttl: ontologies.ofn mirror
-	robot merge --catalog mirror/catalog-v001.xml --include-annotations true -i $< -i ubergraph-axioms.ofn \
+ontologies-merged.ttl: ontologies.ofn ubergraph-axioms.ofn ncbi-gene-classes.ttl mirror
+	robot merge --catalog mirror/catalog-v001.xml --include-annotations true -i $< -i ubergraph-axioms.ofn -i ncbi-gene-classes.ttl \
 	remove --axioms 'disjoint' --trim true --preserve-structure false \
 	remove --term 'owl:Nothing' --trim true --preserve-structure false \
 	remove --term 'http://purl.obolibrary.org/obo/caro#part_of' --term 'http://purl.obolibrary.org/obo/caro#develops_from' --trim true --preserve-structure false \
