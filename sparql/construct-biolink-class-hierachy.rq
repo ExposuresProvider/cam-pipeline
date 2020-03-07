@@ -13,31 +13,12 @@ PREFIX NCBIGENE: <http://identifiers.org/ncbigene:>
 PREFIX sesame: <http://www.openrdf.org/schema/sesame#>
 PREFIX swrl: <http://www.w3.org/2003/11/swrl#>
 CONSTRUCT {
-  ?u rdf:type owl:Class .
-  ?u rdfs:subClassOf SO:0000704 .
-  [
-      rdf:type <http://www.w3.org/2003/11/swrl#Imp> ;
-      swrl:body [ 
-        rdf:type swrl:AtomList ;
-        rdf:first [ 
-          rdf:type swrl:ClassAtom ;
-          swrl:classPredicate ?r ;
-          swrl:argument1 <urn:swrl#x>
-        ] ;
-        rdf:rest rdf:nil
-      ] ;
-      swrl:head [ 
-        rdf:type swrl:AtomList ;
-        rdf:first [ 
-          rdf:type swrl:ClassAtom ;
-          swrl:classPredicate ?u ;
-          swrl:argument1 <urn:swrl#x>
-        ] ;
-        rdf:rest rdf:nil
-      ] 
-  ]
+?x a owl:Class .
+?y a owl:Class .
+?x rdfs:subClassOf ?y .
 }
 WHERE {
-?r <http://geneontology.org/lego/canonical_record> ?u .
-FILTER(STRSTARTS(STR(?u), "http://identifiers.org/uniprot/"))
+?x a blml:ClassDefinition .
+?y a blml:ClassDefinition .
+?x blml:is_a ?y .
 }

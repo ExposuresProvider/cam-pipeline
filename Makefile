@@ -33,8 +33,14 @@ mirror: ontologies.ofn
 reacto-uniprot-rules.ttl: mirror
 	arq --data=mirror/purl.obolibrary.org/obo/go/extensions/reacto.owl --query=sparql/construct-reacto-uniprot-rules.rq --results=ttl >$@
 
-ontologies-merged.ttl: ontologies.ofn ubergraph-axioms.ofn ncbi-gene-classes.ttl uniprot-to-ncbi-rules.ofn reacto-uniprot-rules.ttl mirror
-	robot merge --catalog mirror/catalog-v001.xml --include-annotations true -i $< -i ubergraph-axioms.ofn -i ncbi-gene-classes.ttl -i uniprot-to-ncbi-rules.ofn -i reacto-uniprot-rules.ttl \
+biolink-class-hierarchy.ttl: biolink-model.ttl
+	arq --data=$< --query=sparql/construct-biolink-class-hierachy.rq --results=ttl >$@
+
+ont-biolink-subclasses.ttl: biolink-model.ttl biolink-local.ttl
+	arq --data=biolink-model.ttl --data=biolink-local.ttl --query=sparql/construct-ont-biolink-subclasses.rq --results=ttl >$@
+
+ontologies-merged.ttl: ontologies.ofn ubergraph-axioms.ofn ncbi-gene-classes.ttl uniprot-to-ncbi-rules.ofn reacto-uniprot-rules.ttl biolink-class-hierarchy.ttl ont-biolink-subclasses.ttl mirror
+	robot merge --catalog mirror/catalog-v001.xml --include-annotations true -i $< -i ubergraph-axioms.ofn -i ncbi-gene-classes.ttl -i uniprot-to-ncbi-rules.ofn -i reacto-uniprot-rules.ttl -i biolink-class-hierarchy.ttl -i ont-biolink-subclasses.ttl \
 	remove --axioms 'disjoint' --trim true --preserve-structure false \
 	remove --term 'owl:Nothing' --trim true --preserve-structure false \
 	remove --term 'http://purl.obolibrary.org/obo/caro#part_of' --term 'http://purl.obolibrary.org/obo/caro#develops_from' --trim true --preserve-structure false \
