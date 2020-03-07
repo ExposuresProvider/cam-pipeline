@@ -30,8 +30,11 @@ mirror: ontologies.ofn
 	rm -rf $@ &&\
 	robot mirror -i $< -d $@ -o $@/catalog-v001.xml
 
-ontologies-merged.ttl: ontologies.ofn ubergraph-axioms.ofn ncbi-gene-classes.ttl mirror
-	robot merge --catalog mirror/catalog-v001.xml --include-annotations true -i $< -i ubergraph-axioms.ofn -i ncbi-gene-classes.ttl \
+reacto-uniprot-rules.ttl: mirror
+	arq --data=mirror/purl.obolibrary.org/obo/go/extensions/reacto.owl --query=sparql/construct-reacto-uniprot-rules.rq --results=ttl >$@
+
+ontologies-merged.ttl: ontologies.ofn ubergraph-axioms.ofn ncbi-gene-classes.ttl uniprot-to-ncbi-rules.ofn reacto-uniprot-rules.ttl mirror
+	robot merge --catalog mirror/catalog-v001.xml --include-annotations true -i $< -i ubergraph-axioms.ofn -i ncbi-gene-classes.ttl -i uniprot-to-ncbi-rules.ofn -i reacto-uniprot-rules.ttl \
 	remove --axioms 'disjoint' --trim true --preserve-structure false \
 	remove --term 'owl:Nothing' --trim true --preserve-structure false \
 	remove --term 'http://purl.obolibrary.org/obo/caro#part_of' --term 'http://purl.obolibrary.org/obo/caro#develops_from' --trim true --preserve-structure false \
