@@ -40,4 +40,5 @@ CONSTRUCT {
 WHERE {
 ?r <http://geneontology.org/lego/canonical_record> ?u .
 FILTER(STRSTARTS(STR(?u), "http://identifiers.org/uniprot/"))
+FILTER (isIRI(?u))
 }

@@ -1,0 +1,13 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ChemicalEntity: <http://purl.obolibrary.org/obo/CHEBI_24431>
+
+CONSTRUCT {
+?term rdfs:subClassOf ChemicalEntity: .
+}
+WHERE {
+?s rdf:type ?term .
+# This will not be valid if other MeSH terms appear in the database
+FILTER (STRSTARTS(STR(?term), "http://id.nlm.nih.gov/mesh"))
+FILTER (isIRI(?term))
+}
