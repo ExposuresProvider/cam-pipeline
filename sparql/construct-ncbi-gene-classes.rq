@@ -1,9 +1,9 @@
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX InformationBiomacromolecule: <http://purl.obolibrary.org/obo/CHEBI_33695>
+PREFIX Gene: <http://purl.obolibrary.org/obo/SO_0000704>
 
 CONSTRUCT {
-?term rdfs:subClassOf InformationBiomacromolecule: .
+?term rdfs:subClassOf Gene: .
 }
 WHERE {
 ?s rdf:type ?term .
