@@ -1,6 +1,6 @@
 # AOP-CAM Knowledge Provider database pipeline
 
-This repository contains a makefile and resources for constructing the RDF triplestore used in the AOP-CAM Knowledge Provider prototype for NCATS Data Translator. Source code for the web service API used to query this data can be found at [TranslatorIIPrototypes/cam-api](https://github.com/TranslatorIIPrototypes/cam-api).
+This repository contains a makefile and resources for constructing the RDF triplestore used in the AOP-CAM Knowledge Provider prototype for NCATS Data Translator. Source code for the web service API used to query this data can be found at [TranslatorIIPrototypes/cam-api](https://github.com/TranslatorIIPrototypes/cam-api). The web service API can be tested from within [its Swagger API documentation](http://robokop.renci.org:6434/docs#/). The current version of this database can queried with SPARQL using the endpoint `https://stars-app.renci.org/cam/sparql`.
 
 Development of the prototype is led by Jim Balhoff (RENCI, UNC-Chapel Hill) and Stephen Edwards (RTI International), funded by the [National Center for Advancing Translational Sciences](https://ncats.nih.gov).
 
