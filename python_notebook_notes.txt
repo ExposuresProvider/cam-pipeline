@@ -1,0 +1,8 @@
+python3 -m venv pyenv
+source pyenv/bin/activate
+pip install notebook
+pip install --upgrade pip
+pip install requests
+pip install cyjupyter
+jupyter nbextension enable --py --sys-prefix cyjupyter
+jupyter notebook
