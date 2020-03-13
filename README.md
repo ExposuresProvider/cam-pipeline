@@ -38,7 +38,7 @@ The data sets integrated into the database consist of independent OWL instance m
   ```bash
      export JVM_ARGS=-Xmx256G
      export ROBOT_JAVA_ARGS=-Xmx256G
-     export JAVA_OPTS=-Xmx256G`
+     export JAVA_OPTS=-Xmx256G
   ```
 - Run `make cam-db-reasoned.jnl`
 - Wait a few days...
