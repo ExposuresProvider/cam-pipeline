@@ -30,7 +30,7 @@ The data sets integrated into the database consist of independent OWL instance m
   - [ncit-utils](https://github.com/NCI-Thesaurus/ncit-utils)
   - [Apache Jena arq](https://jena.apache.org)
 - Clone the [Gene Ontology Noctua models repo](https://github.com/geneontology/noctua-models) in `../noctua-models`
-- Clone the [Gene Ontology Noctua models repo](https://github.com/geneontology/noctua-models) in `../noctua-models-dev` and `git checkout dev` in that directory
+- Clone the [Gene Ontology Noctua models repo](https://github.com/geneontology/noctua-models) in `../noctua-models-dev` and `git checkout dev` in that directory (this is to obtain the converted Reactome pathways, which are not yet officially released)
 
 ### Running
 
