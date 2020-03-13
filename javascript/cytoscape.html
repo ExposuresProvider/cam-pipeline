@@ -1,0 +1,125 @@
+<html>
+    <head>
+        <title>CAM pipeline JavaScript demo</title>
+        <script src="https://cdn.jsdelivr.net/npm/cytoscape@3.14.0/dist/cytoscape.umd.js" integrity="sha256-Hnx9sLkwDZcM50YBz10LL8V3XfsEkvyFxJSaP425d6Q=" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <div id="graph" style="width: 500px; height: 500px">
+        </div>
+
+        <script>
+          let elements = {
+            "nodes": [
+                {
+                    "data": {
+                        "id": "obo:BFO_0000002"
+                    }
+                },
+                {
+                    "data": {
+                        "id": "GO:0010467"
+                    }
+                },
+                {
+                    "data": {
+                        "id": "NCBIGENE:558"
+                    }
+                },
+                {
+                    "data": {
+                        "id": "GO:0016310"
+                    }
+                },
+                {
+                    "data": {
+                        "id": "GO:0032259"
+                    }
+                }
+            ],
+            "edges": [
+                {
+                    "data": {
+                        "id": "e0000",
+                        "source": "GO:0010467",
+                        "target": "obo:BFO_0000002"
+                    }
+                },
+                {
+                    "data": {
+                        "id": "e0001",
+                        "source": "GO:0010467",
+                        "target": "NCBIGENE:558"
+                    }
+                },
+                {
+                    "data": {
+                        "id": "e0002",
+                        "source": "GO:0016310",
+                        "target": "obo:BFO_0000002"
+                    }
+                },
+                {
+                    "data": {
+                        "id": "e0003",
+                        "source": "GO:0016310",
+                        "target": "NCBIGENE:558"
+                    }
+                },
+                {
+                    "data": {
+                        "id": "e0004",
+                        "source": "GO:0032259",
+                        "target": "obo:BFO_0000002"
+                    }
+                },
+                {
+                    "data": {
+                        "id": "e0005",
+                        "source": "GO:0032259",
+                        "target": "NCBIGENE:558"
+                    }
+                }
+              ]
+          };
+
+          let cy = cytoscape({
+            elements,
+            container: document.getElementById('graph'),
+            style: [
+                {
+                    "selector": "node",
+                    "style": {
+                        "label": "data(id)",
+                        "background-color": "#60f",
+                        "shape": "round-rectangle"
+                    }
+                },
+                {
+                    "selector": "edge",
+                    "style": {
+                        "curve-style": "unbundled-bezier",
+                        "control-point-distances": [
+                            -20,
+                            20
+                        ],
+                        "control-point-weights": [
+                            0.5
+                        ],
+                        "content": "data(id)",
+                        "line-color": "#808080",
+                        "target-arrow-color": "#808080",
+                        "target-arrow-shape": "triangle",
+                        "target-arrow-fill": "filled"
+                    }
+                }
+            ],
+              layout: {
+                  "name": "breadthfirst",
+                  
+        }});
+
+            console.log("Cy:", cy);
+
+        </script>
+    </body>
+</html>
