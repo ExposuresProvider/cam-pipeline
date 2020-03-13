@@ -3,9 +3,12 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
     <title><%= htmlWebpackPlugin.options.title %></title>
+
+    <!-- TODO: replace with vue-cytoscape (https://www.npmjs.com/package/vue-cytoscape) -->
+    <script src="https://cdn.jsdelivr.net/npm/cytoscape@3.14.0/dist/cytoscape.umd.js" integrity="sha256-Hnx9sLkwDZcM50YBz10LL8V3XfsEkvyFxJSaP425d6Q=" crossorigin="anonymous"></script>
   </head>
   <body>
     <noscript>
