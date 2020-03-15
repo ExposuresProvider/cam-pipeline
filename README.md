@@ -14,9 +14,9 @@ This resources integrates a broad set of ontologies developed as part of the OBO
 
 The data sets integrated into the database consist of independent OWL instance models making use of the terms and relations defined within the combined ontology (as described in ['Gene Ontology Causal Activity Modeling (GO-CAM) moves beyond GO annotations to structured descriptions of biological functions and systems'](https://doi.org/10.1038/s41588-019-0500-1)). Currently three main types of data are included:
 
-- curated Gene Ontology Causal Activity Models
-- Causal Activity Models automatically translated from Reactome pathways
-- Causal Activity Models automatically translated from Comparative Toxicogenomics Database chemical–gene interactions
+- Causal Activity Models annotated by Gene Ontology biocurators (see http://geneontology.org/go-cam)
+- Causal Activity Models automatically translated from Reactome pathways (see [geneontology/pathways2GO](https://github.com/geneontology/pathways2GO))
+- Causal Activity Models automatically translated from Comparative Toxicogenomics Database chemical–gene interactions (see [balhoff/ctd-to-owl](https://github.com/balhoff/ctd-to-owl))
 
 ## Building the database
 
@@ -29,8 +29,8 @@ The data sets integrated into the database consist of independent OWL instance m
   - [ctd-to-owl](https://github.com/balhoff/ctd-to-owl)
   - [ncit-utils](https://github.com/NCI-Thesaurus/ncit-utils)
   - [Apache Jena arq](https://jena.apache.org)
-- Clone the Gene Ontology Noctua models repo in `../noctua-models`
-- Clone the Gene Ontology Noctua models repo in `../noctua-models-dev` and `git checkout dev` in that directory
+- Clone the [Gene Ontology Noctua models repo](https://github.com/geneontology/noctua-models) in `../noctua-models`
+- Clone the [Gene Ontology Noctua models repo](https://github.com/geneontology/noctua-models) in `../noctua-models-dev` and `git checkout dev` in that directory (this is to obtain the converted Reactome pathways, which are not yet officially released)
 
 ### Running
 
@@ -38,7 +38,7 @@ The data sets integrated into the database consist of independent OWL instance m
   ```bash
      export JVM_ARGS=-Xmx256G
      export ROBOT_JAVA_ARGS=-Xmx256G
-     export JAVA_OPTS=-Xmx256G`
+     export JAVA_OPTS=-Xmx256G
   ```
 - Run `make cam-db-reasoned.jnl`
 - Wait a few days...
