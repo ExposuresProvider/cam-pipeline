@@ -1,3 +1,21 @@
+import requests
+import json
+
+
+def query(message, limit=20):
+    endpoint = f"http://robokop.renci.org:6434/query?limit={limit}&strict=true"
+    r = requests.post(endpoint, json=message)
+    result = r.json()
+    return result
+
+def graphQuestion(question):
+    data = reasonerGraphToCytoscape(question)
+    Cytoscape(data=data, visual_style=queryData["style"], layout={"name": "cose", "height": "700px"})
+
+def graphKG():
+    pass
+    
+
 def reasonerGraphToCytoscape(graph):
     csGraph = {}
     nodes = []
