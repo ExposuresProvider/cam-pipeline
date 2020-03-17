@@ -14,6 +14,11 @@ noctua-models.jnl: $(NOCTUA_MODELS_REPO)/models/*.ttl
 noctua-reactome-models.jnl: noctua-models.jnl $(NOCTUA_MODELS_DEV_REPO)/models/R-HSA-*.ttl
 	cp $< $@ &&\
 	blazegraph-runner load --journal=$@ --properties=blazegraph.properties --informat=turtle --use-ontology-graph=true $(patsubst %, "%", $(filter-out $<, $^))
+	
+
+CTD_chem_gene_ixns_structured.xml:
+	curl -L -O 'http://ctdbase.org/reports/CTD_chem_gene_ixns_structured.xml.gz' &&\
+	gunzip CTD_chem_gene_ixns_structured.xml.gz
 
 noctua-reactome-ctd-models.jnl: noctua-reactome-models.jnl CTD_chem_gene_ixns_structured.xml chebi_mesh.tsv
 	cp $< $@ &&\
