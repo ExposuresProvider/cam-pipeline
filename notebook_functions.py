@@ -2,8 +2,12 @@ import requests
 import json
 
 
-def query(message, limit=20):
-    endpoint = f"http://robokop.renci.org:6434/query?limit={limit}&strict=true"
+def query(message, limit=20, strict=True):
+    strict_str = "false"
+    if strict:
+        strict_str = "true"
+    endpoint = f"http://robokop.renci.org:6434/query?limit={limit}&strict={strict_str}"
+    #endpoint = f"http://localhost:6434/query?limit={limit}&strict={strict_str}"
     r = requests.post(endpoint, json=message)
     result = r.json()
     return result
