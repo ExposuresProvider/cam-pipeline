@@ -22,5 +22,7 @@ GRAPH ?g {
   FILTER(isIRI(?o))
   FILTER(?stype != owl:NamedIndividual)
   FILTER(?otype != owl:NamedIndividual)
+  FILTER(?p != rdf:type)
+  FILTER(?g != <http://reasoner.renci.org/ontology>)
 }
 }
