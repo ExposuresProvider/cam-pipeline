@@ -1,0 +1,26 @@
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX go: <http://www.geneontology.org/formats/oboInOwl#>
+PREFIX blml: <https://w3id.org/biolink/biolinkml/meta/>
+PREFIX bl: <https://w3id.org/biolink/vocab/>
+PREFIX MONDO: <http://purl.obolibrary.org/obo/MONDO_>
+PREFIX SO: <http://purl.obolibrary.org/obo/SO_>
+PREFIX RO: <http://purl.obolibrary.org/obo/RO_>
+PREFIX GO: <http://purl.obolibrary.org/obo/GO_>
+PREFIX obo: <http://purl.obolibrary.org/obo/>
+PREFIX NCBIGENE: <http://identifiers.org/ncbigene:>
+PREFIX sesame: <http://www.openrdf.org/schema/sesame#>
+PREFIX swrl: <http://www.w3.org/2003/11/swrl#>
+SELECT DISTINCT ?stype ?p ?otype ?g ?s ?o
+WHERE {
+GRAPH ?g {
+  ?s ?p ?o .
+  ?s sesame:directType ?stype .
+  ?o sesame:directType ?otype .
+  FILTER(isIRI(?s))
+  FILTER(isIRI(?o))
+  FILTER(?stype != owl:NamedIndividual)
+  FILTER(?otype != owl:NamedIndividual)
+}
+}
