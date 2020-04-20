@@ -24,7 +24,7 @@ noctua-reactome-ctd-models.jnl: noctua-reactome-models.jnl CTD_chem_gene_ixns_st
 	cp $< $@ &&\
 	ctd-to-owl CTD_chem_gene_ixns_structured.xml $@ blazegraph.properties chebi_mesh.tsv
 
-cam-db-reasoned.jnl: noctua-reactome-ctd-models-ubergraph.jnl
+cam-db-reasoned.jnl: noctua-reactome-models-ubergraph.jnl
 	cp $< $@ &&\
 	blazegraph-runner reason --journal=$@ --properties=blazegraph.properties --reasoner=whelk --append-graph-name='#inferred' --ontology='http://reasoner.renci.org/ontology' --source-graphs-query=sparql/find-asserted-models.rq --direct-types=true
 
@@ -77,7 +77,7 @@ biolink-model.ttl:
 	curl -L 'https://raw.githubusercontent.com/biolink/biolink-model/master/biolink-model.ttl' -o $@
 
 # Removed dependencies properties-nonredundant.ttl properties-redundant.ttl due to the build time they require
-noctua-reactome-ctd-models-ubergraph.jnl: noctua-reactome-ctd-models.jnl ontologies-merged.ttl subclass_closure.ttl is_defined_by.ttl opposites.ttl biolink-model.ttl biolink-local.ttl
+noctua-reactome-models-ubergraph.jnl: noctua-reactome-models.jnl ontologies-merged.ttl subclass_closure.ttl is_defined_by.ttl opposites.ttl biolink-model.ttl biolink-local.ttl
 	cp $< $@ &&\
 	blazegraph-runner load --journal=$@ --properties=blazegraph.properties --informat=turtle --graph='http://reasoner.renci.org/ontology' ontologies-merged.ttl &&\
 	blazegraph-runner load --journal=$@ --properties=blazegraph.properties --informat=turtle --graph='http://reasoner.renci.org/ontology' opposites.ttl &&\
