@@ -20,9 +20,10 @@ CTD_chem_gene_ixns_structured.xml:
 	curl -L -O 'http://ctdbase.org/reports/CTD_chem_gene_ixns_structured.xml.gz' &&\
 	gunzip CTD_chem_gene_ixns_structured.xml.gz
 
-noctua-reactome-ctd-models.jnl: noctua-reactome-models.jnl CTD_chem_gene_ixns_structured.xml chebi_mesh.tsv
+noctua-reactome-ctd-models.jnl: noctua-reactome-models.jnl #CTD_chem_gene_ixns_structured.xml chebi_mesh.tsv
 	cp $< $@ &&\
-	ctd-to-owl CTD_chem_gene_ixns_structured.xml $@ blazegraph.properties chebi_mesh.tsv
+	# Temporarily disable CTD ingestion to allow more rapid turnaround while the full KP is developed
+	#ctd-to-owl CTD_chem_gene_ixns_structured.xml $@ blazegraph.properties chebi_mesh.tsv
 
 cam-db-reasoned.jnl: noctua-reactome-ctd-models-ubergraph.jnl
 	cp $< $@ &&\
