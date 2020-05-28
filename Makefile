@@ -14,14 +14,13 @@ noctua-models.jnl: $(NOCTUA_MODELS_REPO)/models/*.ttl
 noctua-reactome-models.jnl: noctua-models.jnl $(NOCTUA_MODELS_DEV_REPO)/models/R-HSA-*.ttl
 	cp $< $@ &&\
 	blazegraph-runner load --journal=$@ --properties=blazegraph.properties --informat=turtle --use-ontology-graph=true $(patsubst %, "%", $(filter-out $<, $^))
-	
 
 CTD_chem_gene_ixns_structured.xml:
 	curl -L -O 'http://ctdbase.org/reports/CTD_chem_gene_ixns_structured.xml.gz' &&\
 	gunzip CTD_chem_gene_ixns_structured.xml.gz
 
 noctua-reactome-ctd-models.jnl: noctua-reactome-models.jnl #CTD_chem_gene_ixns_structured.xml chebi_mesh.tsv
-	cp $< $@ &&\
+	cp $< $@ #&&\
 	# Temporarily disable CTD ingestion to allow more rapid turnaround while the full KP is developed
 	#ctd-to-owl CTD_chem_gene_ixns_structured.xml $@ blazegraph.properties chebi_mesh.tsv
 
@@ -40,13 +39,13 @@ mirror: ontologies.ofn
 	robot mirror -i $< -d $@ -o $@/catalog-v001.xml
 
 reacto-uniprot-rules.ttl: mirror
-	arq --data=mirror/purl.obolibrary.org/obo/go/extensions/reacto.owl --query=sparql/construct-reacto-uniprot-rules.rq --results=ttl >$@
+	arq -q --data=mirror/purl.obolibrary.org/obo/go/extensions/reacto.owl --query=sparql/construct-reacto-uniprot-rules.rq --results=ttl >$@
 
 biolink-class-hierarchy.ttl: biolink-model.ttl
-	arq --data=$< --query=sparql/construct-biolink-class-hierachy.rq --results=ttl >$@
+	arq -q --data=$< --query=sparql/construct-biolink-class-hierachy.rq --results=ttl >$@
 
 ont-biolink-subclasses.ttl: biolink-model.ttl biolink-local.ttl
-	arq --data=biolink-model.ttl --data=biolink-local.ttl --query=sparql/construct-ont-biolink-subclasses.rq --results=ttl >$@
+	arq -q --data=biolink-model.ttl --data=biolink-local.ttl --query=sparql/construct-ont-biolink-subclasses.rq --results=ttl >$@
 
 ontologies-merged.ttl: ontologies.ofn ubergraph-axioms.ofn ncbi-gene-classes.ttl mesh-chebi-links.ttl uniprot-to-ncbi-rules.ofn reacto-uniprot-rules.ttl biolink-class-hierarchy.ttl ont-biolink-subclasses.ttl mirror
 	robot merge --catalog mirror/catalog-v001.xml --include-annotations true -i $< -i ubergraph-axioms.ofn -i ncbi-gene-classes.ttl -i mesh-chebi-links.ttl -i uniprot-to-ncbi-rules.ofn -i reacto-uniprot-rules.ttl -i biolink-class-hierarchy.ttl -i ont-biolink-subclasses.ttl \
@@ -56,10 +55,10 @@ ontologies-merged.ttl: ontologies.ofn ubergraph-axioms.ofn ncbi-gene-classes.ttl
 	reason -r ELK -D debug.ofn -o $@
 
 subclass_closure.ttl: ontologies-merged.ttl sparql/subclass-closure.rq
-	arq --data=$< --query=sparql/subclass-closure.rq --results=ttl --optimize=off >$@
+	arq -q --data=$< --query=sparql/subclass-closure.rq --results=ttl --optimize=off >$@
 
 is_defined_by.ttl: ontologies-merged.ttl
-	arq --data=$< --query=sparql/isDefinedBy.rq --results=ttl >$@
+	arq -q --data=$< --query=sparql/isDefinedBy.rq --results=ttl >$@
 
 properties-nonredundant.ttl: ontologies-merged.ttl
 	ncit-utils materialize-property-expressions ontologies-merged.ttl properties-nonredundant.ttl properties-redundant.ttl &&\
