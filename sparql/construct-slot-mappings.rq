@@ -1,0 +1,10 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX blml: <https://w3id.org/biolink/biolinkml/meta/>
+PREFIX bl: <https://w3id.org/biolink/vocab/>
+CONSTRUCT {
+  ?biolink_slot <http://reasoner.renci.org/vocab/slot_mapping> ?relation .
+}
+WHERE {
+?biolink_slot  ^(blml:is_a*/blml:mixins*)/blml:slot_uri ?relation .
+} 
