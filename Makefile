@@ -8,7 +8,7 @@ NOCTUA_MODELS_DEV_REPO=../noctua-models-dev
 all: cam-db-reasoned.jnl
 
 noctua-models.jnl: $(NOCTUA_MODELS_REPO)/models/*.ttl
-	blazegraph-runner load --journal=$@ --properties=blazegraph.properties --informat=turtle --use-ontology-graph=true $(patsubst %, "%", $^) &&\
+	blazegraph-runner load --journal=$@ --properties=blazegraph.properties --informat=turtle --use-ontology-graph=true $(NOCTUA_MODELS_REPO)/models &&\
 	blazegraph-runner update --journal=$@ --properties=blazegraph.properties sparql/delete-non-production-models.ru
 
 noctua-reactome-models.jnl: noctua-models.jnl $(NOCTUA_MODELS_DEV_REPO)/models/R-HSA-*.ttl
