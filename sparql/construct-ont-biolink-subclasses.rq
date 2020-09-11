@@ -12,10 +12,14 @@ PREFIX obo: <http://purl.obolibrary.org/obo/>
 PREFIX NCBIGENE: <http://identifiers.org/ncbigene:>
 PREFIX sesame: <http://www.openrdf.org/schema/sesame#>
 PREFIX swrl: <http://www.w3.org/2003/11/swrl#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+
 CONSTRUCT {
+?ont_term rdf:type owl:Class .
+?bl_term rdf:type owl:Class .
 ?ont_term rdfs:subClassOf ?bl_term .
 }
 WHERE {
-?bl_term blml:class_uri ?ont_term .
+?bl_term skos:mappingRelation|rdfs:subClassOf ?ont_term .
 FILTER(?bl_term != ?ont_term)
 }

@@ -2,9 +2,15 @@ PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX blml: <https://w3id.org/biolink/biolinkml/meta/>
 PREFIX bl: <https://w3id.org/biolink/vocab/>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+
 CONSTRUCT {
-  ?biolink_slot <http://reasoner.renci.org/vocab/slot_mapping> ?relation .
+  #TODO will biolink slots always be object properties?
+  ?relation rdf:type owl:ObjectProperty .
+  ?biolink_slot rdf:type owl:ObjectProperty .
+  ?relation rdfs:subPropertyOf ?biolink_slot .
 }
 WHERE {
-?biolink_slot  ^(blml:is_a*/blml:mixins*)/blml:slot_uri ?relation .
+  ?biolink_slot skos:mappingRelation ?relation .
+  FILTER(?biolink_slot != bl:related_to)
 } 
