@@ -13,12 +13,13 @@ PREFIX NCBIGENE: <http://identifiers.org/ncbigene:>
 PREFIX sesame: <http://www.openrdf.org/schema/sesame#>
 PREFIX swrl: <http://www.w3.org/2003/11/swrl#>
 CONSTRUCT {
-?x a owl:Class .
-?y a owl:Class .
-?x rdfs:subClassOf ?y .
+?x a owl:ObjectProperty .
+?y a owl:ObjectProperty .
+?x rdfs:subPropertyOf ?y .
 }
 WHERE {
-?x a blml:ClassDefinition .
-?y a blml:ClassDefinition .
-?x blml:is_a|blml:mixins ?y .
+?x a blml:SlotDefinition .
+?y a blml:SlotDefinition .
+?x blml:is_a ?y .
+FILTER(?y != bl:related_to)
 }
