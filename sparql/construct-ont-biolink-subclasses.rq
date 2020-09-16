@@ -13,6 +13,7 @@ PREFIX NCBIGENE: <http://identifiers.org/ncbigene:>
 PREFIX sesame: <http://www.openrdf.org/schema/sesame#>
 PREFIX swrl: <http://www.w3.org/2003/11/swrl#>
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX metatype: <https://w3id.org/biolink/biolinkml/meta/types/>
 
 CONSTRUCT {
 ?ont_term rdf:type owl:Class .
@@ -20,6 +21,7 @@ CONSTRUCT {
 ?ont_term rdfs:subClassOf ?bl_term .
 }
 WHERE {
+?bl_term rdf:type metatype:ClassDefinition .
 ?bl_term skos:mappingRelation|rdfs:subClassOf ?ont_term .
 FILTER(?bl_term != ?ont_term)
 }
