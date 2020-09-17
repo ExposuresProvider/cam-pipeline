@@ -12,13 +12,15 @@ PREFIX obo: <http://purl.obolibrary.org/obo/>
 PREFIX NCBIGENE: <http://identifiers.org/ncbigene:>
 PREFIX sesame: <http://www.openrdf.org/schema/sesame#>
 PREFIX swrl: <http://www.w3.org/2003/11/swrl#>
+PREFIX metatype: <https://w3id.org/biolink/biolinkml/meta/types/>
+
 CONSTRUCT {
 ?x a owl:Class .
 ?y a owl:Class .
 ?x rdfs:subClassOf ?y .
 }
 WHERE {
-?x a blml:ClassDefinition .
-?y a blml:ClassDefinition .
+?x a metatype:ClassDefinition .
+?y a metatype:ClassDefinition .
 ?x blml:is_a|blml:mixins ?y .
 }

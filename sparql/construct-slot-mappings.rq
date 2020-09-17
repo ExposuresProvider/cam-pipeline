@@ -3,6 +3,8 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX blml: <https://w3id.org/biolink/biolinkml/meta/>
 PREFIX bl: <https://w3id.org/biolink/vocab/>
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX metatype: <https://w3id.org/biolink/biolinkml/meta/types/>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
 
 CONSTRUCT {
   #TODO will biolink slots always be object properties?
@@ -11,6 +13,7 @@ CONSTRUCT {
   ?relation rdfs:subPropertyOf ?biolink_slot .
 }
 WHERE {
+  ?biolink_slot rdf:type metatype:SlotDefinition .
   ?biolink_slot skos:mappingRelation ?relation .
   FILTER(?biolink_slot != bl:related_to)
 } 
