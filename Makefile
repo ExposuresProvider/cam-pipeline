@@ -5,6 +5,9 @@ NOCTUA_MODELS_REPO=../noctua-models
 # a copy of the above just checked out to dev branch
 NOCTUA_MODELS_DEV_REPO=../noctua-models-dev
 
+## Generate validation reports from sparql queries
+validate: sparql/validate-data.rq
+
 all: cam-db-reasoned.jnl
 
 noctua-models.jnl: $(NOCTUA_MODELS_REPO)/models/*.ttl
