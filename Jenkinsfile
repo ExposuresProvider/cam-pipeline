@@ -13,7 +13,7 @@ pipeline {
                     sh "ls -AlF"
                     sh "if [ ! -d gene-data ]; then mkdir gene-data; fi"
                     sh "cd gene-data"
-                    sh "git clone --depth 1 https://github.com/geneontology/noctua-models; mv noctua-models noctua-models-dev; cd noctua-models-dev; git checkout dev; cd .."
+                    sh "git clone https://github.com/geneontology/noctua-models; mv noctua-models noctua-models-dev; cd noctua-models-dev; git checkout dev; cd .."
                     sh "git clone --depth 1 https://github.com/geneontology/noctua-models"
                     sh 'make -j 16 all'
              }
