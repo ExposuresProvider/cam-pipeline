@@ -22,6 +22,6 @@ pipeline {
 //             steps {
 //                     sh 'make -j 16 validate'
 //             }
-         }
+//          }
      }
  }
