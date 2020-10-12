@@ -18,10 +18,10 @@ pipeline {
                     sh "make all"
              }
          }
-//          stage('Validation Reports') {
-//             steps {
-//                     sh 'make -j 16 validate'
-//             }
-//          }
+         stage('Validation Reports') {
+            steps {
+                    sh 'make validate'
+            }
+         }
      }
  }

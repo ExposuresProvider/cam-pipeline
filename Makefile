@@ -11,7 +11,10 @@ NOCTUA_MODELS_REPO=gene-data/noctua-models
 NOCTUA_MODELS_DEV_REPO=gene-data/noctua-models-dev
 
 ## Generate validation reports from sparql queries
-validate: sparql/validate-data.rq
+validate: missing-biolink-terms.ttl
+
+missing-biolink-terms.ttl: sparql/missing-biolink-terms.rq cam-db-reasoned.jnl
+	blazegraph-runner select --journal=cam-db-reasoned.jnl --properties=blazegraph.properties --outformat=turtle $< $@
 
 all: cam-db-reasoned.jnl
 
@@ -111,3 +114,4 @@ noctua-reactome-ctd-models-ubergraph.jnl: noctua-reactome-ctd-models.jnl ontolog
 	blazegraph-runner load --journal=$@ --properties=blazegraph.properties --informat=turtle --graph='http://reasoner.renci.org/ontology' is_defined_by.ttl #&&\
 #	blazegraph-runner load --journal=$@ --properties=blazegraph.properties --informat=turtle --graph='http://reasoner.renci.org/nonredundant' properties-nonredundant.ttl &&\
 #	blazegraph-runner load --journal=$@ --properties=blazegraph.properties --informat=turtle --graph='http://reasoner.renci.org/redundant' properties-redundant.ttl
+
