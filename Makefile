@@ -1,5 +1,10 @@
 # set JAVA_OPTS=-Xmx64G before running make for blazegraph-runner, ctd-to-owl, ncit-utils
+JAVA_OPTS="-Xmx120G"
 # set ROBOT_JAVA_ARGS=-Xmx64G before running make for robot
+ROBOT_ENV=ROBOT_JAVA_ARGS=-Xmx120G
+ROBOT=$(ROBOT_ENV) robot
+JVM_ARGS=JVM_ARGS=-Xmx120G
+ARQ=$(JVM_ARGS) arq
 # git clone git@github.com:geneontology/noctua-models.git
 NOCTUA_MODELS_REPO=gene-data/noctua-models
 # a copy of the above just checked out to dev branch
@@ -39,25 +44,25 @@ mesh-chebi-links.ttl: noctua-reactome-ctd-models.jnl
 
 mirror: ontologies.ofn
 	rm -rf $@ &&\
-	robot mirror -i $< -d $@ -o $@/catalog-v001.xml
+	$(ROBOT) mirror -i $< -d $@ -o $@/catalog-v001.xml
 
 reacto-uniprot-rules.ttl: mirror
-	arq -q --data=mirror/purl.obolibrary.org/obo/go/extensions/reacto.owl --query=sparql/construct-reacto-uniprot-rules.rq --results=ttl >$@
+	$(ARQ) -q --data=mirror/purl.obolibrary.org/obo/go/extensions/reacto.owl --query=sparql/construct-reacto-uniprot-rules.rq --results=ttl >$@
 
 biolink-class-hierarchy.ttl: biolink-model.ttl
-	arq -q --data=$< --query=sparql/construct-biolink-class-hierachy.rq --results=ttl >$@
+	$(ARQ) -q --data=$< --query=sparql/construct-biolink-class-hierachy.rq --results=ttl >$@
 
 biolink-slot-hierarchy.ttl: biolink-model.ttl
-	arq -q --data=$< --query=sparql/construct-biolink-slot-hierarchy.rq --results=ttl >$@
+	$(ARQ) -q --data=$< --query=sparql/construct-biolink-slot-hierarchy.rq --results=ttl >$@
 
 ont-biolink-subclasses.ttl: biolink-model.ttl biolink-local.ttl
-	arq -q --data=biolink-model.ttl --data=biolink-local.ttl --query=sparql/construct-ont-biolink-subclasses.rq --results=ttl >$@
+	$(ARQ) -q --data=biolink-model.ttl --data=biolink-local.ttl --query=sparql/construct-ont-biolink-subclasses.rq --results=ttl >$@
 
 ont-biolink-subproperties.ttl: biolink-model.ttl biolink-local.ttl
-	arq -q --data=biolink-model.ttl --data=biolink-local.ttl --query=sparql/construct-slot-mappings.rq --results=ttl >$@
+	$(ARQ) -q --data=biolink-model.ttl --data=biolink-local.ttl --query=sparql/construct-slot-mappings.rq --results=ttl >$@
 
 ontologies-merged.ttl: ontologies.ofn ubergraph-axioms.ofn ncbi-gene-classes.ttl mesh-chebi-links.ttl uniprot-to-ncbi-rules.ofn reacto-uniprot-rules.ttl biolink-class-hierarchy.ttl biolink-slot-hierarchy.ttl ont-biolink-subclasses.ttl ont-biolink-subproperties.ttl mirror
-	robot merge --catalog mirror/catalog-v001.xml --include-annotations true \
+	$(ROBOT) merge --catalog mirror/catalog-v001.xml --include-annotations true \
 	-i $< -i ubergraph-axioms.ofn \
 	-i ncbi-gene-classes.ttl \
 	-i mesh-chebi-links.ttl \
@@ -73,10 +78,10 @@ ontologies-merged.ttl: ontologies.ofn ubergraph-axioms.ofn ncbi-gene-classes.ttl
 	reason -r ELK -D debug.ofn -o $@
 
 subclass_closure.ttl: ontologies-merged.ttl sparql/subclass-closure.rq
-	arq -q --data=$< --query=sparql/subclass-closure.rq --results=ttl --optimize=off >$@
+	$(ARQ) -q --data=$< --query=sparql/subclass-closure.rq --results=ttl --optimize=off >$@
 
 is_defined_by.ttl: ontologies-merged.ttl
-	arq -q --data=$< --query=sparql/isDefinedBy.rq --results=ttl >$@
+	$(ARQ) -q --data=$< --query=sparql/isDefinedBy.rq --results=ttl >$@
 
 properties-nonredundant.ttl: ontologies-merged.ttl
 	ncit-utils materialize-property-expressions ontologies-merged.ttl properties-nonredundant.ttl properties-redundant.ttl &&\
