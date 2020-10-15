@@ -3,7 +3,7 @@ JAVA_OPTS="-Xmx150G"
 # set ROBOT_JAVA_ARGS=-Xmx64G before running make for robot
 ROBOT_ENV=ROBOT_JAVA_ARGS=-Xmx150G
 ROBOT=$(ROBOT_ENV) robot
-JVM_ARGS=JVM_ARGS=-Xmx125G
+JVM_ARGS=JVM_ARGS=-Xmx150G
 ARQ=$(JVM_ARGS) arq
 # git clone git@github.com:geneontology/noctua-models.git
 NOCTUA_MODELS_REPO=gene-data/noctua-models
