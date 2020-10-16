@@ -10,6 +10,11 @@ NOCTUA_MODELS_REPO=gene-data/noctua-models
 # a copy of the above just checked out to dev branch
 NOCTUA_MODELS_DEV_REPO=gene-data/noctua-models-dev
 
+.PHONY: clean validate
+
+clean:
+	rm -rf gene-data
+
 ## Generate validation reports from sparql queries
 validate: missing-biolink-terms.ttl
 

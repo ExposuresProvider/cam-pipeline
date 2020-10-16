@@ -11,7 +11,7 @@ pipeline {
                     sh "env"
                     sh "pwd"
                     sh "ls -AlF"
-                    sh "rm -rf gene-data"
+                    sh "make clean"
                     sh "if [ ! -d gene-data ]; then mkdir gene-data; fi"
                     sh "cd gene-data; git clone https://github.com/geneontology/noctua-models; mv noctua-models noctua-models-dev; cd noctua-models-dev; git checkout dev"
                     sh "cd gene-data; git clone --depth 1 https://github.com/geneontology/noctua-models"
