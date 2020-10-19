@@ -1,7 +1,7 @@
 pipeline {
     agent {
         docker {
-            image 'phenoscape/pipeline-tools:v1.3.1'
+            image 'phenoscape/pipeline-tools:v1.5'
             label 'zeppo'
         }
     }
