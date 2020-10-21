@@ -1,5 +1,5 @@
 # set JAVA_OPTS=-Xmx64G before running make for blazegraph-runner, ctd-to-owl, $(NCIT-UTILS)
-JAVA_OPTS="-Xmx150G"
+JAVA_OPTS=-Xmx150G
 BLAZEGRAPH-RUNNER=$(JAVA_OPTS) blazegraph-runner
 NCIT-UTILS=$(JAVA_OPTS) ncit-utils
 
