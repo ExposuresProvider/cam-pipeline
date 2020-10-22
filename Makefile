@@ -1,7 +1,7 @@
-# set JAVA_OPTS=-Xmx64G before running make for blazegraph-runner, ctd-to-owl, $(NCIT-UTILS)
-JAVA_OPTS=-Xmx120G
-BLAZEGRAPH-RUNNER=$(JAVA_OPTS) blazegraph-runner
-NCIT-UTILS=$(JAVA_OPTS) ncit-utils
+# set JAVA_OPTS=-Xmx64G before running make for blazegraph-runner, ctd-to-owl, ncit-utils
+JAVA_ENV=JAVA_OPTS=-Xmx120G
+BLAZEGRAPH-RUNNER=$(JAVA_ENV) blazegraph-runner
+NCIT-UTILS=$(JAVA_ENV) ncit-utils
 
 # set ROBOT_JAVA_ARGS=-Xmx64G before running make for robot
 ROBOT_ENV=ROBOT_JAVA_ARGS=-Xmx120G
