@@ -24,7 +24,7 @@ clean:
 validate: missing-biolink-terms.ttl
 
 missing-biolink-terms.ttl: sparql/missing-biolink-terms.rq cam-db-reasoned.jnl
-	$(BLAZEGRAPH-RUNNER) select --journal=cam-db-reasoned.jnl --properties=blazegraph.properties --outformat=turtle $< $@
+	$(BLAZEGRAPH-RUNNER) select --journal=cam-db-reasoned.jnl --properties=blazegraph.properties --outformat=TSV $< $@
 
 all: cam-db-reasoned.jnl
 
