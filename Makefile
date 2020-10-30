@@ -31,8 +31,8 @@ cam-db-reasoned.jnl: noctua-reactome-ctd-models-ubergraph.jnl
 ncbi-gene-classes.ttl: noctua-reactome-ctd-models.jnl
 	blazegraph-runner construct --journal=$< --properties=blazegraph.properties --outformat=turtle sparql/construct-ncbi-gene-classes.rq $@
 
-protein-subclasses.ttl: sparql/construct-protein-subclasses.rq
-	blazegrapher-runner construct --journal= --properties=blazegraph.properties --outformat=turtle sparql/construct-protein-subclasses.rq $@
+protein-subclasses.ttl: noctua-reactome-ctd-models.jnl sparql/construct-protein-subclasses.rq
+	blazegrapher-runner construct --journal=$< --properties=blazegraph.properties --outformat=turtle sparql/construct-protein-subclasses.rq $@
 
 mesh-chebi-links.ttl: noctua-reactome-ctd-models.jnl
 	blazegraph-runner construct --journal=$< --properties=blazegraph.properties --outformat=turtle sparql/construct-mesh-chebi-links.rq $@
