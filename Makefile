@@ -31,6 +31,9 @@ cam-db-reasoned.jnl: noctua-reactome-ctd-models-ubergraph.jnl
 ncbi-gene-classes.ttl: noctua-reactome-ctd-models.jnl
 	blazegraph-runner construct --journal=$< --properties=blazegraph.properties --outformat=turtle sparql/construct-ncbi-gene-classes.rq $@
 
+protein-subclasses.ttl: sparql/construct-protein-subclasses.rq
+	blazegrapher-runner construct --journal= --properties=blazegraph.properties --outformat=turtle sparql/construct-protein-subclasses.rq $@
+
 mesh-chebi-links.ttl: noctua-reactome-ctd-models.jnl
 	blazegraph-runner construct --journal=$< --properties=blazegraph.properties --outformat=turtle sparql/construct-mesh-chebi-links.rq $@
 
@@ -53,10 +56,11 @@ ont-biolink-subclasses.ttl: biolink-model.ttl biolink-local.ttl
 ont-biolink-subproperties.ttl: biolink-model.ttl biolink-local.ttl
 	arq -q --data=biolink-model.ttl --data=biolink-local.ttl --query=sparql/construct-slot-mappings.rq --results=ttl >$@
 
-ontologies-merged.ttl: ontologies.ofn ubergraph-axioms.ofn ncbi-gene-classes.ttl mesh-chebi-links.ttl uniprot-to-ncbi-rules.ofn reacto-uniprot-rules.ttl biolink-class-hierarchy.ttl biolink-slot-hierarchy.ttl ont-biolink-subclasses.ttl ont-biolink-subproperties.ttl mirror
+ontologies-merged.ttl: ontologies.ofn ubergraph-axioms.ofn ncbi-gene-classes.ttl protein-subclasses.ttl mesh-chebi-links.ttl uniprot-to-ncbi-rules.ofn reacto-uniprot-rules.ttl biolink-class-hierarchy.ttl biolink-slot-hierarchy.ttl ont-biolink-subclasses.ttl ont-biolink-subproperties.ttl mirror
 	robot merge --catalog mirror/catalog-v001.xml --include-annotations true \
 	-i $< -i ubergraph-axioms.ofn \
 	-i ncbi-gene-classes.ttl \
+	-i protein-subclasses.ttl \
 	-i mesh-chebi-links.ttl \
 	-i uniprot-to-ncbi-rules.ofn \
 	-i reacto-uniprot-rules.ttl \
