@@ -7,13 +7,12 @@ PREFIX metatype: <https://w3id.org/biolink/biolinkml/meta/types/>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 
 CONSTRUCT {
-  #TODO will biolink slots always be object properties?
-  ?relation rdf:type owl:ObjectProperty .
-  ?biolink_slot rdf:type owl:ObjectProperty .
-  ?relation rdfs:subPropertyOf ?biolink_slot .
+  <http://cam.renci.org/biolink_slot> rdf:type owl:AnnotationProperty .
+  ?relation <http://cam.renci.org/biolink_slot> ?biolink_slot .
 }
 WHERE {
   ?biolink_slot rdf:type metatype:SlotDefinition .
-  ?biolink_slot skos:mappingRelation ?relation .
-  FILTER(?biolink_slot != bl:related_to)
+  # This is_a traversal is done in advance here, but alternatively it could be done in the SPARQL query
+  # used to find biolink relation mappings.
+  ?biolink_slot (^blml:is_a)*/(skos:mappingRelation|skos:exactMatch|skos:narrowMatch) ?relation .
 } 

@@ -1,0 +1,12 @@
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX pro: <http://purl.obolibrary.org/obo/PR_000000001>
+PREFIX protein: <http://purl.obolibrary.org/obo/CHEBI_36080>
+CONSTRUCT {
+?term rdfs:subClassOf pro: .
+?term rdfs:subClassOf protein: .
+}
+WHERE {
+?s ?p ?term .
+FILTER (STRSTARTS(STR(?term), "http://identifiers.org/uniprot"))
+FILTER (isIRI(?term))
+}
