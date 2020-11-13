@@ -72,10 +72,10 @@ ont-biolink-subclasses.ttl: biolink-model.ttl biolink-local.ttl
 	$(ARQ) -q --data=biolink-model.ttl --data=biolink-local.ttl --query=sparql/construct-ont-biolink-subclasses.rq --results=ttl >$@
 
 slot-mappings.ttl: biolink-model.ttl biolink-local.ttl
-	arq -q --data=biolink-model.ttl --data=biolink-local.ttl --query=sparql/construct-slot-mappings.rq --results=ttl >$@
+	$(ARQ) -q --data=biolink-model.ttl --data=biolink-local.ttl --query=sparql/construct-slot-mappings.rq --results=ttl >$@
 
 ontologies-merged.ttl: ontologies.ofn ubergraph-axioms.ofn ncbi-gene-classes.ttl protein-subclasses.ttl mesh-chebi-links.ttl uniprot-to-ncbi-rules.ofn reacto-uniprot-rules.ttl biolink-class-hierarchy.ttl ont-biolink-subclasses.ttl slot-mappings.ttl mirror
-	robot merge --catalog mirror/catalog-v001.xml --include-annotations true \
+	$(ROBOT) merge --catalog mirror/catalog-v001.xml --include-annotations true \
 	-i $< -i ubergraph-axioms.ofn \
 	-i ncbi-gene-classes.ttl \
 	-i protein-subclasses.ttl \
