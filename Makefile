@@ -47,16 +47,13 @@ reacto-uniprot-rules.ttl: mirror
 biolink-class-hierarchy.ttl: biolink-model.ttl
 	arq -q --data=$< --query=sparql/construct-biolink-class-hierachy.rq --results=ttl >$@
 
-biolink-slot-hierarchy.ttl: biolink-model.ttl
-	arq -q --data=$< --query=sparql/construct-biolink-slot-hierarchy.rq --results=ttl >$@
-
 ont-biolink-subclasses.ttl: biolink-model.ttl biolink-local.ttl
 	arq -q --data=biolink-model.ttl --data=biolink-local.ttl --query=sparql/construct-ont-biolink-subclasses.rq --results=ttl >$@
 
-ont-biolink-subproperties.ttl: biolink-model.ttl biolink-local.ttl
+slot-mappings.ttl: biolink-model.ttl biolink-local.ttl
 	arq -q --data=biolink-model.ttl --data=biolink-local.ttl --query=sparql/construct-slot-mappings.rq --results=ttl >$@
 
-ontologies-merged.ttl: ontologies.ofn ubergraph-axioms.ofn ncbi-gene-classes.ttl protein-subclasses.ttl mesh-chebi-links.ttl uniprot-to-ncbi-rules.ofn reacto-uniprot-rules.ttl biolink-class-hierarchy.ttl biolink-slot-hierarchy.ttl ont-biolink-subclasses.ttl ont-biolink-subproperties.ttl mirror
+ontologies-merged.ttl: ontologies.ofn ubergraph-axioms.ofn ncbi-gene-classes.ttl protein-subclasses.ttl mesh-chebi-links.ttl uniprot-to-ncbi-rules.ofn reacto-uniprot-rules.ttl biolink-class-hierarchy.ttl ont-biolink-subclasses.ttl slot-mappings.ttl mirror
 	robot merge --catalog mirror/catalog-v001.xml --include-annotations true \
 	-i $< -i ubergraph-axioms.ofn \
 	-i ncbi-gene-classes.ttl \
@@ -65,9 +62,8 @@ ontologies-merged.ttl: ontologies.ofn ubergraph-axioms.ofn ncbi-gene-classes.ttl
 	-i uniprot-to-ncbi-rules.ofn \
 	-i reacto-uniprot-rules.ttl \
 	-i biolink-class-hierarchy.ttl \
-	-i biolink-slot-hierarchy.ttl \
 	-i ont-biolink-subclasses.ttl \
-	-i ont-biolink-subproperties.ttl \
+	-i slot-mappings.ttl \
 	remove --axioms 'disjoint' --trim true --preserve-structure false \
 	remove --term 'owl:Nothing' --trim true --preserve-structure false \
 	remove --term 'http://purl.obolibrary.org/obo/caro#part_of' --term 'http://purl.obolibrary.org/obo/caro#develops_from' --trim true --preserve-structure false \
@@ -94,7 +90,7 @@ opposites.ttl: antonyms_HP.txt
 
 # This includes a hack to workaround JSON-LD context problems with biolink
 biolink-model.ttl:
-	curl -L 'https://raw.githubusercontent.com/biolink/biolink-model/subproperty_of-update/biolink-model.ttl' -o $@.tmp
+	curl -L 'https://raw.githubusercontent.com/biolink/biolink-model/master/biolink-model.ttl' -o $@.tmp
 	sed -E 's/<https:\/\/w3id.org\/biolink\/vocab\/([^[:space:]][^[:space:]]*):/<http:\/\/purl.obolibrary.org\/obo\/\1_/g' $@.tmp >$@
 
 # Removed dependencies properties-nonredundant.ttl properties-redundant.ttl due to the build time they require
