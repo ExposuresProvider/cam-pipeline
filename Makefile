@@ -114,6 +114,10 @@ biolink-model.ttl:
 	curl -L 'https://raw.githubusercontent.com/biolink/biolink-model/master/biolink-model.ttl' -o $@.tmp
 	sed -E 's/<https:\/\/w3id.org\/biolink\/vocab\/([^[:space:]][^[:space:]]*):/<http:\/\/purl.obolibrary.org\/obo\/\1_/g' $@.tmp >$@
 
+# Map of predicates between sources and targets
+predicates.tsv: noctua-reactome-ctd-models-ubergraph.jnl sparql/predicates.rq
+	$(BLAZEGRAPH-RUNNER) select --journal=$< --properties=blazegraph.properties --outformat=tsv sparql/construct-ncbi-gene-classes.rq $@
+
 # Removed dependencies properties-nonredundant.ttl properties-redundant.ttl due to the build time they require
 noctua-reactome-ctd-models-ubergraph.jnl: noctua-reactome-ctd-models.jnl ontologies-merged.ttl subclass_closure.ttl is_defined_by.ttl opposites.ttl biolink-model.ttl biolink-local.ttl
 	cp $< $@ &&\

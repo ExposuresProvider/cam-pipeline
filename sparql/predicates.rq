@@ -1,0 +1,15 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX metatype: <https://w3id.org/biolink/biolinkml/meta/types/>
+
+SELECT DISTINCT ?bl_subject ?biolink_slot ?bl_object
+WHERE {
+?s ?p ?o .
+
+?s rdf:type ?bl_subject .
+?bl_subject rdf:type metatype:ClassDefinition .
+
+?o rdf:type ?bl_object .
+?bl_object rdf:type metatype:ClassDefinition .
+
+?p <http://cam.renci.org/biolink_slot> ?biolink_slot
+}
