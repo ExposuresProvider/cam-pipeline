@@ -9,14 +9,12 @@ SELECT DISTINCT ?p ?p_label
 WHERE { 
 ?n0 rdf:type owl:NamedIndividual .
 ?n1 rdf:type owl:NamedIndividual .
+# For a relation ?p between two individuals
 ?n0 ?p ?n1 .
 OPTIONAL { ?p rdfs:label ?p_label . }
+# There must exist some relation between those individuals which maps to biolink
+?n0 ?p1 ?n1 .
 FILTER NOT EXISTS {
-  ?relation <http://cam.renci.org/biolink_slot> ?bl_predicate .
+  ?p1 rdfs:subPropertyOf*/<http://cam.renci.org/biolink_slot> ?bl_predicate .
 }
-FILTER NOT EXISTS {
-  ?n0 ?p2 ?n1 .
-  ?p2 rdfs:subPropertyOf+ ?p .
-  FILTER (?p != ?p2)
-  }  
 }
