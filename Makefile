@@ -23,7 +23,7 @@ clean:
 ## Generate validation reports from sparql queries
 validate: missing-biolink-terms.ttl missing-biolink-relation.ttl
 
-missing-biolink-terms.ttl: sparql/missing-biolink-terms.rq cam-db-reasoned.jnl
+missing-biolink-terms.ttl: sparql/reports/owl-missing-biolink-term.rq cam-db-reasoned.jnl
 	$(BLAZEGRAPH-RUNNER) select --journal=cam-db-reasoned.jnl --properties=blazegraph.properties --outformat=TSV $< $@
 
 missing-biolink-relation.ttl: sparql/reports/owl-missing-biolink-relation.rq cam-db-reasoned.jnl
