@@ -10,17 +10,13 @@ WHERE {
 ?n0 rdf:type owl:NamedIndividual .
 ?n1 rdf:type owl:NamedIndividual .
 ?n0 ?p ?n1 .
-?p rdfs:label ?p_label
+OPTIONAL { ?p rdfs:label ?p_label . }
 FILTER NOT EXISTS {
-	?p rdfs:subPropertyOf+ ?bl_predicate .
-    ?bl_predicate rdf:type metatype:SlotDefinition .
-  }
+  ?relation <http://cam.renci.org/biolink_slot> ?bl_predicate .
+}
 FILTER NOT EXISTS {
-    ?p rdf:type metatype:SlotDefinition .
-  } 
-FILTER NOT EXISTS {
-    ?n0 ?p2 ?n1 .
-    ?p2 rdfs:subPropertyOf+ ?p .
-    FILTER (?p != ?p2)
+  ?n0 ?p2 ?n1 .
+  ?p2 rdfs:subPropertyOf+ ?p .
+  FILTER (?p != ?p2)
   }  
 }
