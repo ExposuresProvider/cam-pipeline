@@ -120,6 +120,8 @@ biolink-model.ttl:
 # Map of predicates between sources and targets
 predicates.tsv: cam-db-reasoned.jnl sparql/predicates.rq
 	$(BLAZEGRAPH-RUNNER) select --journal=$< --properties=blazegraph.properties --outformat=tsv sparql/predicates.rq $@
+	sed -i -e 's;<https://w3id.org/biolink/vocab/;;g' -e 's;>;;g' -e 's;\t;,;g' $@
+	sed -i 1d $@
 
 # Removed dependencies properties-nonredundant.ttl properties-redundant.ttl due to the build time they require
 noctua-reactome-ctd-models-ubergraph.jnl: noctua-reactome-ctd-models.jnl ontologies-merged.ttl subclass_closure.ttl is_defined_by.ttl opposites.ttl biolink-model.ttl biolink-local.ttl
