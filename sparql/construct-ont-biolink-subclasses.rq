@@ -22,6 +22,6 @@ CONSTRUCT {
 }
 WHERE {
 ?bl_term rdf:type metatype:ClassDefinition .
-?bl_term skos:mappingRelation||skos:exactMatch|skos:narrowMatch|rdfs:subClassOf ?ont_term .
+?bl_term skos:mappingRelation|skos:exactMatch|skos:narrowMatch|rdfs:subClassOf ?ont_term .
 FILTER(?bl_term != ?ont_term)
 }
