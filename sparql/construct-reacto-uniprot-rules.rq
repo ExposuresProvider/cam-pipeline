@@ -13,6 +13,7 @@ PREFIX NCBIGENE: <http://identifiers.org/ncbigene:>
 PREFIX sesame: <http://www.openrdf.org/schema/sesame#>
 PREFIX swrl: <http://www.w3.org/2003/11/swrl#>
 CONSTRUCT {
+  <urn:swrl#x> rdf:type swrl:Variable .
   ?u rdf:type owl:Class .
   ?u rdfs:subClassOf SO:0000704 .
   [
