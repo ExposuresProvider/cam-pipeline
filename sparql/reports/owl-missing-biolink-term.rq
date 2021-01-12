@@ -12,7 +12,7 @@ WHERE {
   FILTER NOT EXISTS {
 	?n0 rdf:type ?bl_type .
     ?bl_type rdf:type metatype:ClassDefinition .
-    FILTER(?bl_type != bl:NamedThing)
+    FILTER(?bl_type IN (bl:NamedThing, bl:Entity))
   }
 OPTIONAL { ?descriptive_type rdfs:label ?type_label }
 }
