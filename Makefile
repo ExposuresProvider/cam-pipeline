@@ -12,8 +12,6 @@ ARQ=$(JVM_ARGS) arq
 
 # git clone git@github.com:geneontology/noctua-models.git
 NOCTUA_MODELS_REPO=gene-data/noctua-models
-# a copy of the above just checked out to dev branch
-NOCTUA_MODELS_DEV_REPO=gene-data/noctua-models-dev
 
 .PHONY: clean validate
 

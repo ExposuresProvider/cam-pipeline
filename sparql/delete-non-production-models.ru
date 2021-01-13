@@ -12,7 +12,10 @@ WHERE {
     # A hacky way to choose Noctua model graphs
     ?model lego:modelstate ?modelstate .
     FILTER(?modelstate != "production"^^xsd:string)
+
     GRAPH ?model {
      ?s ?p ?o .
+     ?s <http://purl.org/pav/providedBy> ?o .
+     FILTER  (?o != "https://reactome.org")
     }
 }
