@@ -12,7 +12,8 @@ WHERE {
   FILTER NOT EXISTS {
 	?n0 rdf:type ?bl_type .
     ?bl_type rdf:type metatype:ClassDefinition .
-    FILTER(?bl_type NOT IN (bl:NamedThing, bl:Entity))
+    OPTIONAL{ bl:NamedThing rdfs:subclassOf ?entity } .
+    FILTER( ?bl_type NOT IN (bl:NamedThing, ?entity) )
   }
 OPTIONAL { ?descriptive_type rdfs:label ?type_label }
 }
