@@ -2,7 +2,6 @@ PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX go: <http://www.geneontology.org/formats/oboInOwl#>
-PREFIX blml: <https://w3id.org/biolink/biolinkml/meta/>
 PREFIX bl: <https://w3id.org/biolink/vocab/>
 PREFIX MONDO: <http://purl.obolibrary.org/obo/MONDO_>
 PREFIX SO: <http://purl.obolibrary.org/obo/SO_>
@@ -13,7 +12,7 @@ PREFIX NCBIGENE: <http://identifiers.org/ncbigene:>
 PREFIX sesame: <http://www.openrdf.org/schema/sesame#>
 PREFIX swrl: <http://www.w3.org/2003/11/swrl#>
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-PREFIX metatype: <https://w3id.org/biolink/biolinkml/meta/types/>
+PREFIX linkml: <https://w3id.org/linkml/>
 
 CONSTRUCT {
 ?ont_term rdf:type owl:Class .
@@ -21,7 +20,7 @@ CONSTRUCT {
 ?ont_term rdfs:subClassOf ?bl_term .
 }
 WHERE {
-?bl_term rdf:type metatype:ClassDefinition .
+?bl_term rdf:type linkml:ClassDefinition .
 ?bl_term skos:mappingRelation|skos:exactMatch|skos:narrowMatch|rdfs:subClassOf ?ont_term .
 FILTER(?bl_term != ?ont_term)
 }
