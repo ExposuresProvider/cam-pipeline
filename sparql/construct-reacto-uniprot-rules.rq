@@ -15,7 +15,6 @@ PREFIX linkml: <https://w3id.org/linkml/>
 CONSTRUCT {
   <urn:swrl#x> rdf:type swrl:Variable .
   ?u rdf:type owl:Class .
-  ?u rdfs:subClassOf SO:0000704 .
   [
       rdf:type <http://www.w3.org/2003/11/swrl#Imp> ;
       swrl:body [ 
