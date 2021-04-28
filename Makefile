@@ -50,8 +50,8 @@ cam-db-reasoned.jnl: noctua-reactome-ctd-models-ubergraph.jnl
 	cp $< $@ &&\
 	$(BLAZEGRAPH-RUNNER) reason --journal=$@ --properties=blazegraph.properties --reasoner=whelk --append-graph-name='#inferred' --ontology='http://reasoner.renci.org/ontology' --source-graphs-query=sparql/find-asserted-models.rq --direct-types=true
 
-ncbi-gene-classes.ttl: noctua-reactome-ctd-models.jnl
-	$(BLAZEGRAPH-RUNNER) construct --journal=$< --properties=blazegraph.properties --outformat=turtle sparql/construct-ncbi-gene-classes.rq $@
+ncbi-gene-classes.ttl: uniprot-to-ncbi-rules.ofn
+	$(ROBOT) query --input uniprot-to-ncbi-rules.ofn --query sparql/construct-ncbi-gene-classes.rq ncbi-gene-classes.ttl
 
 protein-subclasses.ttl: noctua-reactome-ctd-models.jnl sparql/construct-protein-subclasses.rq
 	$(BLAZEGRAPH-RUNNER) construct --journal=$< --properties=blazegraph.properties --outformat=turtle sparql/construct-protein-subclasses.rq $@

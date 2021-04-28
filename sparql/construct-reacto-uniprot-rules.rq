@@ -2,7 +2,6 @@ PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX go: <http://www.geneontology.org/formats/oboInOwl#>
-PREFIX blml: <https://w3id.org/biolink/biolinkml/meta/>
 PREFIX bl: <https://w3id.org/biolink/vocab/>
 PREFIX MONDO: <http://purl.obolibrary.org/obo/MONDO_>
 PREFIX SO: <http://purl.obolibrary.org/obo/SO_>
@@ -12,10 +11,10 @@ PREFIX obo: <http://purl.obolibrary.org/obo/>
 PREFIX NCBIGENE: <http://identifiers.org/ncbigene:>
 PREFIX sesame: <http://www.openrdf.org/schema/sesame#>
 PREFIX swrl: <http://www.w3.org/2003/11/swrl#>
+PREFIX linkml: <https://w3id.org/linkml/>
 CONSTRUCT {
   <urn:swrl#x> rdf:type swrl:Variable .
   ?u rdf:type owl:Class .
-  ?u rdfs:subClassOf SO:0000704 .
   [
       rdf:type <http://www.w3.org/2003/11/swrl#Imp> ;
       swrl:body [ 
@@ -40,6 +39,5 @@ CONSTRUCT {
 }
 WHERE {
 ?r <http://geneontology.org/lego/canonical_record> ?u .
-FILTER(STRSTARTS(STR(?u), "http://identifiers.org/uniprot/"))
 FILTER (isIRI(?u))
 }
