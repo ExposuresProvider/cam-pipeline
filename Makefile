@@ -33,15 +33,11 @@ noctua-models.jnl: $(NOCTUA_MODELS_REPO)/models/*.ttl
 	$(BLAZEGRAPH-RUNNER) load --journal=$@ --properties=blazegraph.properties --informat=turtle --use-ontology-graph=true $(NOCTUA_MODELS_REPO)/models &&\
 	$(BLAZEGRAPH-RUNNER) update --journal=$@ --properties=blazegraph.properties sparql/delete-non-production-models.ru
 
-noctua-reactome-models.jnl: noctua-models.jnl $(NOCTUA_MODELS_DEV_REPO)/models/R-HSA-*.ttl
-	cp $< $@ &&\
-	$(BLAZEGRAPH-RUNNER) load --journal=$@ --properties=blazegraph.properties --informat=turtle --use-ontology-graph=true $(patsubst %, "%", $(filter-out $<, $^))
-
 CTD_chem_gene_ixns_structured.xml:
 	curl -L -O 'http://ctdbase.org/reports/CTD_chem_gene_ixns_structured.xml.gz' &&\
 	gunzip CTD_chem_gene_ixns_structured.xml.gz
 
-noctua-reactome-ctd-models.jnl: noctua-reactome-models.jnl #CTD_chem_gene_ixns_structured.xml chebi_mesh.tsv
+noctua-reactome-ctd-models.jnl: noctua-models.jnl #CTD_chem_gene_ixns_structured.xml chebi_mesh.tsv
 	cp $< $@ #&&\
 	# Temporarily disable CTD ingestion to allow more rapid turnaround while the full KP is developed
 	#ctd-to-owl CTD_chem_gene_ixns_structured.xml $@ blazegraph.properties chebi_mesh.tsv
