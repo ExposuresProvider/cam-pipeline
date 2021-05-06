@@ -12,8 +12,6 @@ ARQ=$(JVM_ARGS) arq
 
 # git clone git@github.com:geneontology/noctua-models.git
 NOCTUA_MODELS_REPO=gene-data/noctua-models
-# a copy of the above just checked out to dev branch
-NOCTUA_MODELS_DEV_REPO=gene-data/noctua-models-dev
 
 .PHONY: clean validate
 
@@ -35,15 +33,11 @@ noctua-models.jnl: $(NOCTUA_MODELS_REPO)/models/*.ttl
 	$(BLAZEGRAPH-RUNNER) load --journal=$@ --properties=blazegraph.properties --informat=turtle --use-ontology-graph=true $(NOCTUA_MODELS_REPO)/models &&\
 	$(BLAZEGRAPH-RUNNER) update --journal=$@ --properties=blazegraph.properties sparql/delete-non-production-models.ru
 
-noctua-reactome-models.jnl: noctua-models.jnl $(NOCTUA_MODELS_DEV_REPO)/models/R-HSA-*.ttl
-	cp $< $@ &&\
-	$(BLAZEGRAPH-RUNNER) load --journal=$@ --properties=blazegraph.properties --informat=turtle --use-ontology-graph=true $(patsubst %, "%", $(filter-out $<, $^))
-
 CTD_chem_gene_ixns_structured.xml:
 	curl -L -O 'http://ctdbase.org/reports/CTD_chem_gene_ixns_structured.xml.gz' &&\
 	gunzip CTD_chem_gene_ixns_structured.xml.gz
 
-noctua-reactome-ctd-models.jnl: noctua-reactome-models.jnl #CTD_chem_gene_ixns_structured.xml chebi_mesh.tsv
+noctua-reactome-ctd-models.jnl: noctua-models.jnl #CTD_chem_gene_ixns_structured.xml chebi_mesh.tsv
 	cp $< $@ #&&\
 	# Temporarily disable CTD ingestion to allow more rapid turnaround while the full KP is developed
 	#ctd-to-owl CTD_chem_gene_ixns_structured.xml $@ blazegraph.properties chebi_mesh.tsv
@@ -52,8 +46,8 @@ cam-db-reasoned.jnl: noctua-reactome-ctd-models-ubergraph.jnl
 	cp $< $@ &&\
 	$(BLAZEGRAPH-RUNNER) reason --journal=$@ --properties=blazegraph.properties --reasoner=whelk --append-graph-name='#inferred' --ontology='http://reasoner.renci.org/ontology' --source-graphs-query=sparql/find-asserted-models.rq --direct-types=true
 
-ncbi-gene-classes.ttl: noctua-reactome-ctd-models.jnl
-	$(BLAZEGRAPH-RUNNER) construct --journal=$< --properties=blazegraph.properties --outformat=turtle sparql/construct-ncbi-gene-classes.rq $@
+ncbi-gene-classes.ttl: uniprot-to-ncbi-rules.ofn
+	$(ROBOT) query --input uniprot-to-ncbi-rules.ofn --query sparql/construct-ncbi-gene-classes.rq ncbi-gene-classes.ttl
 
 protein-subclasses.ttl: noctua-reactome-ctd-models.jnl sparql/construct-protein-subclasses.rq
 	$(BLAZEGRAPH-RUNNER) construct --journal=$< --properties=blazegraph.properties --outformat=turtle sparql/construct-protein-subclasses.rq $@

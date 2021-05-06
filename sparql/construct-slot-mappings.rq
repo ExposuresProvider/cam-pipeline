@@ -1,18 +1,17 @@
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX blml: <https://w3id.org/biolink/biolinkml/meta/>
 PREFIX bl: <https://w3id.org/biolink/vocab/>
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-PREFIX metatype: <https://w3id.org/biolink/biolinkml/meta/types/>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX linkml: <https://w3id.org/linkml/>
 
 CONSTRUCT {
   <http://cam.renci.org/biolink_slot> rdf:type owl:AnnotationProperty .
   ?relation <http://cam.renci.org/biolink_slot> ?biolink_slot .
 }
 WHERE {
-  ?biolink_slot rdf:type metatype:SlotDefinition .
+  ?biolink_slot rdf:type linkml:SlotDefinition .
   # This is_a traversal is done in advance here, but alternatively it could be done in the SPARQL query
   # used to find biolink relation mappings.
-  ?biolink_slot (^blml:is_a)*/(skos:mappingRelation|skos:exactMatch|skos:narrowMatch) ?relation .
+  ?biolink_slot (^linkml:is_a)*/(skos:mappingRelation|skos:exactMatch|skos:narrowMatch) ?relation .
 } 

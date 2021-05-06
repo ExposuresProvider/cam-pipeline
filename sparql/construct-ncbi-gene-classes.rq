@@ -6,7 +6,7 @@ CONSTRUCT {
 ?term rdfs:subClassOf Gene: .
 }
 WHERE {
-?s rdf:type ?term .
+?s ?p ?term .
 FILTER (STRSTARTS(STR(?term), "http://identifiers.org/ncbigene"))
 FILTER (isIRI(?term))
 }
