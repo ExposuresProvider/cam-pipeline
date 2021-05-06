@@ -4,6 +4,7 @@ PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX bl: <https://w3id.org/biolink/vocab/>
 PREFIX sesame: <http://www.openrdf.org/schema/sesame#>
 PREFIX linkml: <https://w3id.org/linkml/>
+
 SELECT DISTINCT ?descriptive_type ?type_label
 WHERE { 
 ?n0 rdf:type owl:NamedIndividual .
@@ -12,6 +13,10 @@ WHERE {
 	?n0 rdf:type ?bl_type .
     ?bl_type rdf:type linkml:ClassDefinition .
     FILTER(?bl_type != bl:NamedThing)
+    ?bl_type rdfs:subClassOf bl:NamedThing
+  }
+  FILTER NOT EXISTS {
+  	?descriptive_type owl:deprecated true .
   }
 OPTIONAL { ?descriptive_type rdfs:label ?type_label }
 }
