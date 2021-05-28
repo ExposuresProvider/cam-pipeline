@@ -11,9 +11,7 @@ WHERE {
 # For a relation ?p between two individuals
 ?n0 ?p ?n1 .
 OPTIONAL { ?p rdfs:label ?p_label . }
-# There must exist some relation between those individuals which maps to biolink
-?n0 ?p1 ?n1 .
 FILTER NOT EXISTS {
-  ?p1 rdfs:subPropertyOf*/<http://cam.renci.org/biolink_slot> ?bl_predicate .
+  ?p rdfs:subPropertyOf*/<http://cam.renci.org/biolink_slot> ?bl_predicate .
 }
 }
