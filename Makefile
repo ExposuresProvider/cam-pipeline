@@ -12,6 +12,7 @@ ARQ=$(JVM_ARGS) arq
 
 # git clone git@github.com:geneontology/noctua-models.git
 NOCTUA_MODELS_REPO=gene-data/noctua-models
+BIOLINK=1.8.2
 
 .PHONY: clean validate
 
@@ -108,7 +109,7 @@ opposites.ttl: antonyms_HP.txt
 
 # This includes a hack to workaround JSON-LD context problems with biolink
 biolink-model.ttl:
-	curl -L 'https://raw.githubusercontent.com/biolink/biolink-model/master/biolink-model.ttl' -o $@.tmp
+	curl -L 'https://raw.githubusercontent.com/biolink/biolink-model/$(BIOLINK)/biolink-model.ttl' -o $@.tmp
 	sed -E 's/<https:\/\/w3id.org\/biolink\/vocab\/([^[:space:]][^[:space:]]*):/<http:\/\/purl.obolibrary.org\/obo\/\1_/g' $@.tmp >$@
 
 # Map of predicates between sources and targets
