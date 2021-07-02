@@ -110,7 +110,7 @@ opposites.ttl: antonyms_HP.txt
 # This includes a hack to workaround JSON-LD context problems with biolink
 biolink-model.ttl:
 	curl -L 'https://raw.githubusercontent.com/biolink/biolink-model/$(BIOLINK)/biolink-model.ttl' -o $@.tmp
-	sed -E 's/<https:\/\/w3id.org\/biolink\/vocab\/([^[:space:]][^[:space:]]*):/<http:\/\/purl.obolibrary.org\/obo\/\1_/g' $@.tmp >$@
+	riot --syntax=turtle --output=ntriples $@.tmp | sed -E 's/<https:\/\/w3id.org\/biolink\/vocab\/([^[:space:]][^[:space:]]*):/<http:\/\/purl.obolibrary.org\/obo\/\1_/g' >$@
 
 # Map of predicates between sources and targets
 predicates.tsv: cam-db-reasoned.jnl sparql/predicates.rq
