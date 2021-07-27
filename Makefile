@@ -12,7 +12,7 @@ ARQ=$(JVM_ARGS) arq
 
 # git clone git@github.com:geneontology/noctua-models.git
 NOCTUA_MODELS_REPO=gene-data/noctua-models
-BIOLINK=2.0.2
+BIOLINK=2.1.0
 
 .PHONY: clean validate
 
