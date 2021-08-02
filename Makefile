@@ -1,14 +1,25 @@
 # set JAVA_OPTS=-Xmx64G before running make for blazegraph-runner, ctd-to-owl, ncit-utils
-JAVA_ENV=JAVA_OPTS=-Xmx120G
-BLAZEGRAPH-RUNNER=$(JAVA_ENV) blazegraph-runner
-NCIT-UTILS=$(JAVA_ENV) ncit-utils
 
-# set ROBOT_JAVA_ARGS=-Xmx64G before running make for robot
-ROBOT_ENV=ROBOT_JAVA_ARGS=-Xmx120G
-ROBOT=$(ROBOT_ENV) robot
+ifndef BLAZEGRAPH_RUNNER_JAVA_OPTS
+	BLAZEGRAPH_RUNNER_JAVA_OPTS="-Xmx120g -Xms120g"
+endif
 
-JVM_ARGS=JVM_ARGS=-Xmx120G
-ARQ=$(JVM_ARGS) arq
+ifndef NCIT_JAVA_OPTS
+	NCIT_JAVA_OPTS="-Xmx120g -Xms120g"
+endif
+
+ifndef ROBOT_JAVA_OPTS
+	ROBOT_JAVA_OPTS="-Xmx120g -Xms120g"
+endif
+
+ifndef ARQ_JAVA_OPTS
+	ARQ_JAVA_OPTS="-Xmx120g -Xms120g"
+endif
+
+BLAZEGRAPH-RUNNER=JAVA_OPTS="$(BLAZEGRAPH_RUNNER_JAVA_OPTS)" blazegraph-runner
+NCIT-UTILS=JAVA_OPTS="$(NCIT_JAVA_OPTS)" ncit-utils
+ROBOT=ROBOT_JAVA_ARGS="$(ROBOT_JAVA_OPTS)" robot
+ARQ=JAVA_OPTS="$(ARQ_JAVA_OPTS)" arq
 
 # git clone git@github.com:geneontology/noctua-models.git
 NOCTUA_MODELS_REPO=gene-data/noctua-models
