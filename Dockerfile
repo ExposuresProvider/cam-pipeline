@@ -18,11 +18,11 @@ USER root
 RUN id -u cam 1>/dev/null 2>&1 || (( getent group 0 1>/dev/null 2>&1 || ( type groupadd 1>/dev/null 2>&1 && groupadd -g 0 root || addgroup -g 0 -S root )) && ( type useradd 1>/dev/null 2>&1 && useradd --system --create-home --uid 1001 --gid 0 cam || adduser -S -u 1001 -G root cam ))
 WORKDIR /opt/docker
 COPY --from=stage0 --chown=cam:root /1/opt/docker /opt/docker
-ENV ROBOT_JAVA_ARGS="-Xmx24g -Xms24g"
-ENV BLAZEGRAPH_RUNNER_JAVA_OPTS="-Xmx24g -Xms24g"
-ENV NCIT_JAVA_OPTS="-Xmx24g -Xms24g"
-ENV ROBOT_JAVA_OPTS="-Xmx24g -Xms24g"
-ENV ARQ_JAVA_OPTS="-Xmx24g -Xms24g"
+ENV ROBOT_JAVA_ARGS="-Xmx64g -Xms64g"
+ENV BLAZEGRAPH_RUNNER_JAVA_OPTS="-Xmx64g -Xms64g"
+ENV NCIT_JAVA_OPTS="-Xmx64g -Xms64g"
+ENV ROBOT_JAVA_OPTS="-Xmx64g -Xms64g"
+ENV ARQ_JAVA_OPTS="-Xmx64g -Xms64g"
 ENV PATH="$PATH:."
 
 RUN apk update && apk add bash curl make coreutils tar git
@@ -42,7 +42,7 @@ RUN curl -L -O https://github.com/ontodev/robot/releases/download/v1.8.1/robot.j
 RUN curl -L -O https://github.com/balhoff/blazegraph-runner/releases/download/v1.6.4/blazegraph-runner-1.6.4.tgz && \
         tar -xzf blazegraph-runner-1.6.4.tgz && \
         rm blazegraph-runner-1.6.4.tgz && \
-        ln -s ./blazegraph-runner-1.6.4/bin/blazegraph-runner./blazegraph-runner
+        ln -s ./blazegraph-runner-1.6.4/bin/blazegraph-runner ./blazegraph-runner
 
 RUN curl -L -O https://github.com/NCI-Thesaurus/ncit-utils/releases/download/v0.6/ncit-utils-0.6.tgz && \
         tar -xzf ncit-utils-0.6.tgz && \
