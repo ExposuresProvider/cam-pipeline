@@ -18,11 +18,11 @@ USER root
 RUN id -u cam 1>/dev/null 2>&1 || (( getent group 0 1>/dev/null 2>&1 || ( type groupadd 1>/dev/null 2>&1 && groupadd -g 0 root || addgroup -g 0 -S root )) && ( type useradd 1>/dev/null 2>&1 && useradd --system --create-home --uid 1001 --gid 0 cam || adduser -S -u 1001 -G root cam ))
 WORKDIR /opt/docker
 COPY --from=stage0 --chown=cam:root /1/opt/docker /opt/docker
-ENV ROBOT_JAVA_ARGS="-Xmx64g -Xms64g"
-ENV BLAZEGRAPH_RUNNER_JAVA_OPTS="-Xmx64g -Xms64g"
-ENV NCIT_JAVA_OPTS="-Xmx64g -Xms64g"
-ENV ROBOT_JAVA_OPTS="-Xmx64g -Xms64g"
-ENV ARQ_JAVA_OPTS="-Xmx64g -Xms64g"
+ENV ROBOT_JAVA_ARGS="-Xmx90g -Xms90g"
+ENV BLAZEGRAPH_RUNNER_JAVA_OPTS="-Xmx90g -Xms90g"
+ENV NCIT_JAVA_OPTS="-Xmx90g -Xms90g"
+ENV ROBOT_JAVA_OPTS="-Xmx90g -Xms90g"
+ENV ARQ_JAVA_OPTS="-Xmx90g -Xms90g"
 ENV PATH="$PATH:."
 
 RUN apk update && apk add bash curl make coreutils tar git
