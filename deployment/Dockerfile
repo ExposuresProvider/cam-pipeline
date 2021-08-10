@@ -14,7 +14,6 @@ RUN id -u cam 1>/dev/null 2>&1 || (( getent group 0 1>/dev/null 2>&1 || ( type g
 WORKDIR /opt/docker
 COPY --from=stage0 --chown=cam:root /1/opt/docker /opt/docker
 ENV JETTY_PORT="8080"
-ENV JVM_OPTS="-Djava.awt.headless=true -server -Xmx32g -Xms32g -XX:MaxDirectMemorySize=3000m -XX:+UseG1GC"
 ENV BLZG_HOME="/opt/docker/blazegraph"
 ENV PATH="$PATH:$BLZG_HOME/bin:."
 
@@ -30,9 +29,5 @@ RUN curl -L -O https://github.com/blazegraph/database/releases/download/BLAZEGRA
 
 RUN sed -i 's;>> $BLZG_LOG 2>\&1 &;#>> $BLZG_LOG 2>\&1 &;g' blazegraph/bin/blazegraph.sh
 
-#RUN mv -f readonly_cors.xml blazegraph/war/WEB-INF/override-web.xml
-#RUN ln -s ./cam-db-reasoned.jnl ./blazegraph/data/blazegraph.jnl
 CMD [ ]
 ENTRYPOINT /bin/bash
-#CMD blazegraph/bin/blazegraph.sh start
-#CMD java -server -Xmx32g -Djetty.port=8666 -Djetty.overrideWebXml=readonly_cors.xml -cp blazegraph-jar-2.1.4.jar:jetty-servlets-9.2.3.v20140905.jar com.bigdata.rdf.sail.webapp.StandaloneNanoSparqlServer
