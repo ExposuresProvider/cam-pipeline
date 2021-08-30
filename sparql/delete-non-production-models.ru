@@ -11,9 +11,10 @@ WHERE {
     ?model rdf:type owl:Ontology .
     # A hacky way to choose Noctua model graphs
     ?model lego:modelstate ?modelstate .
-    FILTER(?modelstate != "production"^^xsd:string)
+    FILTER(?modelstate != "production")
+    FILTER NOT EXISTS{
     ?model <http://purl.org/pav/providedBy> ?provider .
-    FILTER(?provider != "https://reactome.org")
+    FILTER(?provider != "https://reactome.org")}
     GRAPH ?model {
      ?s ?p ?o .
     }
