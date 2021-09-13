@@ -13,11 +13,17 @@ ARQ=$(JVM_ARGS) arq
 # git clone git@github.com:geneontology/noctua-models.git
 NOCTUA_MODELS_REPO=gene-data/noctua-models
 BIOLINK=2.1.0
+CTDTOOWLV=0.1
+CTD_TO_OWL=$(JAVA_ENV) ctd-to-owl/bin/ctd-to-owl
 
 .PHONY: clean validate
 
 clean:
 	rm -rf gene-data
+
+ctd-to-owl:
+	curl -L -O 'https://github.com/balhoff/ctd-to-owl/releases/download/v0.1/ctd-to-owl-$(CTDTOOWLV).tgz' &&\
+	tar -zxf ctd-to-owl-$(CTDTOOWLV).tgz && mv ctd-to-owl-$(CTDTOOWLV) ctd-to-owl
 
 ## Generate validation reports from sparql queries
 validate: missing-biolink-terms.ttl missing-biolink-relation.ttl
@@ -38,10 +44,9 @@ CTD_chem_gene_ixns_structured.xml:
 	curl -L -O 'http://ctdbase.org/reports/CTD_chem_gene_ixns_structured.xml.gz' &&\
 	gunzip CTD_chem_gene_ixns_structured.xml.gz
 
-noctua-reactome-ctd-models.jnl: noctua-models.jnl #CTD_chem_gene_ixns_structured.xml chebi_mesh.tsv
-	cp $< $@ #&&\
-	# Temporarily disable CTD ingestion to allow more rapid turnaround while the full KP is developed
-	#ctd-to-owl CTD_chem_gene_ixns_structured.xml $@ blazegraph.properties chebi_mesh.tsv
+noctua-reactome-ctd-models.jnl: noctua-models.jnl CTD_chem_gene_ixns_structured.xml chebi_mesh.tsv
+	cp $< $@ &&\
+	$(CTD_TO_OWL) CTD_chem_gene_ixns_structured.xml $@ blazegraph.properties chebi_mesh.tsv
 
 cam-db-reasoned.jnl: noctua-reactome-ctd-models-ubergraph.jnl
 	cp $< $@ &&\
