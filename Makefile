@@ -44,7 +44,7 @@ CTD_chem_gene_ixns_structured.xml:
 	curl -L -O 'http://ctdbase.org/reports/CTD_chem_gene_ixns_structured.xml.gz' &&\
 	gunzip CTD_chem_gene_ixns_structured.xml.gz
 
-noctua-reactome-ctd-models.jnl: ctd-to-owl noctua-models.jnl CTD_chem_gene_ixns_structured.xml chebi_mesh.tsv
+noctua-reactome-ctd-models.jnl: noctua-models.jnl CTD_chem_gene_ixns_structured.xml chebi_mesh.tsv ctd-to-owl
 	cp $< $@ &&\
 	$(CTD_TO_OWL) CTD_chem_gene_ixns_structured.xml $@ blazegraph.properties chebi_mesh.tsv
 
