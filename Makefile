@@ -1,18 +1,17 @@
 # set JAVA_OPTS=-Xmx64G before running make for blazegraph-runner, ctd-to-owl, ncit-utils
-JAVA_ENV=JAVA_OPTS=-Xmx120G
+JAVA_ENV=JAVA_OPTS=-Xmx32G
 BLAZEGRAPH-RUNNER=$(JAVA_ENV) blazegraph-runner
 NCIT-UTILS=$(JAVA_ENV) ncit-utils
 
 # set ROBOT_JAVA_ARGS=-Xmx64G before running make for robot
-ROBOT_ENV=ROBOT_JAVA_ARGS=-Xmx120G
+ROBOT_ENV=ROBOT_JAVA_ARGS=-Xmx32G
 ROBOT=$(ROBOT_ENV) robot
+SOUFFLE=souffle
 
-JVM_ARGS=JVM_ARGS=-Xmx120G
+JVM_ARGS=JVM_ARGS=-Xmx32G
 ARQ=$(JVM_ARGS) arq
 
-# git clone git@github.com:geneontology/noctua-models.git
-NOCTUA_MODELS_REPO=gene-data/noctua-models
-BIOLINK=2.1.0
+BIOLINK=2.2.5
 
 .PHONY: clean validate
 
@@ -30,8 +29,8 @@ missing-biolink-relation.ttl: sparql/reports/owl-missing-biolink-relation.rq cam
 
 all: cam-db-reasoned.jnl
 
-noctua-models.jnl: $(NOCTUA_MODELS_REPO)/models/*.ttl
-	$(BLAZEGRAPH-RUNNER) load --journal=$@ --properties=blazegraph.properties --informat=turtle --use-ontology-graph=true $(NOCTUA_MODELS_REPO)/models &&\
+noctua-models.jnl: noctua-models/models/*.ttl
+	$(BLAZEGRAPH-RUNNER) load --journal=$@ --properties=blazegraph.properties --informat=turtle --use-ontology-graph=true noctua-models/models &&\
 	$(BLAZEGRAPH-RUNNER) update --journal=$@ --properties=blazegraph.properties sparql/delete-non-production-models.ru
 
 CTD_chem_gene_ixns_structured.xml:
@@ -63,14 +62,14 @@ mirror: ontologies.ofn
 reacto-uniprot-rules.ttl: mirror
 	$(ARQ) -q --data=mirror/purl.obolibrary.org/obo/go/extensions/reacto.owl --query=sparql/construct-reacto-uniprot-rules.rq --results=ttl >$@
 
-biolink-class-hierarchy.ttl: biolink-model.ttl
-	$(ARQ) -q --data=$< --query=sparql/construct-biolink-class-hierachy.rq --results=ttl >$@
+biolink-class-hierarchy.ttl: biolink-model.nt
+	$(ARQ) -q --data=$< --query=sparql/construct-biolink-class-hierachy.rq --results=ttl > $@
 
-ont-biolink-subclasses.ttl: biolink-model.ttl biolink-local.ttl
-	$(ARQ) -q --data=biolink-model.ttl --data=biolink-local.ttl --query=sparql/construct-ont-biolink-subclasses.rq --results=ttl >$@
+ont-biolink-subclasses.ttl: biolink-model.nt biolink-local.ttl
+	$(ARQ) -q --data=biolink-model.nt --data=biolink-local.ttl --query=sparql/construct-ont-biolink-subclasses.rq --results=ttl >$@
 
-slot-mappings.ttl: biolink-model.ttl biolink-local.ttl
-	$(ARQ) -q --data=biolink-model.ttl --data=biolink-local.ttl --query=sparql/construct-slot-mappings.rq --results=ttl >$@
+slot-mappings.ttl: biolink-model.nt biolink-local.ttl
+	$(ARQ) -q --data=biolink-model.nt --data=biolink-local.ttl --query=sparql/construct-slot-mappings.rq --results=ttl >$@
 
 ontologies-merged.ttl: ontologies.ofn ubergraph-axioms.ofn ncbi-gene-classes.ttl protein-subclasses.ttl mesh-chebi-links.ttl uniprot-to-ncbi-rules.ofn reacto-uniprot-rules.ttl biolink-class-hierarchy.ttl ont-biolink-subclasses.ttl slot-mappings.ttl mirror
 	$(ROBOT) merge --catalog mirror/catalog-v001.xml --include-annotations true \
@@ -85,8 +84,9 @@ ontologies-merged.ttl: ontologies.ofn ubergraph-axioms.ofn ncbi-gene-classes.ttl
 	-i slot-mappings.ttl \
 	remove --axioms 'disjoint' --trim true --preserve-structure false \
 	remove --term 'owl:Nothing' --trim true --preserve-structure false \
-	remove --term 'http://purl.obolibrary.org/obo/caro#part_of' --term 'http://purl.obolibrary.org/obo/caro#develops_from' --trim true --preserve-structure false \
-	reason -r ELK -D debug.ofn -o $@
+	remove --term 'http://purl.obolibrary.org/obo/caro#part_of' --term 'http://purl.obolibrary.org/obo/caro#develops_from' \
+	--trim true --preserve-structure false -D debug.ofn -o $@
+	#--trim true --preserve-structure false reason -r ELK -D debug.ofn -o $@
 
 subclass_closure.ttl: ontologies-merged.ttl sparql/subclass-closure.rq
 	$(ARQ) -q --data=$< --query=sparql/subclass-closure.rq --results=ttl --optimize=off >$@
@@ -109,8 +109,13 @@ opposites.ttl: antonyms_HP.txt
 
 # This includes a hack to workaround JSON-LD context problems with biolink
 biolink-model.ttl:
-	curl -L 'https://raw.githubusercontent.com/biolink/biolink-model/$(BIOLINK)/biolink-model.ttl' -o $@.tmp
-	riot --syntax=turtle --output=ntriples $@.tmp | sed -E 's/<https:\/\/w3id.org\/biolink\/vocab\/([^[:space:]][^[:space:]]*):/<http:\/\/purl.obolibrary.org\/obo\/\1_/g' >$@
+	curl -L 'https://raw.githubusercontent.com/biolink/biolink-model/$(BIOLINK)/biolink-model.ttl' -o $@
+	#sed -i -e 's;2021-07-07 01:36;2021-07-07T01:36:00;g' -e 's;Wed Jul  7 01:34:10 2021;2021-07-07T01:34:10;g' $@
+	sed -i -e 's;2021-09-21 22:44;2021-09-21T22:44:00;g' -e 's;Tue Sep 21 22:41:10 2021;2021-09-21T22:41:10;g' $@
+
+
+biolink-model.nt: biolink-model.ttl
+	riot --syntax=turtle --output=ntriples $< | sed -E 's;<https:\/\/w3id.org\/biolink\/vocab\/([^[:space:]][^[:space:]]*):;<http:\/\/purl.obolibrary.org\/obo\/\1_;g' > $@
 
 # Map of predicates between sources and targets
 predicates.tsv: cam-db-reasoned.jnl sparql/predicates.rq
@@ -119,11 +124,12 @@ predicates.tsv: cam-db-reasoned.jnl sparql/predicates.rq
 	sed -i 1d $@
 
 # Removed dependencies properties-nonredundant.ttl properties-redundant.ttl due to the build time they require
-noctua-reactome-ctd-models-ubergraph.jnl: noctua-reactome-ctd-models.jnl ontologies-merged.ttl subclass_closure.ttl is_defined_by.ttl opposites.ttl biolink-model.ttl biolink-local.ttl
+noctua-reactome-ctd-models-ubergraph.jnl: noctua-reactome-ctd-models.jnl ontologies-merged.ttl subclass_closure.ttl is_defined_by.ttl opposites.ttl biolink-model.nt biolink-local.ttl
 	cp $< $@ &&\
 	$(BLAZEGRAPH-RUNNER) load --journal=$@ --properties=blazegraph.properties --informat=turtle --graph='http://reasoner.renci.org/ontology' ontologies-merged.ttl &&\
 	$(BLAZEGRAPH-RUNNER) load --journal=$@ --properties=blazegraph.properties --informat=turtle --graph='http://reasoner.renci.org/ontology' opposites.ttl &&\
-	$(BLAZEGRAPH-RUNNER) load --journal=$@ --properties=blazegraph.properties --informat=turtle --graph='http://reasoner.renci.org/ontology' biolink-model.ttl biolink-local.ttl &&\
+	$(BLAZEGRAPH-RUNNER) load --journal=$@ --properties=blazegraph.properties --informat=turtle --graph='http://reasoner.renci.org/ontology' biolink-local.ttl &&\
+	$(BLAZEGRAPH-RUNNER) load --journal=$@ --properties=blazegraph.properties --informat=ntriples --graph='http://reasoner.renci.org/ontology' biolink-model.nt &&\
 	$(BLAZEGRAPH-RUNNER) load --journal=$@ --properties=blazegraph.properties --informat=turtle --graph='http://reasoner.renci.org/ontology/closure' subclass_closure.ttl &&\
 	$(BLAZEGRAPH-RUNNER) load --journal=$@ --properties=blazegraph.properties --informat=turtle --graph='http://reasoner.renci.org/ontology' is_defined_by.ttl #&&\
 #	$(BLAZEGRAPH-RUNNER) load --journal=$@ --properties=blazegraph.properties --informat=turtle --graph='http://reasoner.renci.org/nonredundant' properties-nonredundant.ttl &&\
