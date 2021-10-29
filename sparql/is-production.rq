@@ -1,0 +1,13 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+ASK WHERE {
+  {
+    ?cam <http://geneontology.org/lego/modelstate> ?state .
+    FILTER(?state = "production")
+  }
+  UNION
+  {
+    ?cam <http://purl.org/pav/providedBy> ?provider .
+    FILTER(?provider = "https://reactome.org")
+  }
+}

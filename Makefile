@@ -1,13 +1,12 @@
-# set JAVA_OPTS=-Xmx64G before running make for blazegraph-runner, ctd-to-owl, ncit-utils
-JAVA_ENV=JAVA_OPTS=-Xmx120G
+JAVA_ENV=JAVA_OPTS="-Xmx120G -XX:+UseParallelGC"
 BLAZEGRAPH-RUNNER=$(JAVA_ENV) blazegraph-runner
-NCIT-UTILS=$(JAVA_ENV) ncit-utils
+MAT=$(JAVA_ENV) materializer
 
 # set ROBOT_JAVA_ARGS=-Xmx64G before running make for robot
-ROBOT_ENV=ROBOT_JAVA_ARGS=-Xmx120G
+ROBOT_ENV=ROBOT_JAVA_ARGS="-Xmx120G -XX:+UseParallelGC"
 ROBOT=$(ROBOT_ENV) robot
 
-JVM_ARGS=JVM_ARGS=-Xmx120G
+JVM_ARGS=JVM_ARGS="-Xmx120G -XX:+UseParallelGC"
 ARQ=$(JVM_ARGS) arq
 
 # git clone git@github.com:geneontology/noctua-models.git
@@ -34,6 +33,9 @@ noctua-models.jnl: $(NOCTUA_MODELS_REPO)/models/*.ttl
 	$(BLAZEGRAPH-RUNNER) load --journal=$@ --properties=blazegraph.properties --informat=turtle --use-ontology-graph=true $(NOCTUA_MODELS_REPO)/models &&\
 	$(BLAZEGRAPH-RUNNER) update --journal=$@ --properties=blazegraph.properties sparql/delete-non-production-models.ru
 
+noctua-models-inferences.nq: $(NOCTUA_MODELS_REPO)/models/*.ttl sparql/is-production.rq ontologies-merged.ttl
+	$(MAT) --ontology-file ontologies-merged.ttl --input $(NOCTUA_MODELS_REPO)/models --output $@ --output-graph-name '#inferred' --suffix-graph true --mark-direct-types true --output-indirect-types true --parallelism 20 --filter-graph-query sparql/is-production.rq --reasoner arachne
+
 CTD_chem_gene_ixns_structured.xml:
 	curl -L -O 'http://ctdbase.org/reports/CTD_chem_gene_ixns_structured.xml.gz' &&\
 	gunzip CTD_chem_gene_ixns_structured.xml.gz
@@ -43,9 +45,9 @@ noctua-reactome-ctd-models.jnl: noctua-models.jnl #CTD_chem_gene_ixns_structured
 	# Temporarily disable CTD ingestion to allow more rapid turnaround while the full KP is developed
 	#ctd-to-owl CTD_chem_gene_ixns_structured.xml $@ blazegraph.properties chebi_mesh.tsv
 
-cam-db-reasoned.jnl: noctua-reactome-ctd-models-ubergraph.jnl
+cam-db-reasoned.jnl: noctua-reactome-ctd-models-ubergraph.jnl noctua-models-inferences.nq
 	cp $< $@ &&\
-	$(BLAZEGRAPH-RUNNER) reason --journal=$@ --properties=blazegraph.properties --reasoner=whelk --append-graph-name='#inferred' --ontology='http://reasoner.renci.org/ontology' --source-graphs-query=sparql/find-asserted-models.rq --direct-types=true
+	$(BLAZEGRAPH-RUNNER) load --journal=$@ --properties=blazegraph.properties --informat=n-quads noctua-models-inferences.nq
 
 ncbi-gene-classes.ttl: uniprot-to-ncbi-rules.ofn
 	$(ROBOT) query --input uniprot-to-ncbi-rules.ofn --query sparql/construct-ncbi-gene-classes.rq ncbi-gene-classes.ttl
