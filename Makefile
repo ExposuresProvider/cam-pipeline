@@ -43,7 +43,7 @@ CTD_chem_gene_ixns_structured.xml:
 ctd-models.nq: CTD_chem_gene_ixns_structured.xml
 	$(JAVA_ENV) ctd-to-owl CTD_chem_gene_ixns_structured.xml $@ chebi_mesh.tsv
 
-ctd-models-inferences.nq: ctd-models.nq
+ctd-models-inferences.nq: ctd-models.nq ontologies-merged.ttl
 	$(MAT) --ontology-file ontologies-merged.ttl --input $< --output $@ --output-graph-name '#inferred' --suffix-graph true --mark-direct-types true --output-indirect-types true --parallelism 20 --reasoner arachne
 
 noctua-reactome-ctd-models.jnl: noctua-models.jnl ctd-models.nq
