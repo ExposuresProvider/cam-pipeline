@@ -22,19 +22,19 @@ owlrl-datalog:
 	git clone https://github.com/balhoff/owlrl-datalog.git
 
 ontology.nt: ontologies-merged.ttl
-	riot --output=ntriples $< >$@
+	riot --nocheck --output=ntriples $< >$@
 
 ontology.facts: ontology.nt
 	sed 's/ /\t/' <$< | sed 's/ /\t/' | sed 's/ \.$$//' >$@
 
 ontology: owlrl-datalog ontology.facts
-	mkdir -p $@ && souffle -c owlrl-datalog/src/owl_from_rdf.dl -D $@ && touch ontology
+	mkdir -p $@ && souffle -c owlrl-datalog/src/datalog/owl_from_rdf.dl -D $@ && touch ontology
 
 quad.facts: ctd-models.nq
 	sed 's/ /\t/' <$< | sed 's/ /\t/' | sed -E 's/\t(.+) (.+)\.$$/\t\1\t\2/' >$@
 
 inferred.csv: quad.facts ontology owlrl-datalog
-	souffle -c owlrl-datalog/src/owl_rl_abox_quads.dl
+	souffle -c owlrl-datalog/src/datalog/owl_rl_abox_quads.dl
 
 ## Generate validation reports from sparql queries
 validate: missing-biolink-terms.ttl missing-biolink-relation.ttl
