@@ -18,6 +18,24 @@ BIOLINK=2.1.0
 clean:
 	rm -rf gene-data
 
+owlrl-datalog:
+	git clone https://github.com/balhoff/owlrl-datalog.git
+
+ontology.nt: ontologies-merged.ttl
+	riot --output=ntriples $< >$@
+
+ontology.facts: ontology.nt
+	sed 's/ /\t/' <$< | sed 's/ /\t/' | sed 's/ \.$$//' >$@
+
+ontology: owlrl-datalog/src/owl_from_rdf.dl ontology.facts
+	mkdir -p $@ && souffle -c owlrl-datalog/src/owl_from_rdf.dl -D $@ && touch ontology
+
+quad.facts: ctd-models.nq
+	sed 's/ /\t/' <$< | sed 's/ /\t/' | sed -E 's/\t(.+) (.+)\.$$/\t\1\t\2/' >$@
+
+inferred.csv: quad.facts ontology owlrl-datalog/src/owl_rl_abox_quads.dl
+	souffle -c owlrl-datalog/src/owl_rl_abox_quads.dl
+
 ## Generate validation reports from sparql queries
 validate: missing-biolink-terms.ttl missing-biolink-relation.ttl
 
@@ -43,8 +61,9 @@ CTD_chem_gene_ixns_structured.xml:
 ctd-models.nq: CTD_chem_gene_ixns_structured.xml
 	$(JAVA_ENV) ctd-to-owl CTD_chem_gene_ixns_structured.xml $@ chebi_mesh.tsv
 
-ctd-models-inferences.nq: ctd-models.nq
-	$(MAT) --ontology-file ontologies-merged.ttl --input $< --output $@ --output-graph-name '#inferred' --suffix-graph true --mark-direct-types true --output-indirect-types true --parallelism 20 --reasoner arachne
+ctd-models-inferences.nq: inferred.csv
+	sed 's/$$/ \./' <$< >$@
+	#$(MAT) --ontology-file ontologies-merged.ttl --input $< --output $@ --output-graph-name '#inferred' --suffix-graph true --mark-direct-types true --output-indirect-types true --parallelism 20 --reasoner arachne
 
 noctua-reactome-ctd-models.jnl: noctua-models.jnl ctd-models.nq
 	cp $< $@ &&\
