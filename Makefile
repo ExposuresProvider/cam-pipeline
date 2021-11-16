@@ -37,13 +37,13 @@ ontology.nt: ontologies-merged.ttl
 ontology.facts: ontology.nt
 	sed 's/ /\t/' <$< | sed 's/ /\t/' | sed 's/ \.$$//' >$@
 
-ontology: owlrl-datalog ontology.facts
+ontology: owlrl-datalog/bin/owl_from_rdf ontology.facts
 	mkdir -p $@ && ./owlrl-datalog/bin/owl_from_rdf -D $@ && touch ontology
 
 quad.facts: ctd-models.nq
 	sed 's/ /\t/' <$< | sed 's/ /\t/' | sed -E 's/\t(.+) (.+)\.$$/\t\1\t\2/' >$@
 
-inferred.csv: quad.facts ontology owlrl-datalog
+inferred.csv: quad.facts ontology owlrl-datalog/bin/owl_rl_abox_quads
 	./owlrl-datalog/bin/owl_rl_abox_quads
 
 ## Generate validation reports from sparql queries
