@@ -21,10 +21,13 @@ clean:
 owlrl-datalog:
 	git clone https://github.com/balhoff/owlrl-datalog.git
 
-owlrl-datalog/bin/owl_rl_abox_quads: owlrl-datalog
+owlrl-datalog/bin/owl_rl_abox_quads: owlrl-datalog owlrl-datalog/src/datalog/swrl.dl
 	cd owlrl-datalog &&\
 	mkdir -p bin &&\
 	souffle -c src/datalog/owl_rl_abox_quads.dl -o bin/owl_rl_abox_quads
+
+owlrl-datalog/src/datalog/swrl.dl: ontologies-merged.ttl owlrl-datalog
+	amm -s owlrl-datalog/src/scala/swrl-to-souffle.sc ontologies-merged.ttl $@
 
 owlrl-datalog/bin/owl_from_rdf: owlrl-datalog
 	cd owlrl-datalog &&\
