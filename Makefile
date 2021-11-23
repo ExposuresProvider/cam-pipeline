@@ -9,6 +9,8 @@ ROBOT=$(ROBOT_ENV) robot
 JVM_ARGS=JVM_ARGS="-Xmx120G -XX:+UseParallelGC"
 ARQ=$(JVM_ARGS) arq
 
+SCALA_RUN=$(JAVA_ENV) scala-cli run --home /tools
+
 # git clone git@github.com:geneontology/noctua-models.git
 NOCTUA_MODELS_REPO=gene-data/noctua-models
 BIOLINK=2.1.0
@@ -27,7 +29,7 @@ owlrl-datalog/bin/owl_rl_abox_quads: owlrl-datalog owlrl-datalog/src/datalog/swr
 	souffle -c src/datalog/owl_rl_abox_quads.dl -o bin/owl_rl_abox_quads
 
 owlrl-datalog/src/datalog/swrl.dl: ontologies-merged.ttl owlrl-datalog
-	$(JAVA_ENV) scala-cli owlrl-datalog/src/scala/swrl-to-souffle.sc -- ontologies-merged.ttl $@
+	$(SCALA_RUN) owlrl-datalog/src/scala/swrl-to-souffle.sc -- ontologies-merged.ttl $@
 
 owlrl-datalog/bin/owl_from_rdf: owlrl-datalog
 	cd owlrl-datalog &&\
