@@ -29,7 +29,7 @@ owlrl-datalog/bin/owl_rl_abox_quads: owlrl-datalog owlrl-datalog/src/datalog/swr
 	souffle -c src/datalog/owl_rl_abox_quads.dl -o bin/owl_rl_abox_quads
 
 owlrl-datalog/src/datalog/swrl.dl: ontologies-merged.ttl owlrl-datalog
-	$(SCALA_RUN) owlrl-datalog/src/scala/swrl-to-souffle.sc -- ontologies-merged.ttl $@
+	$(JAVA_ENV) ./owlrl-datalog/src/scala/swrl-to-souffle ontologies-merged.ttl $@
 
 owlrl-datalog/bin/owl_from_rdf: owlrl-datalog
 	cd owlrl-datalog &&\
