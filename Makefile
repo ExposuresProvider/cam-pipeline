@@ -28,8 +28,11 @@ owlrl-datalog/bin/owl_rl_abox_quads: owlrl-datalog owlrl-datalog/src/datalog/swr
 	mkdir -p bin &&\
 	souffle -c src/datalog/owl_rl_abox_quads.dl -o bin/owl_rl_abox_quads
 
-owlrl-datalog/src/datalog/swrl.dl: ontologies-merged.ttl owlrl-datalog
-	$(JAVA_ENV) ./owlrl-datalog/src/scala/swrl-to-souffle ontologies-merged.ttl $@
+owlrl-datalog/src/datalog/swrl.dl: swrl.dl
+	cp swrl.dl $@
+
+#owlrl-datalog/src/datalog/swrl.dl: ontologies-merged.ttl owlrl-datalog
+#	$(JAVA_ENV) ./owlrl-datalog/src/scala/swrl-to-souffle ontologies-merged.ttl $@
 
 owlrl-datalog/bin/owl_from_rdf: owlrl-datalog
 	cd owlrl-datalog &&\
