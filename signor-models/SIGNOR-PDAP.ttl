@@ -1,0 +1,1583 @@
+@prefix ECO: <http://purl.obolibrary.org/obo/ECO_> .
+@prefix GO: <http://purl.obolibrary.org/obo/GO_> .
+@prefix UniProtKB: <http://identifiers.org/uniprot/> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix ns1: <http://geneontology.org/lego/> .
+@prefix obo: <http://purl.obolibrary.org/obo/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+ns1:evidence a owl:AnnotationProperty .
+
+<http://geneontology.org/lego/hint/layout/x> a owl:AnnotationProperty .
+
+<http://geneontology.org/lego/hint/layout/y> a owl:AnnotationProperty .
+
+dc:contributor a owl:AnnotationProperty .
+
+dc:date a owl:AnnotationProperty .
+
+dc:source a owl:AnnotationProperty .
+
+dct:created a owl:AnnotationProperty .
+
+dct:dateAccepted a owl:AnnotationProperty .
+
+<http://purl.org/pav/providedBy> a owl:AnnotationProperty .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef> a owl:Ontology ;
+    ns1:modelstate "development" ;
+    dc:date "2021-12-06" ;
+    dc:title "SIGNOR - Pancreatic ductal adenocarcinoma (PDA)" ;
+    owl:versionIRI <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef> .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/08583e1a-2283-4356-9550-178d0f353ca3> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:7774578" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/0eddd0e8-a128-45b4-9281-779cdaec42d1> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:12297050" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/0efbfe0c-2bff-46e2-88d6-a871fdd946de> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:9346908" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/11eb9a48-4747-4c85-88fb-88e0dc4afacf> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0002-9528-6018" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:9843571" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/168ccc41-38e1-4b9e-aa8f-c7e129d8be12> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:9346908" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/16c96d32-13ca-4e13-972a-ee2dbb3eeb42> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:7774578" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/17e1c40b-1d5c-49ab-9861-ffc1606b78ec> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0001-5084-9000" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:17208333" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/17e76a74-b31f-4a56-8c13-155f7b16d1aa> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0002-9528-6018" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:16585207" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/1e3330f1-6d76-4935-9d8f-dae02cd97112> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0001-5084-9000" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:12545153" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/1fb533c9-5781-40f5-80eb-07844bcfcf37> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0002-9528-6018" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:16585207" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/20e666c1-5d34-4011-a965-a2ac0f2b90c0> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0002-9528-6018" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:16585207" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/247ffd95-f9aa-4ac5-8c16-00a0d41684d6> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:12040186" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/24d10feb-832c-41a3-9717-8942d2b09d2f> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:9914500" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/252039c8-53ef-43b1-ac31-b686c5edae6d> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0002-9528-6018" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:16585207" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/26733ca1-d6ed-42bb-b908-3550d8837c90> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:22693070" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/2e8b8c12-ed67-44f3-a1f0-df144b75f0e7> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:10935507" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/39f55d0d-d816-4d5f-9ca8-43de66060882> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:7774578" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/3a1125a8-9dcb-4a19-9ad5-f15096899434> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:12297050" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/3aaacad4-a6b6-46c2-8d30-817a8538c28e> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:11013220" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/3f7cf19b-5154-41fc-b72d-6c4dcbe1052d> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0002-9528-6018" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:21779497" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/48646ef9-0272-4d31-8731-c8dbcfa3c801> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:11013220" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/48b94e76-7ccf-4df7-b13d-8aa7532301cb> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:11013220" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/4ccfab21-c0fe-44d8-b2cf-f5ac08f16544> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0002-9528-6018" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:16585207" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/59b4d156-8c36-424c-8d39-9071475de7be> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:11154267" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/606b9dcf-ca2d-4192-9777-766fb076d62a> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:9346241" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/66ced7bb-590e-40eb-a93e-9b27d24e3dfd> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:23336272" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/69e9bda0-b15b-44f1-942c-4d2cfff09df1> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0002-9528-6018" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:16585207" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/6cd3ac5e-e91d-4f23-83f8-163300819add> a GO:0098772,
+        owl:NamedIndividual ;
+    obo:RO_0002333 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/31490010-e08c-4693-8d6b-a1c2e83ee17c> .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/729cb47b-298f-4c3b-9fce-c7984e31e8a1> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:11013220" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/744a28e9-d46e-4062-8cca-ae94e72d4590> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:9346908" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/7458c169-32dd-4ece-afb2-536ba9003b69> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:22693070" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/76c8bcca-1a1e-44e4-98d6-d15b1794eb73> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:11154267" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/77998cbf-3178-47d0-a5be-b4326776b673> a GO:0004672,
+        owl:NamedIndividual ;
+    obo:RO_0002333 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/05587062-48f2-4140-b70a-44b2aea895aa> .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/77aa9715-0116-4d87-9365-41505537345c> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:14967450" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/7865cb3a-f19b-4760-9a84-77ef128140a5> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0002-9528-6018" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:11274206" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/7bcd3199-4d11-438f-8727-dbb092a05e36> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:23336272" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/872e5413-7ab0-4885-b7c2-0d7f62fca202> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0001-5084-9000" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:8891723" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/8af97556-0e6e-46f2-852d-b4424aa4a23b> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:12297050" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/8cca1f17-9350-4f82-9645-66d73a5bcc4d> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0002-9528-6018" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:16585207" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/8d424fe7-490f-4d57-b189-a4912de1538f> a GO:0098772,
+        owl:NamedIndividual ;
+    obo:RO_0002333 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/f9208093-adc2-4d40-8cd4-223c79a15892> .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/8dba036f-0e0a-4733-94e9-ef4a828fd7ff> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0002-9528-6018" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:21779497" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/8e494e95-2298-411b-b765-a4963454bf2a> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:7774578" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/900bdc4f-cf80-4281-b30a-ac4aa453e327> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0002-2374-3531" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:22926518" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/935e4a2b-d2b1-4222-a6a3-9274dd99b0be> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0002-2374-3531" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:9732876" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/95dce23a-2021-4423-b3d7-789596d7fb25> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0002-9528-6018" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:21779497" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/99a30c6b-3be4-47d1-a876-1e0f4254aea1> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:12297050" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/9c7df7c4-9d41-42dc-9e16-491f8c74163e> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0002-2374-3531" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:15313915" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/a1a9322a-1252-4d7e-84d9-e76b5139c709> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:19458083" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/a6e3884a-9e66-4a61-abb7-dca103ee88c9> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:8255752" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/ad1011e5-1a75-424f-895d-37573e858ed4> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:23336272" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/ade4395a-4e6f-410c-99c1-dd971540b66c> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:19458083" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/b4657109-e46e-4b96-ab2c-5ff0b0c86393> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:12297050" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/bad4d8a2-9c8a-45a5-8ad9-6dd8589715b0> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:11013220" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/bc5de4b6-db7c-4730-830d-8ebbe9dff126> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:19458083" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/bdef0153-b71b-4728-9058-7dc1bbd799d6> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0002-2374-3531" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:21779497" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/c27097f0-370f-42ca-a02a-4793389588da> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:11013220" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/c4097d0b-43a4-4bc6-b75f-4811318c7950> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:14967450" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/c6e25d5f-0e45-4aa7-9021-0a8db99ac631> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:15284024" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/ce2366b9-15ed-4bd5-8de4-6315b57164b5> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:12297050" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/d1921d2c-8a0b-444a-9e12-aaa2f567c732> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:11013220" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/d35ca869-98be-42d8-8125-a5dcbeca88f6> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0002-9528-6018" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:9042862" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/d3609ab5-d92d-4dfe-8e3c-5eb6c490cb51> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:9346241" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/d49c3498-a1e2-44dc-91e9-e48c2613c108> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:22693070" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/db0ea720-27a0-438b-808f-994bca2f5f3b> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0002-2374-3531" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:15313915" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/de86b2de-0167-48c7-8357-751136aa35a0> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:11013220" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/df75cd88-1dc0-4560-a123-a4323a40e4ef> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:9346241" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/e9cb96df-05d4-4003-9fcd-e5a8bf556039> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0002-2374-3531" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:15313915" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/eacced21-6711-4cae-a70a-85d612edff05> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:19609947" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/f023d651-dfaf-43c5-978a-930a6110af85> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:14967450" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/f17b1f00-3c82-4a9d-81e8-1e826d63a44d> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:11013220" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/f5a16b06-9846-48e2-a53f-e683c55bba53> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:12297050" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/f5dac598-923f-45f0-b60b-bd80e955d3e8> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0001-5084-9000" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:8891723" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/f5eaf697-d437-4bcd-b3f0-8bbc93750f27> a GO:0098772,
+        owl:NamedIndividual ;
+    obo:RO_0002333 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/589d1e0d-78db-4644-9f61-2745199008b7> .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/fbf5301c-6b1c-4bb9-9480-1c6843d3b894> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:11154267" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/fcca1f9d-570b-444f-8734-50d778062c63> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:7774578" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/feb80e74-dabc-471e-a689-c075ad5c9982> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:11013220" .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/ff2839ab-4316-4984-9f31-0674fed5db02> a ECO:0000269,
+        owl:NamedIndividual ;
+    dc:contributor "http://orcid.org/0000-0001-5084-9000" ;
+    dc:date "2021-12-06" ;
+    dc:source "PMID:8891723" .
+
+obo:RO_0002305 a owl:ObjectProperty .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/0dc05a7e-e84a-4aa1-a8c6-e665d8fd8bc7> a UniProtKB:Q13485,
+        owl:NamedIndividual .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/160b0ff7-0f4b-4725-bfbc-fbf23e53844e> a UniProtKB:P49789,
+        owl:NamedIndividual .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/1b33b19c-62f6-4e7a-ae10-8e01e476ce2b> a UniProtKB:O14920,
+        owl:NamedIndividual .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/2038720e-f60b-44d5-8b83-35a33274fd59> a UniProtKB:O14920,
+        owl:NamedIndividual .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/2085a674-5510-4a5c-b17a-41769ade6814> a UniProtKB:P11802,
+        owl:NamedIndividual .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/24e91686-e09a-4b62-98ec-2528f1ab9d28> a UniProtKB:Q13485,
+        owl:NamedIndividual .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/301742a2-dd11-46ac-a3b0-4ef16e8d2632> a UniProtKB:P84022,
+        owl:NamedIndividual .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/32e26d4b-0878-41eb-83d6-da8dbcd22f2e> a UniProtKB:P84022,
+        owl:NamedIndividual .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/3725a40b-c1b1-40a9-b50f-ae09fb421d0f> a UniProtKB:Q00534,
+        owl:NamedIndividual .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/3d85383d-a379-4dbb-867e-284660feb9a6> a UniProtKB:P01116,
+        owl:NamedIndividual .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/44f411b2-af05-4db6-a2d2-ac7ae715eb09> a UniProtKB:P01133,
+        owl:NamedIndividual .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/4bf8cae7-8d73-4e30-9443-673f95d2029a> a UniProtKB:P42771,
+        owl:NamedIndividual .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/521a4ad0-196a-4cd3-bd50-bd95ff3d70c3> a UniProtKB:P37173,
+        owl:NamedIndividual .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/5ff8ec3e-fe9d-462a-842a-a0f3fad5882b> a UniProtKB:O15111,
+        owl:NamedIndividual .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/6085aec6-1015-40c8-8fb5-a0fb714fc6d5> a UniProtKB:P24385,
+        owl:NamedIndividual .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/61d945f5-cf49-456b-a1c7-2edaf053af86> a UniProtKB:Q13485,
+        owl:NamedIndividual .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/70809083-7b15-49f5-b48c-3b5c339da90e> a UniProtKB:P24385,
+        owl:NamedIndividual .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/85e526e4-3b5c-47cc-87b2-1b9908ad764a> a UniProtKB:Q13485,
+        owl:NamedIndividual .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/a8d09c03-6b09-4b64-bbc6-adcede76f8b0> a UniProtKB:Q15796,
+        owl:NamedIndividual .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/b3575bcf-3c10-47e1-b789-f2e1d72097e8> a UniProtKB:P01135,
+        owl:NamedIndividual .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/b61ffd63-7922-486d-8423-2a22fe1042d4> a UniProtKB:Q9Y6K9,
+        owl:NamedIndividual .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/bca8a31d-9cff-4acc-a260-47f8391ada7d> a UniProtKB:P42336,
+        owl:NamedIndividual .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/be043ff8-22f8-4315-aebd-994774bd7d2e> a UniProtKB:P42771,
+        owl:NamedIndividual .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/becd232c-8538-4137-afec-e90ecdbfff2c> a UniProtKB:Q15796,
+        owl:NamedIndividual .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/c7866864-e092-41e1-af77-77fd6acd7a54> a UniProtKB:P27986,
+        owl:NamedIndividual .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/c8d6c880-5130-48a5-bcb0-9a0de2702ab8> a UniProtKB:Q9Y6K9,
+        owl:NamedIndividual .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/f23dc1d1-db12-470d-b446-5d53d4341387> a UniProtKB:O15111,
+        owl:NamedIndividual .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/f9208093-adc2-4d40-8cd4-223c79a15892> a UniProtKB:P01116,
+        owl:NamedIndividual .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/04ee4246-cc43-4d56-8605-41bbe6e7b82a> a GO:0098772,
+        owl:NamedIndividual ;
+    obo:RO_0002333 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/c4800c18-9615-4b40-8dcc-a9e724dc4be2> .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/16b57311-91ee-4ef9-9e76-94a7916360e5> a GO:0140110,
+        owl:NamedIndividual ;
+    obo:RO_0002333 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/6c3455c8-ef0b-4cbd-a883-a3c8a39aacc6> .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/455164aa-a312-490f-9929-748abb760074> a GO:0140110,
+        owl:NamedIndividual ;
+    obo:RO_0002213 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/2f2fb87c-0cd9-4569-9e31-9f14ee3cbe06> ;
+    obo:RO_0002233 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/e7a37819-0566-4ded-838e-2afcb8f5a9eb> ;
+    obo:RO_0002333 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/674a51e4-9304-40d8-8544-d555597222ab> .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/4c2c3811-28a6-47f4-9b5f-cc2de07b6215> a GO:0003674,
+        owl:NamedIndividual ;
+    obo:RO_0002233 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/75eca25a-9799-4d9b-9657-e44c274b097c> ;
+    obo:RO_0002305 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/a42121a1-000b-454c-bcb7-875059054c75> ;
+    obo:RO_0002333 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/160b0ff7-0f4b-4725-bfbc-fbf23e53844e> .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/54c0f787-bdbb-47f3-9b18-e70047069ca9> a GO:0098772,
+        owl:NamedIndividual ;
+    obo:RO_0002333 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/a58e074d-1732-4d81-b80d-b1949e3a3552> .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/5a58b64b-7f4b-4196-be43-0a0d0cc785b5> a GO:0098772,
+        owl:NamedIndividual ;
+    obo:RO_0002233 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/4f4ec033-77db-411c-b7dd-23566324f905> ;
+    obo:RO_0002333 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/be043ff8-22f8-4315-aebd-994774bd7d2e> ;
+    obo:RO_0002630 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/b500a66b-7daf-4052-b3d3-3f1ba64f0246> .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/5dd614bc-b5cf-4b80-b268-64a10e9a1512> a GO:0098772,
+        owl:NamedIndividual ;
+    obo:RO_0002233 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/df240d27-9d7a-4aa1-9e7f-160f80d042de> ;
+    obo:RO_0002333 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/4bf8cae7-8d73-4e30-9443-673f95d2029a> ;
+    obo:RO_0002630 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/6a0a68db-36b1-4024-bbcc-4be6e7bf3952> .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/6a0a68db-36b1-4024-bbcc-4be6e7bf3952> a GO:0004672,
+        owl:NamedIndividual ;
+    obo:RO_0002333 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/df240d27-9d7a-4aa1-9e7f-160f80d042de> .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/9d545aee-b83b-499c-a1d5-14242d89037a> a GO:0004672,
+        owl:NamedIndividual ;
+    obo:RO_0002233 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/73fa17df-3d1e-4d17-ad65-246012181cfc> ;
+    obo:RO_0002333 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/0c0fd025-b5dc-4036-b797-ec6c1d10af45> ;
+    obo:RO_0002630 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/d8fa62f0-5f43-489e-a4a4-3505c1c66161> .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/9feeee91-8f6d-4326-bbf1-6dcecc98a2d9> a GO:0098772,
+        owl:NamedIndividual ;
+    obo:RO_0002233 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/47b05664-8a6f-4b31-a102-f5cf8db67052> ;
+    obo:RO_0002333 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/3d85383d-a379-4dbb-867e-284660feb9a6> ;
+    obo:RO_0002629 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/1a74be27-5210-4f1d-b82e-01a0e23a1de0> .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/a42121a1-000b-454c-bcb7-875059054c75> a GO:0061630,
+        owl:NamedIndividual ;
+    obo:RO_0002333 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/75eca25a-9799-4d9b-9657-e44c274b097c> .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/bc0ab532-34a0-4d4b-8903-b54b4f1cf4d8> a GO:0140110,
+        owl:NamedIndividual ;
+    obo:RO_0002213 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/f5e6c981-8874-40bd-93e0-e342af8e5402> ;
+    obo:RO_0002233 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/e7a37819-0566-4ded-838e-2afcb8f5a9eb> ;
+    obo:RO_0002333 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/98b44fd4-09c4-4e1a-8126-ccdaafcbac0d> .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/cdae5726-f9ca-44b7-8ebb-92b7681d9bae> a GO:0098772,
+        owl:NamedIndividual ;
+    obo:RO_0002333 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/5bf2f6f8-6c53-4cd2-bb40-c2265cf849b6> .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/d8fa62f0-5f43-489e-a4a4-3505c1c66161> a GO:0098772,
+        owl:NamedIndividual ;
+    obo:RO_0002333 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/73fa17df-3d1e-4d17-ad65-246012181cfc> .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/179f587f-136c-43fe-ae63-cc0598e0bdbe> a UniProtKB:P36897,
+        owl:NamedIndividual .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/2f2fb87c-0cd9-4569-9e31-9f14ee3cbe06> a GO:0009299,
+        owl:NamedIndividual ;
+    obo:RO_0002213 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/4d56b271-1e68-4956-aa85-d298828653c2> ;
+    obo:RO_0002233 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/e7a37819-0566-4ded-838e-2afcb8f5a9eb> .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/31490010-e08c-4693-8d6b-a1c2e83ee17c> a GO:0032991,
+        owl:NamedIndividual ;
+    rdfs:label "SMAD3/SMAD4" ;
+    obo:BFO_0000051 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/32e26d4b-0878-41eb-83d6-da8dbcd22f2e>,
+        <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/61d945f5-cf49-456b-a1c7-2edaf053af86> .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/33e855a1-d306-44b5-ae1d-4ffb2165436c> a UniProtKB:P36897,
+        owl:NamedIndividual .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/589d1e0d-78db-4644-9f61-2745199008b7> a GO:0032991,
+        owl:NamedIndividual ;
+    rdfs:label "SMAD2/SMAD4" ;
+    obo:BFO_0000051 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/85e526e4-3b5c-47cc-87b2-1b9908ad764a>,
+        <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/becd232c-8538-4137-afec-e90ecdbfff2c> .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/5bf2f6f8-6c53-4cd2-bb40-c2265cf849b6> a UniProtKB:Q15796,
+        owl:NamedIndividual .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/674a51e4-9304-40d8-8544-d555597222ab> a GO:0032991,
+        owl:NamedIndividual ;
+    rdfs:label "SMAD2/SMAD4" ;
+    obo:BFO_0000051 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/24e91686-e09a-4b62-98ec-2528f1ab9d28>,
+        <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/a8d09c03-6b09-4b64-bbc6-adcede76f8b0> .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/6c3455c8-ef0b-4cbd-a883-a3c8a39aacc6> a UniProtKB:P40763,
+        owl:NamedIndividual .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/73fa17df-3d1e-4d17-ad65-246012181cfc> a UniProtKB:P25963,
+        owl:NamedIndividual .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/75eca25a-9799-4d9b-9657-e44c274b097c> a UniProtKB:Q00987,
+        owl:NamedIndividual .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/98b44fd4-09c4-4e1a-8126-ccdaafcbac0d> a GO:0032991,
+        owl:NamedIndividual ;
+    rdfs:label "SMAD3/SMAD4" ;
+    obo:BFO_0000051 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/0dc05a7e-e84a-4aa1-a8c6-e665d8fd8bc7>,
+        <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/301742a2-dd11-46ac-a3b0-4ef16e8d2632> .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/a58e074d-1732-4d81-b80d-b1949e3a3552> a UniProtKB:P06400,
+        owl:NamedIndividual .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/c4800c18-9615-4b40-8dcc-a9e724dc4be2> a UniProtKB:P84022,
+        owl:NamedIndividual .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/f5e6c981-8874-40bd-93e0-e342af8e5402> a GO:0009299,
+        owl:NamedIndividual ;
+    obo:RO_0002213 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/4d56b271-1e68-4956-aa85-d298828653c2> ;
+    obo:RO_0002233 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/e7a37819-0566-4ded-838e-2afcb8f5a9eb> .
+
+obo:RO_0002213 a owl:ObjectProperty .
+
+obo:RO_0002630 a owl:ObjectProperty .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/05587062-48f2-4140-b70a-44b2aea895aa> a GO:0032991,
+        owl:NamedIndividual ;
+    rdfs:label "IKK-complex" ;
+    obo:BFO_0000051 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/1b33b19c-62f6-4e7a-ae10-8e01e476ce2b>,
+        <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/b61ffd63-7922-486d-8423-2a22fe1042d4>,
+        <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/f23dc1d1-db12-470d-b446-5d53d4341387> .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/0c0fd025-b5dc-4036-b797-ec6c1d10af45> a GO:0032991,
+        owl:NamedIndividual ;
+    rdfs:label "IKK-complex" ;
+    obo:BFO_0000051 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/2038720e-f60b-44d5-8b83-35a33274fd59>,
+        <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/5ff8ec3e-fe9d-462a-842a-a0f3fad5882b>,
+        <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/c8d6c880-5130-48a5-bcb0-9a0de2702ab8> .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/1a74be27-5210-4f1d-b82e-01a0e23a1de0> a GO:0003824,
+        owl:NamedIndividual ;
+    obo:RO_0002333 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/47b05664-8a6f-4b31-a102-f5cf8db67052> .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/43532923-eb70-438d-ba0e-cea25df73804> a GO:0004672,
+        owl:NamedIndividual ;
+    obo:RO_0002233 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/c4800c18-9615-4b40-8dcc-a9e724dc4be2> ;
+    obo:RO_0002333 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/33e855a1-d306-44b5-ae1d-4ffb2165436c> ;
+    obo:RO_0002629 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/04ee4246-cc43-4d56-8605-41bbe6e7b82a> .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/4d56b271-1e68-4956-aa85-d298828653c2> a GO:0098772,
+        owl:NamedIndividual ;
+    obo:RO_0002333 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/e7a37819-0566-4ded-838e-2afcb8f5a9eb> .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/58dbbf9c-73b7-423c-90b7-323d3ff65cfe> a GO:0004672,
+        owl:NamedIndividual ;
+    obo:RO_0002233 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/5bf2f6f8-6c53-4cd2-bb40-c2265cf849b6> ;
+    obo:RO_0002333 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/179f587f-136c-43fe-ae63-cc0598e0bdbe> ;
+    obo:RO_0002629 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/cdae5726-f9ca-44b7-8ebb-92b7681d9bae> .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/7f3b82f5-5820-4b5e-a6b8-94c0e76e6088> a GO:0004672,
+        owl:NamedIndividual ;
+    obo:RO_0002333 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/f01a6fe8-f64e-48db-bd1f-2e25256f7b50> .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/b500a66b-7daf-4052-b3d3-3f1ba64f0246> a GO:0004672,
+        owl:NamedIndividual ;
+    obo:RO_0002233 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/a58e074d-1732-4d81-b80d-b1949e3a3552> ;
+    obo:RO_0002333 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/4f4ec033-77db-411c-b7dd-23566324f905> ;
+    obo:RO_0002630 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/54c0f787-bdbb-47f3-9b18-e70047069ca9> .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/f29835e0-0d0e-4208-8168-1fd130baf5ff> a GO:0004672,
+        owl:NamedIndividual ;
+    obo:RO_0002233 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/179f587f-136c-43fe-ae63-cc0598e0bdbe>,
+        <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/33e855a1-d306-44b5-ae1d-4ffb2165436c> ;
+    obo:RO_0002333 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/521a4ad0-196a-4cd3-bd50-bd95ff3d70c3> ;
+    obo:RO_0002629 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/43532923-eb70-438d-ba0e-cea25df73804>,
+        <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/58dbbf9c-73b7-423c-90b7-323d3ff65cfe> .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/4039404c-5ebf-47f1-8f53-e18b8993be61> a UniProtKB:P00533,
+        owl:NamedIndividual .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/4f4ec033-77db-411c-b7dd-23566324f905> a GO:0032991,
+        owl:NamedIndividual ;
+    rdfs:label "CyclinD/CDK4" ;
+    obo:BFO_0000051 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/2085a674-5510-4a5c-b17a-41769ade6814>,
+        <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/70809083-7b15-49f5-b48c-3b5c339da90e> .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/df240d27-9d7a-4aa1-9e7f-160f80d042de> a GO:0032991,
+        owl:NamedIndividual ;
+    rdfs:label "CDK6/CCND1" ;
+    obo:BFO_0000051 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/3725a40b-c1b1-40a9-b50f-ae09fb421d0f>,
+        <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/6085aec6-1015-40c8-8fb5-a0fb714fc6d5> .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/f01a6fe8-f64e-48db-bd1f-2e25256f7b50> a UniProtKB:P00533,
+        owl:NamedIndividual .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/f2e925d9-e312-4c5b-856d-d1b3f9433b4f> a UniProtKB:P00533,
+        owl:NamedIndividual .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/01c498a4-2d01-4d73-bd92-bb9cb5969d74> a GO:0098772,
+        owl:NamedIndividual ;
+    obo:RO_0002233 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/4039404c-5ebf-47f1-8f53-e18b8993be61>,
+        <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/f01a6fe8-f64e-48db-bd1f-2e25256f7b50>,
+        <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/f2e925d9-e312-4c5b-856d-d1b3f9433b4f> ;
+    obo:RO_0002333 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/44f411b2-af05-4db6-a2d2-ac7ae715eb09> ;
+    obo:RO_0002629 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/7a844129-a446-4261-8c80-1831219afc57>,
+        <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/7f3b82f5-5820-4b5e-a6b8-94c0e76e6088>,
+        <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/9202c0ce-ada2-48d5-a70e-a231cf7e0d65> .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/53f727f4-0f5d-4733-913b-75323147f10b> a GO:0098772,
+        owl:NamedIndividual ;
+    obo:RO_0002233 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/4039404c-5ebf-47f1-8f53-e18b8993be61>,
+        <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/f01a6fe8-f64e-48db-bd1f-2e25256f7b50>,
+        <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/f2e925d9-e312-4c5b-856d-d1b3f9433b4f> ;
+    obo:RO_0002333 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/b3575bcf-3c10-47e1-b789-f2e1d72097e8> ;
+    obo:RO_0002629 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/7a844129-a446-4261-8c80-1831219afc57>,
+        <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/7f3b82f5-5820-4b5e-a6b8-94c0e76e6088>,
+        <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/9202c0ce-ada2-48d5-a70e-a231cf7e0d65> .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/7a844129-a446-4261-8c80-1831219afc57> a GO:0004672,
+        owl:NamedIndividual ;
+    obo:RO_0002233 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/6c3455c8-ef0b-4cbd-a883-a3c8a39aacc6> ;
+    obo:RO_0002333 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/f2e925d9-e312-4c5b-856d-d1b3f9433b4f> ;
+    obo:RO_0002629 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/16b57311-91ee-4ef9-9e76-94a7916360e5> .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/9202c0ce-ada2-48d5-a70e-a231cf7e0d65> a GO:0098772,
+        owl:NamedIndividual ;
+    obo:RO_0002233 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/47b05664-8a6f-4b31-a102-f5cf8db67052> ;
+    obo:RO_0002333 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/4039404c-5ebf-47f1-8f53-e18b8993be61> ;
+    obo:RO_0002629 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/1a74be27-5210-4f1d-b82e-01a0e23a1de0> .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/47b05664-8a6f-4b31-a102-f5cf8db67052> a GO:0032991,
+        owl:NamedIndividual ;
+    rdfs:label "PI3K" ;
+    obo:BFO_0000051 <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/bca8a31d-9cff-4acc-a260-47f8391ada7d>,
+        <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/c7866864-e092-41e1-af77-77fd6acd7a54> .
+
+<http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/e7a37819-0566-4ded-838e-2afcb8f5a9eb> a UniProtKB:P42772,
+        owl:NamedIndividual .
+
+obo:RO_0002629 a owl:ObjectProperty .
+
+obo:BFO_0000051 a owl:ObjectProperty .
+
+obo:RO_0002233 a owl:ObjectProperty .
+
+obo:RO_0002333 a owl:ObjectProperty .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/0efbfe0c-2bff-46e2-88d6-a871fdd946de> ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002333 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/58dbbf9c-73b7-423c-90b7-323d3ff65cfe> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/179f587f-136c-43fe-ae63-cc0598e0bdbe> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/8e494e95-2298-411b-b765-a4963454bf2a> ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002233 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/f29835e0-0d0e-4208-8168-1fd130baf5ff> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/179f587f-136c-43fe-ae63-cc0598e0bdbe> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/7458c169-32dd-4ece-afb2-536ba9003b69> ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002333 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/7a844129-a446-4261-8c80-1831219afc57> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/f2e925d9-e312-4c5b-856d-d1b3f9433b4f> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/24d10feb-832c-41a3-9717-8942d2b09d2f> ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002333 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/d8fa62f0-5f43-489e-a4a4-3505c1c66161> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/73fa17df-3d1e-4d17-ad65-246012181cfc> .
+
+[] a owl:Axiom ;
+    owl:annotatedProperty obo:BFO_0000051 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/df240d27-9d7a-4aa1-9e7f-160f80d042de> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/3725a40b-c1b1-40a9-b50f-ae09fb421d0f> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/df75cd88-1dc0-4560-a123-a4323a40e4ef> ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002333 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/9d545aee-b83b-499c-a1d5-14242d89037a> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/0c0fd025-b5dc-4036-b797-ec6c1d10af45> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/76c8bcca-1a1e-44e4-98d6-d15b1794eb73> ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002233 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/5a58b64b-7f4b-4196-be43-0a0d0cc785b5> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/4f4ec033-77db-411c-b7dd-23566324f905> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/ff2839ab-4316-4984-9f31-0674fed5db02> ;
+    dc:contributor "http://orcid.org/0000-0001-5084-9000" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002233 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/5dd614bc-b5cf-4b80-b268-64a10e9a1512> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/df240d27-9d7a-4aa1-9e7f-160f80d042de> .
+
+[] a owl:Axiom ;
+    owl:annotatedProperty obo:BFO_0000051 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/05587062-48f2-4140-b70a-44b2aea895aa> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/b61ffd63-7922-486d-8423-2a22fe1042d4> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/872e5413-7ab0-4885-b7c2-0d7f62fca202> ;
+    dc:contributor "http://orcid.org/0000-0001-5084-9000" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002630 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/5dd614bc-b5cf-4b80-b268-64a10e9a1512> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/6a0a68db-36b1-4024-bbcc-4be6e7bf3952> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/f023d651-dfaf-43c5-978a-930a6110af85> ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002333 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/9202c0ce-ada2-48d5-a70e-a231cf7e0d65> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/4039404c-5ebf-47f1-8f53-e18b8993be61> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/2e8b8c12-ed67-44f3-a1f0-df144b75f0e7> ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002333 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/a42121a1-000b-454c-bcb7-875059054c75> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/75eca25a-9799-4d9b-9657-e44c274b097c> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/de86b2de-0167-48c7-8357-751136aa35a0> ;
+    dc:contributor "http://orcid.org/" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002213 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/bc0ab532-34a0-4d4b-8903-b54b4f1cf4d8> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/f5e6c981-8874-40bd-93e0-e342af8e5402> .
+
+[] a owl:Axiom ;
+    owl:annotatedProperty obo:BFO_0000051 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/674a51e4-9304-40d8-8544-d555597222ab> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/24e91686-e09a-4b62-98ec-2528f1ab9d28> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/08583e1a-2283-4356-9550-178d0f353ca3> ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002233 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/f29835e0-0d0e-4208-8168-1fd130baf5ff> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/33e855a1-d306-44b5-ae1d-4ffb2165436c> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/247ffd95-f9aa-4ac5-8c16-00a0d41684d6> ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002333 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/1a74be27-5210-4f1d-b82e-01a0e23a1de0> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/47b05664-8a6f-4b31-a102-f5cf8db67052> .
+
+[] a owl:Axiom ;
+    owl:annotatedProperty obo:BFO_0000051 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/05587062-48f2-4140-b70a-44b2aea895aa> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/1b33b19c-62f6-4e7a-ae10-8e01e476ce2b> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/7bcd3199-4d11-438f-8727-dbb092a05e36> ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002630 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/b500a66b-7daf-4052-b3d3-3f1ba64f0246> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/54c0f787-bdbb-47f3-9b18-e70047069ca9> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/16c96d32-13ca-4e13-972a-ee2dbb3eeb42> ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002333 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/f29835e0-0d0e-4208-8168-1fd130baf5ff> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/521a4ad0-196a-4cd3-bd50-bd95ff3d70c3> .
+
+[] a owl:Axiom ;
+    owl:annotatedProperty obo:BFO_0000051 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/df240d27-9d7a-4aa1-9e7f-160f80d042de> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/6085aec6-1015-40c8-8fb5-a0fb714fc6d5> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/3a1125a8-9dcb-4a19-9ad5-f15096899434> ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002233 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/01c498a4-2d01-4d73-bd92-bb9cb5969d74> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/f01a6fe8-f64e-48db-bd1f-2e25256f7b50> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/bc5de4b6-db7c-4730-830d-8ebbe9dff126> ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002333 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/43532923-eb70-438d-ba0e-cea25df73804> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/33e855a1-d306-44b5-ae1d-4ffb2165436c> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/a6e3884a-9e66-4a61-abb7-dca103ee88c9> ;
+    dc:contributor "http://orcid.org/" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002333 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/54c0f787-bdbb-47f3-9b18-e70047069ca9> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/a58e074d-1732-4d81-b80d-b1949e3a3552> .
+
+[] a owl:Axiom ;
+    owl:annotatedProperty obo:BFO_0000051 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/98b44fd4-09c4-4e1a-8126-ccdaafcbac0d> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/0dc05a7e-e84a-4aa1-a8c6-e665d8fd8bc7> .
+
+[] a owl:Axiom ;
+    owl:annotatedProperty obo:BFO_0000051 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/4f4ec033-77db-411c-b7dd-23566324f905> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/2085a674-5510-4a5c-b17a-41769ade6814> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/935e4a2b-d2b1-4222-a6a3-9274dd99b0be> ;
+    dc:contributor "http://orcid.org/0000-0002-2374-3531" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002333 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/6cd3ac5e-e91d-4f23-83f8-163300819add> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/31490010-e08c-4693-8d6b-a1c2e83ee17c> .
+
+[] a owl:Axiom ;
+    owl:annotatedProperty obo:BFO_0000051 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/98b44fd4-09c4-4e1a-8126-ccdaafcbac0d> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/301742a2-dd11-46ac-a3b0-4ef16e8d2632> .
+
+[] a owl:Axiom ;
+    owl:annotatedProperty obo:BFO_0000051 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/589d1e0d-78db-4644-9f61-2745199008b7> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/becd232c-8538-4137-afec-e90ecdbfff2c> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/39f55d0d-d816-4d5f-9ca8-43de66060882> ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002629 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/f29835e0-0d0e-4208-8168-1fd130baf5ff> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/58dbbf9c-73b7-423c-90b7-323d3ff65cfe> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/f5dac598-923f-45f0-b60b-bd80e955d3e8> ;
+    dc:contributor "http://orcid.org/0000-0001-5084-9000" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002333 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/5dd614bc-b5cf-4b80-b268-64a10e9a1512> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/4bf8cae7-8d73-4e30-9443-673f95d2029a> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/f17b1f00-3c82-4a9d-81e8-1e826d63a44d> ;
+    dc:contributor "http://orcid.org/" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002233 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/bc0ab532-34a0-4d4b-8903-b54b4f1cf4d8> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/e7a37819-0566-4ded-838e-2afcb8f5a9eb> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/8dba036f-0e0a-4733-94e9-ef4a828fd7ff> ;
+    dc:contributor "http://orcid.org/0000-0002-9528-6018" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002629 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/9feeee91-8f6d-4326-bbf1-6dcecc98a2d9> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/1a74be27-5210-4f1d-b82e-01a0e23a1de0> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/95dce23a-2021-4423-b3d7-789596d7fb25> ;
+    dc:contributor "http://orcid.org/0000-0002-9528-6018" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002333 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/9feeee91-8f6d-4326-bbf1-6dcecc98a2d9> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/3d85383d-a379-4dbb-867e-284660feb9a6> .
+
+[] a owl:Axiom ;
+    owl:annotatedProperty obo:BFO_0000051 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/589d1e0d-78db-4644-9f61-2745199008b7> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/85e526e4-3b5c-47cc-87b2-1b9908ad764a> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/66ced7bb-590e-40eb-a93e-9b27d24e3dfd> ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002333 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/b500a66b-7daf-4052-b3d3-3f1ba64f0246> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/4f4ec033-77db-411c-b7dd-23566324f905> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/26733ca1-d6ed-42bb-b908-3550d8837c90> ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002233 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/7a844129-a446-4261-8c80-1831219afc57> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/6c3455c8-ef0b-4cbd-a883-a3c8a39aacc6> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/feb80e74-dabc-471e-a689-c075ad5c9982> ;
+    dc:contributor "http://orcid.org/" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002233 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/2f2fb87c-0cd9-4569-9e31-9f14ee3cbe06> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/e7a37819-0566-4ded-838e-2afcb8f5a9eb> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/ad1011e5-1a75-424f-895d-37573e858ed4> ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002233 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/b500a66b-7daf-4052-b3d3-3f1ba64f0246> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/a58e074d-1732-4d81-b80d-b1949e3a3552> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/59b4d156-8c36-424c-8d39-9071475de7be> ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002333 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/5a58b64b-7f4b-4196-be43-0a0d0cc785b5> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/be043ff8-22f8-4315-aebd-994774bd7d2e> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/69e9bda0-b15b-44f1-942c-4d2cfff09df1> ;
+    dc:contributor "http://orcid.org/0000-0002-9528-6018" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002629 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/53f727f4-0f5d-4733-913b-75323147f10b> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/7a844129-a446-4261-8c80-1831219afc57> .
+
+[] a owl:Axiom ;
+    owl:annotatedProperty obo:BFO_0000051 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/31490010-e08c-4693-8d6b-a1c2e83ee17c> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/61d945f5-cf49-456b-a1c7-2edaf053af86> .
+
+[] a owl:Axiom ;
+    owl:annotatedProperty obo:BFO_0000051 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/31490010-e08c-4693-8d6b-a1c2e83ee17c> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/32e26d4b-0878-41eb-83d6-da8dbcd22f2e> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/d3609ab5-d92d-4dfe-8e3c-5eb6c490cb51> ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002630 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/9d545aee-b83b-499c-a1d5-14242d89037a> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/d8fa62f0-5f43-489e-a4a4-3505c1c66161> .
+
+[] a owl:Axiom ;
+    owl:annotatedProperty obo:BFO_0000051 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/47b05664-8a6f-4b31-a102-f5cf8db67052> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/bca8a31d-9cff-4acc-a260-47f8391ada7d> .
+
+[] a owl:Axiom ;
+    owl:annotatedProperty obo:BFO_0000051 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/0c0fd025-b5dc-4036-b797-ec6c1d10af45> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/5ff8ec3e-fe9d-462a-842a-a0f3fad5882b> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/ade4395a-4e6f-410c-99c1-dd971540b66c> ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002233 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/43532923-eb70-438d-ba0e-cea25df73804> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/c4800c18-9615-4b40-8dcc-a9e724dc4be2> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/b4657109-e46e-4b96-ab2c-5ff0b0c86393> ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002629 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/01c498a4-2d01-4d73-bd92-bb9cb5969d74> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/7a844129-a446-4261-8c80-1831219afc57> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/e9cb96df-05d4-4003-9fcd-e5a8bf556039> ;
+    dc:contributor "http://orcid.org/0000-0002-2374-3531" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002333 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/4c2c3811-28a6-47f4-9b5f-cc2de07b6215> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/160b0ff7-0f4b-4725-bfbc-fbf23e53844e> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/48646ef9-0272-4d31-8731-c8dbcfa3c801> ;
+    dc:contributor "http://orcid.org/" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002333 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/455164aa-a312-490f-9929-748abb760074> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/674a51e4-9304-40d8-8544-d555597222ab> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/252039c8-53ef-43b1-ac31-b686c5edae6d> ;
+    dc:contributor "http://orcid.org/0000-0002-9528-6018" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002629 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/53f727f4-0f5d-4733-913b-75323147f10b> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/9202c0ce-ada2-48d5-a70e-a231cf7e0d65> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/fbf5301c-6b1c-4bb9-9480-1c6843d3b894> ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002630 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/5a58b64b-7f4b-4196-be43-0a0d0cc785b5> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/b500a66b-7daf-4052-b3d3-3f1ba64f0246> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/1fb533c9-5781-40f5-80eb-07844bcfcf37> ;
+    dc:contributor "http://orcid.org/0000-0002-9528-6018" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002333 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/53f727f4-0f5d-4733-913b-75323147f10b> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/b3575bcf-3c10-47e1-b789-f2e1d72097e8> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/11eb9a48-4747-4c85-88fb-88e0dc4afacf> ;
+    dc:contributor "http://orcid.org/0000-0002-9528-6018" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002333 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/04ee4246-cc43-4d56-8605-41bbe6e7b82a> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/c4800c18-9615-4b40-8dcc-a9e724dc4be2> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/9c7df7c4-9d41-42dc-9e16-491f8c74163e> ;
+    dc:contributor "http://orcid.org/0000-0002-2374-3531" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002305 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/4c2c3811-28a6-47f4-9b5f-cc2de07b6215> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/a42121a1-000b-454c-bcb7-875059054c75> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/0eddd0e8-a128-45b4-9281-779cdaec42d1> ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002233 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/01c498a4-2d01-4d73-bd92-bb9cb5969d74> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/4039404c-5ebf-47f1-8f53-e18b8993be61> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/48b94e76-7ccf-4df7-b13d-8aa7532301cb> ;
+    dc:contributor "http://orcid.org/" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002213 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/f5e6c981-8874-40bd-93e0-e342af8e5402> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/4d56b271-1e68-4956-aa85-d298828653c2> .
+
+[] a owl:Axiom ;
+    owl:annotatedProperty obo:BFO_0000051 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/0c0fd025-b5dc-4036-b797-ec6c1d10af45> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/2038720e-f60b-44d5-8b83-35a33274fd59> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/bad4d8a2-9c8a-45a5-8ad9-6dd8589715b0> ;
+    dc:contributor "http://orcid.org/" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002213 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/455164aa-a312-490f-9929-748abb760074> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/2f2fb87c-0cd9-4569-9e31-9f14ee3cbe06> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/ce2366b9-15ed-4bd5-8de4-6315b57164b5> ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002233 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/01c498a4-2d01-4d73-bd92-bb9cb5969d74> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/f2e925d9-e312-4c5b-856d-d1b3f9433b4f> .
+
+[] a owl:Axiom ;
+    owl:annotatedProperty obo:BFO_0000051 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/47b05664-8a6f-4b31-a102-f5cf8db67052> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/c7866864-e092-41e1-af77-77fd6acd7a54> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/744a28e9-d46e-4062-8cca-ae94e72d4590> ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002233 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/58dbbf9c-73b7-423c-90b7-323d3ff65cfe> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/5bf2f6f8-6c53-4cd2-bb40-c2265cf849b6> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/1e3330f1-6d76-4935-9d8f-dae02cd97112> ;
+    dc:contributor "http://orcid.org/0000-0001-5084-9000" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002333 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/16b57311-91ee-4ef9-9e76-94a7916360e5> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/6c3455c8-ef0b-4cbd-a883-a3c8a39aacc6> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/d49c3498-a1e2-44dc-91e9-e48c2613c108> ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002629 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/7a844129-a446-4261-8c80-1831219afc57> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/16b57311-91ee-4ef9-9e76-94a7916360e5> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/3aaacad4-a6b6-46c2-8d30-817a8538c28e> ;
+    dc:contributor "http://orcid.org/" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002233 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/455164aa-a312-490f-9929-748abb760074> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/e7a37819-0566-4ded-838e-2afcb8f5a9eb> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/eacced21-6711-4cae-a70a-85d612edff05> ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002333 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/77998cbf-3178-47d0-a5be-b4326776b673> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/05587062-48f2-4140-b70a-44b2aea895aa> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/4ccfab21-c0fe-44d8-b2cf-f5ac08f16544> ;
+    dc:contributor "http://orcid.org/0000-0002-9528-6018" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002233 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/53f727f4-0f5d-4733-913b-75323147f10b> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/f01a6fe8-f64e-48db-bd1f-2e25256f7b50> .
+
+[] a owl:Axiom ;
+    owl:annotatedProperty obo:BFO_0000051 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/0c0fd025-b5dc-4036-b797-ec6c1d10af45> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/c8d6c880-5130-48a5-bcb0-9a0de2702ab8> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/bdef0153-b71b-4728-9058-7dc1bbd799d6> ;
+    dc:contributor "http://orcid.org/0000-0002-2374-3531" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002333 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/8d424fe7-490f-4d57-b189-a4912de1538f> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/f9208093-adc2-4d40-8cd4-223c79a15892> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/3f7cf19b-5154-41fc-b72d-6c4dcbe1052d> ;
+    dc:contributor "http://orcid.org/0000-0002-9528-6018" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002233 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/9feeee91-8f6d-4326-bbf1-6dcecc98a2d9> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/47b05664-8a6f-4b31-a102-f5cf8db67052> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/d35ca869-98be-42d8-8125-a5dcbeca88f6> ;
+    dc:contributor "http://orcid.org/0000-0002-9528-6018" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002333 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/4d56b271-1e68-4956-aa85-d298828653c2> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/e7a37819-0566-4ded-838e-2afcb8f5a9eb> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/729cb47b-298f-4c3b-9fce-c7984e31e8a1> ;
+    dc:contributor "http://orcid.org/" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002213 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/2f2fb87c-0cd9-4569-9e31-9f14ee3cbe06> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/4d56b271-1e68-4956-aa85-d298828653c2> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/c27097f0-370f-42ca-a02a-4793389588da> ;
+    dc:contributor "http://orcid.org/" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002233 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/f5e6c981-8874-40bd-93e0-e342af8e5402> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/e7a37819-0566-4ded-838e-2afcb8f5a9eb> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/d1921d2c-8a0b-444a-9e12-aaa2f567c732> ;
+    dc:contributor "http://orcid.org/" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002333 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/bc0ab532-34a0-4d4b-8903-b54b4f1cf4d8> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/98b44fd4-09c4-4e1a-8126-ccdaafcbac0d> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/db0ea720-27a0-438b-808f-994bca2f5f3b> ;
+    dc:contributor "http://orcid.org/0000-0002-2374-3531" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002233 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/4c2c3811-28a6-47f4-9b5f-cc2de07b6215> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/75eca25a-9799-4d9b-9657-e44c274b097c> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/168ccc41-38e1-4b9e-aa8f-c7e129d8be12> ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002629 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/58dbbf9c-73b7-423c-90b7-323d3ff65cfe> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/cdae5726-f9ca-44b7-8ebb-92b7681d9bae> .
+
+[] a owl:Axiom ;
+    owl:annotatedProperty obo:BFO_0000051 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/674a51e4-9304-40d8-8544-d555597222ab> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/a8d09c03-6b09-4b64-bbc6-adcede76f8b0> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/99a30c6b-3be4-47d1-a876-1e0f4254aea1> ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002629 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/01c498a4-2d01-4d73-bd92-bb9cb5969d74> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/7f3b82f5-5820-4b5e-a6b8-94c0e76e6088> .
+
+[] a owl:Axiom ;
+    owl:annotatedProperty obo:BFO_0000051 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/4f4ec033-77db-411c-b7dd-23566324f905> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/70809083-7b15-49f5-b48c-3b5c339da90e> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/c4097d0b-43a4-4bc6-b75f-4811318c7950> ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002629 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/9202c0ce-ada2-48d5-a70e-a231cf7e0d65> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/1a74be27-5210-4f1d-b82e-01a0e23a1de0> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/17e76a74-b31f-4a56-8c13-155f7b16d1aa> ;
+    dc:contributor "http://orcid.org/0000-0002-9528-6018" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002629 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/53f727f4-0f5d-4733-913b-75323147f10b> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/7f3b82f5-5820-4b5e-a6b8-94c0e76e6088> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/606b9dcf-ca2d-4192-9777-766fb076d62a> ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002233 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/9d545aee-b83b-499c-a1d5-14242d89037a> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/73fa17df-3d1e-4d17-ad65-246012181cfc> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/f5a16b06-9846-48e2-a53f-e683c55bba53> ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002629 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/01c498a4-2d01-4d73-bd92-bb9cb5969d74> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/9202c0ce-ada2-48d5-a70e-a231cf7e0d65> .
+
+[] a owl:Axiom ;
+    owl:annotatedProperty obo:BFO_0000051 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/05587062-48f2-4140-b70a-44b2aea895aa> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/f23dc1d1-db12-470d-b446-5d53d4341387> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/c6e25d5f-0e45-4aa7-9021-0a8db99ac631> ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002333 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/7f3b82f5-5820-4b5e-a6b8-94c0e76e6088> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/f01a6fe8-f64e-48db-bd1f-2e25256f7b50> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/fcca1f9d-570b-444f-8734-50d778062c63> ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002629 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/f29835e0-0d0e-4208-8168-1fd130baf5ff> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/43532923-eb70-438d-ba0e-cea25df73804> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/8cca1f17-9350-4f82-9645-66d73a5bcc4d> ;
+    dc:contributor "http://orcid.org/0000-0002-9528-6018" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002233 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/53f727f4-0f5d-4733-913b-75323147f10b> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/f2e925d9-e312-4c5b-856d-d1b3f9433b4f> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/17e1c40b-1d5c-49ab-9861-ffc1606b78ec> ;
+    dc:contributor "http://orcid.org/0000-0001-5084-9000" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002333 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/6a0a68db-36b1-4024-bbcc-4be6e7bf3952> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/df240d27-9d7a-4aa1-9e7f-160f80d042de> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/77aa9715-0116-4d87-9365-41505537345c> ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002233 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/9202c0ce-ada2-48d5-a70e-a231cf7e0d65> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/47b05664-8a6f-4b31-a102-f5cf8db67052> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/a1a9322a-1252-4d7e-84d9-e76b5139c709> ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002629 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/43532923-eb70-438d-ba0e-cea25df73804> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/04ee4246-cc43-4d56-8605-41bbe6e7b82a> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/8af97556-0e6e-46f2-852d-b4424aa4a23b> ;
+    dc:contributor "http://orcid.org/0000-0003-4392-8725" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002333 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/01c498a4-2d01-4d73-bd92-bb9cb5969d74> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/44f411b2-af05-4db6-a2d2-ac7ae715eb09> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/20e666c1-5d34-4011-a965-a2ac0f2b90c0> ;
+    dc:contributor "http://orcid.org/0000-0002-9528-6018" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002233 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/53f727f4-0f5d-4733-913b-75323147f10b> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/4039404c-5ebf-47f1-8f53-e18b8993be61> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/7865cb3a-f19b-4760-9a84-77ef128140a5> ;
+    dc:contributor "http://orcid.org/0000-0002-9528-6018" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002333 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/cdae5726-f9ca-44b7-8ebb-92b7681d9bae> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/5bf2f6f8-6c53-4cd2-bb40-c2265cf849b6> .
+
+[] a owl:Axiom ;
+    ns1:evidence <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/900bdc4f-cf80-4281-b30a-ac4aa453e327> ;
+    dc:contributor "http://orcid.org/0000-0002-2374-3531" ;
+    dc:date "2021-12-06" ;
+    rdfs:comment "" ;
+    owl:annotatedProperty obo:RO_0002333 ;
+    owl:annotatedSource <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/f5eaf697-d437-4bcd-b3f0-8bbc93750f27> ;
+    owl:annotatedTarget <http://model.geneontology.org/b66e2b5e-0da0-4dbe-b653-5230a9f6e7ef/589d1e0d-78db-4644-9f61-2745199008b7> .
+

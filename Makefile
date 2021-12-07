@@ -48,8 +48,11 @@ ontology.facts: ontology.nt
 ontology: owlrl-datalog/bin/owl_from_rdf ontology.facts
 	mkdir -p $@ && ./owlrl-datalog/bin/owl_from_rdf -D $@ && touch ontology
 
-quad.facts: ctd-models.nq
-	sed 's/ /\t/' <$< | sed 's/ /\t/' | sed -E 's/\t(.+) (.+)\.$$/\t\1\t\2/' >$@
+signor-models.nq: signor-models
+	riot -q --output=N-Quads signor-models/* >$@
+
+quad.facts: ctd-models.nq signor-models.nq
+	riot -q --output=N-Quads ctd-models.nq signor-models.nq | sed 's/ /\t/' | sed 's/ /\t/' | sed -E 's/\t(.+) (.+)\.$$/\t\1\t\2/' >$@
 
 inferred.csv: quad.facts ontology owlrl-datalog/bin/owl_rl_abox_quads
 	./owlrl-datalog/bin/owl_rl_abox_quads
@@ -83,9 +86,10 @@ ctd-models-inferences.nq: inferred.csv
 	sed 's/$$/ \./' <$< >$@
 	#$(MAT) --ontology-file ontologies-merged.ttl --input $< --output $@ --output-graph-name '#inferred' --suffix-graph true --mark-direct-types true --output-indirect-types true --parallelism 20 --reasoner arachne
 
-noctua-reactome-ctd-models.jnl: noctua-models.jnl ctd-models.nq
+noctua-reactome-ctd-models.jnl: noctua-models.jnl ctd-models.nq signor-models.nq
 	cp $< $@ &&\
-	$(BLAZEGRAPH-RUNNER) load --journal=$@ --properties=blazegraph.properties --informat=nquads $<
+	$(BLAZEGRAPH-RUNNER) load --journal=$@ --properties=blazegraph.properties --informat=nquads signor-models.nq &&\
+	$(BLAZEGRAPH-RUNNER) load --journal=$@ --properties=blazegraph.properties --informat=nquads ctd-models.nq
 
 cam-db-reasoned.jnl: noctua-reactome-ctd-models-ubergraph.jnl noctua-models-inferences.nq ctd-models-inferences.nq
 	cp $< $@ &&\
