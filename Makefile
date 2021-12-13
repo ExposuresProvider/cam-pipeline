@@ -48,11 +48,8 @@ ontology.facts: ontology.nt
 ontology: owlrl-datalog/bin/owl_from_rdf ontology.facts
 	mkdir -p $@ && ./owlrl-datalog/bin/owl_from_rdf -D $@ && touch ontology
 
-signor-models.nq: signor-models
-	riot -q --output=N-Quads signor-models/* >$@
-
-quad.facts: ctd-models.nq signor-models.nq
-	riot -q --output=N-Quads ctd-models.nq signor-models.nq | sed 's/ /\t/' | sed 's/ /\t/' | sed -E 's/\t(.+) (.+)\.$$/\t\1\t\2/' >$@
+quad.facts: ctd-models.nq
+	riot -q --output=N-Quads ctd-models.nq | sed 's/ /\t/' | sed 's/ /\t/' | sed -E 's/\t(.+) (.+)\.$$/\t\1\t\2/' >$@
 
 inferred.csv: quad.facts ontology owlrl-datalog/bin/owl_rl_abox_quads
 	./owlrl-datalog/bin/owl_rl_abox_quads
@@ -68,12 +65,16 @@ missing-biolink-relation.ttl: sparql/reports/owl-missing-biolink-relation.rq cam
 
 all: cam-db-reasoned.jnl
 
-noctua-models.jnl: $(NOCTUA_MODELS_REPO)/models/*.ttl
+noctua-models.jnl: $(NOCTUA_MODELS_REPO)/models/*.ttl signor-models
 	$(BLAZEGRAPH-RUNNER) load --journal=$@ --properties=blazegraph.properties --informat=turtle --use-ontology-graph=true $(NOCTUA_MODELS_REPO)/models &&\
-	$(BLAZEGRAPH-RUNNER) update --journal=$@ --properties=blazegraph.properties sparql/delete-non-production-models.ru
+	$(BLAZEGRAPH-RUNNER) update --journal=$@ --properties=blazegraph.properties sparql/delete-non-production-models.ru &&\
+	$(BLAZEGRAPH-RUNNER) load --journal=$@ --properties=blazegraph.properties --informat=turtle --use-ontology-graph=true signor-models
 
 noctua-models-inferences.nq: $(NOCTUA_MODELS_REPO)/models/*.ttl sparql/is-production.rq ontologies-merged.ttl
 	$(MAT) --ontology-file ontologies-merged.ttl --input $(NOCTUA_MODELS_REPO)/models --output $@ --output-graph-name '#inferred' --suffix-graph true --mark-direct-types true --output-indirect-types true --parallelism 20 --filter-graph-query sparql/is-production.rq --reasoner arachne
+
+signor-models-inferences.nq: signor-models
+	$(MAT) --ontology-file ontologies-merged.ttl --input signor-models --output $@ --output-graph-name '#inferred' --suffix-graph true --mark-direct-types true --output-indirect-types true --parallelism 20 --reasoner arachne
 
 CTD_chem_gene_ixns_structured.xml:
 	curl -L -O 'http://ctdbase.org/reports/CTD_chem_gene_ixns_structured.xml.gz' &&\
@@ -86,14 +87,14 @@ ctd-models-inferences.nq: inferred.csv
 	sed 's/$$/ \./' <$< >$@
 	#$(MAT) --ontology-file ontologies-merged.ttl --input $< --output $@ --output-graph-name '#inferred' --suffix-graph true --mark-direct-types true --output-indirect-types true --parallelism 20 --reasoner arachne
 
-noctua-reactome-ctd-models.jnl: noctua-models.jnl ctd-models.nq signor-models.nq
+noctua-reactome-ctd-models.jnl: noctua-models.jnl ctd-models.nq
 	cp $< $@ &&\
-	$(BLAZEGRAPH-RUNNER) load --journal=$@ --properties=blazegraph.properties --informat=nquads signor-models.nq &&\
 	$(BLAZEGRAPH-RUNNER) load --journal=$@ --properties=blazegraph.properties --informat=nquads ctd-models.nq
 
-cam-db-reasoned.jnl: noctua-reactome-ctd-models-ubergraph.jnl noctua-models-inferences.nq ctd-models-inferences.nq
+cam-db-reasoned.jnl: noctua-reactome-ctd-models-ubergraph.jnl noctua-models-inferences.nq ctd-models-inferences.nq signor-models-inferences.nq
 	cp $< $@ &&\
 	$(BLAZEGRAPH-RUNNER) load --journal=$@ --properties=blazegraph.properties --informat=n-quads noctua-models-inferences.nq &&\
+	$(BLAZEGRAPH-RUNNER) load --journal=$@ --properties=blazegraph.properties --informat=n-quads signor-models-inferences.nq &&\
 	$(BLAZEGRAPH-RUNNER) load --journal=$@ --properties=blazegraph.properties --informat=n-quads ctd-models-inferences.nq
 
 ncbi-gene-classes.ttl: uniprot-to-ncbi-rules.ofn
