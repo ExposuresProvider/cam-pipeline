@@ -17,4 +17,3 @@ UPDATE {
   # here.
   ?model lego:modelstate ?modelstate
 }
-}
