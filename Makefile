@@ -65,7 +65,11 @@ missing-biolink-relation.ttl: sparql/reports/owl-missing-biolink-relation.rq cam
 
 all: cam-db-reasoned.jnl
 
-noctua-models.jnl: $(NOCTUA_MODELS_REPO)/models/*.ttl signor-models
+$(NOCTUA_MODELS_REPO):
+	mkdir -p gene-data
+	git clone --depth 1 https://github.com/geneontology/noctua-models gene-data/noctua-models
+
+noctua-models.jnl: $(NOCTUA_MODELS_REPO) $(NOCTUA_MODELS_REPO)/models/*.ttl signor-models
 	$(BLAZEGRAPH-RUNNER) load --journal=$@ --properties=blazegraph.properties --informat=turtle --use-ontology-graph=true signor-models &&\
 	$(BLAZEGRAPH-RUNNER) update --journal=$@ --properties=blazegraph.properties sparql/set-provenance-to-signor.ru &&\
 	$(BLAZEGRAPH-RUNNER) load --journal=$@ --properties=blazegraph.properties --informat=turtle --use-ontology-graph=true $(NOCTUA_MODELS_REPO)/models &&\
