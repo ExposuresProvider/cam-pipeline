@@ -8,7 +8,7 @@ PREFIX pav: <http://purl.org/pav/>
 # Currently we import the SIGNOR models first, use this SPARQL UPDATE to mark them as imported from
 # SIGNOR, and then load the remaining models.
 
-UPDATE {
+INSERT {
   ?model pav:importedFrom <https://signor.uniroma2.it/>
 } WHERE {
   ?model rdf:type owl:Ontology .
