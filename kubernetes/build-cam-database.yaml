@@ -1,0 +1,43 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: build-cam-database
+spec:
+  schedule: "@weekly"
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: pipeline-tools
+            image: "renciorg/cam-pipeline-tools:v1.3"
+            resources:
+              limits:
+                cpu: '8'
+                memory: 150G
+            command: ["sh", "-c", "cd /workspace; rm -rf current; mkdir current; cd current; git clone https://github.com/NCATS-Tangerine/cam-pipeline.git; cd cam-pipeline; git checkout use-materializer; mkdir gene-data; cd gene-data; git clone --depth 1 https://github.com/geneontology/noctua-models; cd ..; make all; rm -rf /workspace/success; mv /workspace/current /workspace/success"]
+            volumeMounts:
+            - mountPath: "/workspace"
+              name: storage
+          restartPolicy: Never
+          volumes:
+          - name: storage
+            persistentVolumeClaim:
+              claimName: cam-kp-build-pipeline-storage
+      backoffLimit: 0
+# ---
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: cam-kp-build-pipeline-storage
+#   labels:
+#     project: CAM-KP
+#     env: prod
+# spec:
+#   accessModes:
+#   - ReadWriteMany
+#   resources:
+#     requests:
+#       storage: 500G
+#   storageClassName: basic
