@@ -9,7 +9,12 @@ PREFIX pav: <http://purl.org/pav/>
 # SIGNOR, and then load the remaining models.
 
 INSERT {
-  ?model pav:importedFrom <https://signor.uniroma2.it/>
+  # pav:importedFrom might be more accurate here, but I think
+  # sparql/delete-non-production-models.ru deletes models that
+  # don't have a pav:providedBy (which also seems to be what
+  # the triplestore largely uses), so let's use that to be
+  # consistent.
+  ?model pav:providedBy <https://signor.uniroma2.it/> .
 } WHERE {
   ?model rdf:type owl:Ontology .
   # When generating SIGNOR models, we set lego:modelstate,
