@@ -66,9 +66,10 @@ missing-biolink-relation.ttl: sparql/reports/owl-missing-biolink-relation.rq cam
 all: cam-db-reasoned.jnl
 
 noctua-models.jnl: $(NOCTUA_MODELS_REPO)/models/*.ttl signor-models
+	$(BLAZEGRAPH-RUNNER) load --journal=$@ --properties=blazegraph.properties --informat=turtle --use-ontology-graph=true signor-models &&\
+	$(BLAZEGRAPH-RUNNER) update --journal=$@ --properties=blazegraph.properties sparql/set-provenance-to-signor.ru &&\
 	$(BLAZEGRAPH-RUNNER) load --journal=$@ --properties=blazegraph.properties --informat=turtle --use-ontology-graph=true $(NOCTUA_MODELS_REPO)/models &&\
-	$(BLAZEGRAPH-RUNNER) update --journal=$@ --properties=blazegraph.properties sparql/delete-non-production-models.ru &&\
-	$(BLAZEGRAPH-RUNNER) load --journal=$@ --properties=blazegraph.properties --informat=turtle --use-ontology-graph=true signor-models
+	$(BLAZEGRAPH-RUNNER) update --journal=$@ --properties=blazegraph.properties sparql/delete-non-production-models.ru
 
 noctua-models-inferences.nq: $(NOCTUA_MODELS_REPO)/models/*.ttl sparql/is-production.rq ontologies-merged.ttl
 	$(MAT) --ontology-file ontologies-merged.ttl --input $(NOCTUA_MODELS_REPO)/models --output $@ --output-graph-name '#inferred' --suffix-graph true --mark-direct-types true --output-indirect-types true --parallelism 20 --filter-graph-query sparql/is-production.rq --reasoner arachne
