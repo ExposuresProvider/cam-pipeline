@@ -13,7 +13,7 @@ SCALA_RUN=$(JAVA_ENV) scala-cli run --home /tools
 
 # git clone git@github.com:geneontology/noctua-models.git
 NOCTUA_MODELS_REPO=gene-data/noctua-models
-BIOLINK=2.1.0
+BIOLINK=3.1.0
 
 .PHONY: clean validate
 
