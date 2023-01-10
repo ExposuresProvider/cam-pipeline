@@ -2,6 +2,9 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: build-cam-database
+  labels:
+    project: CAM-KP
+    env: dev
 spec:
   schedule: "@weekly"
   concurrencyPolicy: Forbid
@@ -26,18 +29,18 @@ spec:
             persistentVolumeClaim:
               claimName: cam-kp-build-pipeline-storage
       backoffLimit: 0
-# ---
-# apiVersion: v1
-# kind: PersistentVolumeClaim
-# metadata:
-#   name: cam-kp-build-pipeline-storage
-#   labels:
-#     project: CAM-KP
-#     env: prod
-# spec:
-#   accessModes:
-#   - ReadWriteMany
-#   resources:
-#     requests:
-#       storage: 500G
-#   storageClassName: basic
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: cam-kp-build-pipeline-storage
+  labels:
+    project: CAM-KP
+    env: dev
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 1000G
+  storageClassName: basic
