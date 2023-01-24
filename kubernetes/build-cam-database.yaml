@@ -3,8 +3,7 @@ kind: CronJob
 metadata:
   name: build-cam-database
   labels:
-    project: CAM-KP
-    env: dev
+    app: cam-pipeline
 spec:
   schedule: "@weekly"
   concurrencyPolicy: Forbid
