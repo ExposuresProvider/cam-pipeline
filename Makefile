@@ -15,10 +15,12 @@ SCALA_RUN=$(JAVA_ENV) scala-cli run --home /tools
 NOCTUA_MODELS_REPO=gene-data/noctua-models
 BIOLINK=2.1.0
 
-.PHONY: clean validate
+.PHONY: clean validate all
 
+all: cam-db-reasoned.jnl
 clean:
 	rm -rf gene-data
+	rm -rf noctua-models.jnl
 
 owlrl-datalog:
 	git clone https://github.com/balhoff/owlrl-datalog.git
@@ -63,15 +65,17 @@ missing-biolink-terms.ttl: sparql/reports/owl-missing-biolink-term.rq cam-db-rea
 missing-biolink-relation.ttl: sparql/reports/owl-missing-biolink-relation.rq cam-db-reasoned.jnl
 	$(BLAZEGRAPH-RUNNER) select --journal=cam-db-reasoned.jnl --properties=blazegraph.properties --outformat=TSV $< $@
 
-all: cam-db-reasoned.jnl
+$(NOCTUA_MODELS_REPO):
+	mkdir -p gene-data
+	git clone --depth 1 https://github.com/geneontology/noctua-models gene-data/noctua-models
 
-noctua-models.jnl: $(NOCTUA_MODELS_REPO)/models/*.ttl signor-models
+noctua-models.jnl: $(NOCTUA_MODELS_REPO) signor-models
 	$(BLAZEGRAPH-RUNNER) load --journal=$@ --properties=blazegraph.properties --informat=turtle --use-ontology-graph=true signor-models &&\
 	$(BLAZEGRAPH-RUNNER) update --journal=$@ --properties=blazegraph.properties sparql/set-provenance-to-signor.ru &&\
 	$(BLAZEGRAPH-RUNNER) load --journal=$@ --properties=blazegraph.properties --informat=turtle --use-ontology-graph=true $(NOCTUA_MODELS_REPO)/models &&\
 	$(BLAZEGRAPH-RUNNER) update --journal=$@ --properties=blazegraph.properties sparql/delete-non-production-models.ru
 
-noctua-models-inferences.nq: $(NOCTUA_MODELS_REPO)/models/*.ttl sparql/is-production.rq ontologies-merged.ttl
+noctua-models-inferences.nq: $(NOCTUA_MODELS_REPO) sparql/is-production.rq ontologies-merged.ttl
 	$(MAT) --ontology-file ontologies-merged.ttl --input $(NOCTUA_MODELS_REPO)/models --output $@ --output-graph-name '#inferred' --suffix-graph true --mark-direct-types true --output-indirect-types true --parallelism 20 --filter-graph-query sparql/is-production.rq --reasoner arachne
 
 signor-models-inferences.nq: signor-models
