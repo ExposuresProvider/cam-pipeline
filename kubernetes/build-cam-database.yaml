@@ -19,7 +19,7 @@ spec:
               limits:
                 cpu: '8'
                 memory: 150G
-            command: ["sh", "-c", "cd /workspace; rm -rf current; mkdir current; cd current; git clone https://github.com/NCATS-Tangerine/cam-pipeline.git; cd cam-pipeline; git checkout add-kubernetes; make all; rm -rf /workspace/success; mv /workspace/current /workspace/success"]
+            command: ["sh", "-c", "cd /workspace; rm -rf current; mkdir current; cd current; git clone https://github.com/NCATS-Tangerine/cam-pipeline.git; cd cam-pipeline; git checkout master; make all; rm -rf /workspace/success; mv /workspace/current /workspace/success"]
             volumeMounts:
             - mountPath: "/workspace"
               name: storage
