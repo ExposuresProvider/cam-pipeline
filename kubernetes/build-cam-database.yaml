@@ -28,18 +28,3 @@ spec:
             persistentVolumeClaim:
               claimName: build-cam-database-storage
       backoffLimit: 0
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: build-cam-database-storage
-  labels:
-    project: CAM-KP
-    env: dev
-spec:
-  accessModes:
-  - ReadWriteMany
-  resources:
-    requests:
-      storage: 1000G
-  storageClassName: basic
