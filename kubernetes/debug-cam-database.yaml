@@ -1,0 +1,26 @@
+# A Pod for debugging cam-pipeline outputs.
+# Assumes that there's a build-cam-database-storage PVC.
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: cam-pipeline-debug
+  labels:
+    app: cam-pipeline
+spec:
+  containers:
+  - name: pipeline-tools
+    image: "renciorg/cam-pipeline-tools:v1.4"
+    resources:
+      limits:
+        cpu: '8'
+        memory: 150G
+    command: ["sh", "-c", "while true; echo 'alive'; do sleep 10; done"]
+    volumeMounts:
+    - mountPath: "/workspace"
+      name: storage
+  restartPolicy: Never
+  volumes:
+  - name: storage
+    persistentVolumeClaim:
+      claimName: build-cam-database-storage
