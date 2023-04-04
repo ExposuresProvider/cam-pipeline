@@ -1,0 +1,69 @@
+#define RDF_TYPE "<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>"
+#define RDFS_SUBPROPERTY_OF "<http://www.w3.org/2000/01/rdf-schema#subPropertyOf>"
+#define SESAME_DIRECT_TYPE "<http://www.openrdf.org/schema/sesame#directType>"
+#define SKOS_EXACT_MATCH "<http://www.w3.org/2004/02/skos/core#exactMatch>"
+#define SKOS_NARROW_MATCH "<http://www.w3.org/2004/02/skos/core#narrowMatch>"
+#define PROV_WAS_DERIVED_FROM "<http://www.w3.org/ns/prov#wasDerivedFrom>"
+#define MOLECULAR_FUNCTION "<http://purl.obolibrary.org/obo/GO_0003674>"
+#define BIOLOGICAL_PROCESS "<http://purl.obolibrary.org/obo/GO_0008150>"
+#define CELLULAR_COMPONENT "<http://purl.obolibrary.org/obo/GO_0005575>"
+#define CANONICAL_RECORD "<http://geneontology.org/lego/canonical_record>"
+
+.input asserted(IO=file, filename="quad.facts")
+.input inferred(IO=file, filename="inferred.csv")
+.input biolink(IO=file, filename="biolink.facts")
+.input ontology(IO=file, filename="ontology.facts")
+.output kg_edge
+
+.decl asserted(s: symbol, p: symbol, o: symbol, g: symbol) //brie
+.decl inferred(s: symbol, p: symbol, o: symbol, g: symbol) //brie
+.decl quad(s: symbol, p: symbol, o: symbol, g: symbol) //brie
+.decl biolink_quad(s: symbol, pred: symbol, o: symbol, g: symbol) //brie
+.decl redundant_quad(s: symbol, pred: symbol, o: symbol, g: symbol) //brie
+.decl nonredundant_quad(s: symbol, pred: symbol, o: symbol, g: symbol) //brie
+.decl ontology(s: symbol, p: symbol, o: symbol)
+.decl canonical_record(reacto: symbol, uniprot: symbol)
+.decl graph(g: symbol)
+.decl biolink(s: symbol, p: symbol, o: symbol)
+.decl mapped_to(term: symbol, other: symbol)
+.decl subprop(sub: symbol, super: symbol)
+.decl primary_source(graph: symbol, source: symbol)
+.decl direct_type(ind: symbol, type: symbol)
+.decl kg_edge(s: symbol, p: symbol, o: symbol, prov: symbol, primary_source: symbol)
+
+canonical_record(reacto, uniprot) :- ontology(reacto, CANONICAL_RECORD, uniprot).
+
+quad(s, p, o, g) :- asserted(s, p, o, g).
+quad(s, p, o, g) :- inferred(s, p, o, inf), inferred(inf, PROV_WAS_DERIVED_FROM, g, inf).
+
+mapped_to(t, o) :- biolink(t, SKOS_EXACT_MATCH, o).
+mapped_to(t, o) :- biolink(t, SKOS_NARROW_MATCH, o).
+
+subprop(sub, super) :- biolink(sub, RDFS_SUBPROPERTY_OF, super).
+subprop(sub, supersuper) :- subprop(sub, super), biolink(super, RDFS_SUBPROPERTY_OF, supersuper).
+
+graph(g) :- quad(_, _, _, g).
+
+primary_source(g, "infores:go-cam") :- graph(g), contains("model.geneontology.org", g).
+primary_source(g, "infores:ctd") :- graph(g), contains("ctdbase.org", g).
+// signor?
+
+direct_type(i, t) :-
+    quad(i, SESAME_DIRECT_TYPE, t, _),
+    t != MOLECULAR_FUNCTION,
+    t != BIOLOGICAL_PROCESS,
+    t != CELLULAR_COMPONENT,
+    !contains("http://purl.obolibrary.org/obo/BFO_", t),
+    !contains("http://purl.obolibrary.org/obo/CARO_", t).
+
+direct_type(i, uniprot) :- quad(i, SESAME_DIRECT_TYPE, reacto, _), canonical_record(reacto, uniprot).
+
+biolink_quad(s, pred, o, g) :- quad(s, p, o, g), mapped_to(pred, p), p != RDF_TYPE.
+redundant_quad(s, pred, o, g) :- biolink_quad(s, pred, o, g), subprop(other, pred), biolink_quad(s, other, o, g).
+nonredundant_quad(s, pred, o, g) :- biolink_quad(s, pred, o, g), !redundant_quad(s, pred, o, g).
+
+kg_edge(subj, pred, obj, g, os) :- 
+    nonredundant_quad(s, pred, o, g), 
+    direct_type(s, subj), 
+    direct_type(o, obj), 
+    primary_source(g, os).
