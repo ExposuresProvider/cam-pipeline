@@ -59,7 +59,7 @@ noctua-models.dir:
 
 noctua-models.nq: noctua-models.dir
 	rm -f $@.jnl &&\
-	$(BLAZEGRAPH-RUNNER) load --journal=$@.jnl --properties=blazegraph.properties --informat=turtle --use-ontology-graph=true noctua-models/models &&
+	$(BLAZEGRAPH-RUNNER) load --journal=$@.jnl --properties=blazegraph.properties --informat=turtle --use-ontology-graph=true noctua-models/models &&\
 	$(BLAZEGRAPH-RUNNER) update --journal=$@.jnl --properties=blazegraph.properties sparql/delete-non-production-models.ru &&\
 	$(BLAZEGRAPH-RUNNER) dump --journal=$@.jnl --properties=blazegraph.properties --outformat=n-quads $@ && rm $@.jnl
 
