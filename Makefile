@@ -44,11 +44,10 @@ mirror: ontologies.ofn
 	rm -rf $@ &&\
 	$(ROBOT) mirror -i $< -d $@ -o $@/catalog-v001.xml
 
-#FIXME SWRL rules in the ontology need to be turned into Souffle
-ontologies-merged.ttl: ontologies.ofn ubergraph-axioms.ofn reacto-uniprot-rules.ttl mirror
+#FIXME stop disabling disjoint checks
+ontologies-merged.ttl: ontologies.ofn ubergraph-axioms.ofn mirror
 	$(ROBOT) merge --catalog mirror/catalog-v001.xml --include-annotations true \
 	-i $< -i ubergraph-axioms.ofn \
-	-i reacto-uniprot-rules.ttl \
 	remove --axioms 'disjoint' --trim true --preserve-structure false \
 	remove --term 'owl:Nothing' --trim true --preserve-structure false \
 	remove --term 'http://purl.obolibrary.org/obo/caro#part_of' --term 'http://purl.obolibrary.org/obo/caro#develops_from' --trim true --preserve-structure false \
