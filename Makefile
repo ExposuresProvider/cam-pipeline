@@ -7,7 +7,7 @@ ROBOT=$(ROBOT_ENV) robot
 JVM_ARGS=JVM_ARGS="-Xmx64G -XX:+UseParallelGC"
 ARQ=$(JVM_ARGS) arq
 
-SCALA_RUN=$(JAVA_ENV) HOME="." scala-cli run
+SCALA_RUN=$(JAVA_ENV) HOME="/work" scala-cli run
 
 BIOLINK=v3.2.5
 
