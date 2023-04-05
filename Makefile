@@ -1,10 +1,10 @@
-JAVA_ENV=JAVA_OPTS="-Xmx64G -XX:+UseParallelGC"
+JAVA_ENV=JAVA_OPTS="-Xmx96G -XX:+UseParallelGC"
 BLAZEGRAPH-RUNNER=$(JAVA_ENV) blazegraph-runner
 
-ROBOT_ENV=ROBOT_JAVA_ARGS="-Xmx64G -XX:+UseParallelGC"
+ROBOT_ENV=ROBOT_JAVA_ARGS="-Xmx96G -XX:+UseParallelGC"
 ROBOT=$(ROBOT_ENV) robot
 
-JVM_ARGS=JVM_ARGS="-Xmx64G -XX:+UseParallelGC"
+JVM_ARGS=JVM_ARGS="-Xmx96G -XX:+UseParallelGC"
 ARQ=$(JVM_ARGS) arq
 
 SCALA_RUN=$(JAVA_ENV) COURSIER_CACHE=/home/cam/coursier-cache scala-cli run
@@ -68,9 +68,16 @@ signor-models.nq: signor-models
 	$(BLAZEGRAPH-RUNNER) update --journal=$@.jnl --properties=blazegraph.properties sparql/set-provenance-to-signor.ru &&\
 	$(BLAZEGRAPH-RUNNER) dump --journal=$@.jnl --properties=blazegraph.properties --outformat=n-quads $@ && rm $@.jnl
 
+CTD_chem_gene_ixns_structured.xml:
+	curl -L -O 'http://ctdbase.org/reports/CTD_chem_gene_ixns_structured.xml.gz' &&\
+	gunzip CTD_chem_gene_ixns_structured.xml.gz
+
+ctd-models.nq: CTD_chem_gene_ixns_structured.xml
+	$(JAVA_ENV) ctd-to-owl CTD_chem_gene_ixns_structured.xml $@ chebi_mesh.tsv
+
 # Must concatenate multiple RDF files using riot before loading into Souffle, so that blank nodes don't collide
-quad.facts: noctua-models.nq
-	riot -q --output=N-Quads $< | sed 's/ /\t/' | sed 's/ /\t/' | sed -E 's/\t(.+) (.+) \.$$/\t\1\t\2/' >$@
+quad.facts: noctua-models.nq ctd-models.nq
+	riot -q --output=N-Quads noctua-models.nq ctd-models.nq | sed 's/ /\t/' | sed 's/ /\t/' | sed -E 's/\t(.+) (.+) \.$$/\t\1\t\2/' >$@
 
 inferred.csv: quad.facts ontology.dir owlrl-datalog/bin/owl_rl_abox_quads
 	./owlrl-datalog/bin/owl_rl_abox_quads
