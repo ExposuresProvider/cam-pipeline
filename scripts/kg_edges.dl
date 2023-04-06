@@ -3,6 +3,7 @@
 #define SESAME_DIRECT_TYPE "<http://www.openrdf.org/schema/sesame#directType>"
 #define SKOS_EXACT_MATCH "<http://www.w3.org/2004/02/skos/core#exactMatch>"
 #define SKOS_NARROW_MATCH "<http://www.w3.org/2004/02/skos/core#narrowMatch>"
+#define SKOS_BROAD_MATCH "<http://www.w3.org/2004/02/skos/core#broadMatch>"
 #define PROV_WAS_DERIVED_FROM "<http://www.w3.org/ns/prov#wasDerivedFrom>"
 #define MOLECULAR_FUNCTION "<http://purl.obolibrary.org/obo/GO_0003674>"
 #define BIOLOGICAL_PROCESS "<http://purl.obolibrary.org/obo/GO_0008150>"
@@ -38,6 +39,7 @@ quad(s, p, o, g) :- inferred(s, p, o, inf), inferred(inf, PROV_WAS_DERIVED_FROM,
 
 mapped_to(t, o) :- biolink(t, SKOS_EXACT_MATCH, o).
 mapped_to(t, o) :- biolink(t, SKOS_NARROW_MATCH, o).
+mapped_to(t, o) :- biolink(t, SKOS_BROAD_MATCH, o).
 
 subprop(sub, super) :- biolink(sub, RDFS_SUBPROPERTY_OF, super).
 subprop(sub, supersuper) :- subprop(sub, super), biolink(super, RDFS_SUBPROPERTY_OF, supersuper).
