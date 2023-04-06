@@ -62,8 +62,9 @@ biolink_quad(s, pred, o, g) :- quad(s, p, o, g), mapped_to(pred, p), p != RDF_TY
 redundant_quad(s, pred, o, g) :- biolink_quad(s, pred, o, g), subprop(other, pred), biolink_quad(s, other, o, g).
 nonredundant_quad(s, pred, o, g) :- biolink_quad(s, pred, o, g), !redundant_quad(s, pred, o, g).
 
-kg_edge(subj, pred, obj, g, os) :- 
+kg_edge(subj, pred, obj, prov, ps) :- 
     nonredundant_quad(s, pred, o, g), 
     direct_type(s, subj), 
     direct_type(o, obj), 
-    primary_source(g, os).
+    primary_source(g, ps),
+    prov=substr(g, 1, strlen(string) - 2).
