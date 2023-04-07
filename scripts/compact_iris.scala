@@ -8,9 +8,7 @@ import zio.Console._
 import zio.stream._
 import zio.json._
 import scala.io.Source
-import java.nio.charset.StandardCharsets
 import java.io.File
-import java.io.FileInputStream
 
 object Script extends ZIOAppDefault {
 
@@ -23,7 +21,7 @@ object Script extends ZIOAppDefault {
         prefixes <- prefixesFromFile(prefixesFile)
         supplementalNamespaces <- prefixesFromFile(supplementalNamespacesFile)
         allNamespaces = prefixes.iterator.map(_.swap) ++ supplementalNamespaces
-        namespaces = allNamespaces.toList.sortBy {case (ns, _) => -ns.size }
+        namespaces = allNamespaces.toList.sortBy { case (ns, _) => -ns.size }
         stream <- ZStream.fromFileName(inFile)
             .via(ZPipeline.utf8Decode 
              >>> ZPipeline.splitLines 
