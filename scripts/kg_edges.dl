@@ -9,6 +9,7 @@
 #define BIOLOGICAL_PROCESS "<http://purl.obolibrary.org/obo/GO_0008150>"
 #define CELLULAR_COMPONENT "<http://purl.obolibrary.org/obo/GO_0005575>"
 #define CANONICAL_RECORD "<http://geneontology.org/lego/canonical_record>"
+#define MOLECULAR_EVENT "<http://purl.obolibrary.org/obo/go/extensions/reacto.owl#molecular_event>"
 
 .input asserted(IO=file, filename="quad.facts")
 .input inferred(IO=file, filename="inferred.csv")
@@ -55,6 +56,7 @@ direct_type(i, t) :-
     t != MOLECULAR_FUNCTION,
     t != BIOLOGICAL_PROCESS,
     t != CELLULAR_COMPONENT,
+    t != MOLECULAR_EVENT,
     !contains("http://purl.obolibrary.org/obo/BFO_", t),
     !contains("http://purl.obolibrary.org/obo/CARO_", t).
 
