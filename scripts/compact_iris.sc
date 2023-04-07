@@ -53,3 +53,5 @@ object Script extends ZIOAppDefault {
         .getOrElse(iri)
 
 }
+
+Script.main(args)

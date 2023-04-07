@@ -94,5 +94,5 @@ biolink-model-prefix-map.json:
 kg_edge.csv: scripts/kg_edges inferred.csv quad.facts biolink.facts ontology.facts
 	./scripts/kg_edges
 
-kg.tsv: kg_edge.csv scripts/compact_iris.scala biolink-model-prefix-map.json supplemental-namespaces.json
-	$(SCALA_RUN) scripts/compact_iris.scala --  biolink-model-prefix-map.json supplemental-namespaces.json kg_edge.csv $@
+kg.tsv: kg_edge.csv scripts/compact_iris.sc biolink-model-prefix-map.json supplemental-namespaces.json
+	$(SCALA_RUN) scripts/compact_iris.sc --  biolink-model-prefix-map.json supplemental-namespaces.json kg_edge.csv $@
