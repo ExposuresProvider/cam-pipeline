@@ -14,6 +14,7 @@
 .input asserted(IO=file, filename="quad.facts")
 .input inferred(IO=file, filename="inferred.csv")
 .input biolink(IO=file, filename="biolink.facts")
+.input local_mapping(IO=file, filename="ro-to-biolink-local-mappings.tsv")
 .input ontology(IO=file, filename="ontology.facts")
 .output kg_edge
 
@@ -28,6 +29,7 @@
 .decl graph(g: symbol)
 .decl biolink(s: symbol, p: symbol, o: symbol)
 .decl mapped_to(term: symbol, other: symbol)
+.decl local_mapping(ro: symbol, biolink: symbol, scope: symbol)
 .decl subprop(sub: symbol, super: symbol)
 .decl primary_source(graph: symbol, source: symbol)
 .decl direct_type(ind: symbol, type: symbol)
@@ -38,9 +40,10 @@ canonical_record(reacto, uniprot) :- ontology(reacto, CANONICAL_RECORD, uniprot)
 quad(s, p, o, g) :- asserted(s, p, o, g).
 quad(s, p, o, g) :- inferred(s, p, o, inf), inferred(inf, PROV_WAS_DERIVED_FROM, g, inf).
 
-mapped_to(t, o) :- biolink(t, SKOS_EXACT_MATCH, o).
-mapped_to(t, o) :- biolink(t, SKOS_NARROW_MATCH, o).
-mapped_to(t, o) :- biolink(t, SKOS_BROAD_MATCH, o).
+//mapped_to(t, o) :- biolink(t, SKOS_EXACT_MATCH, o).
+//mapped_to(t, o) :- biolink(t, SKOS_NARROW_MATCH, o).
+//mapped_to(t, o) :- biolink(t, SKOS_BROAD_MATCH, o).
+mapped_to(t, o) :- local_mapping(o, t, _).
 
 subprop(sub, super) :- biolink(sub, RDFS_SUBPROPERTY_OF, super).
 subprop(sub, supersuper) :- subprop(sub, super), biolink(super, RDFS_SUBPROPERTY_OF, supersuper).
