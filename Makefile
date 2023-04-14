@@ -56,11 +56,8 @@ ontologies-merged.ttl: ontologies.ofn ubergraph-axioms.ofn mirror
 noctua-models.dir:
 	git clone --depth 1 https://github.com/geneontology/noctua-models && touch $@
 
-noctua-models.nq: noctua-models.dir
-	rm -f $@.jnl &&\
-	$(BLAZEGRAPH-RUNNER) load --journal=$@.jnl --properties=blazegraph.properties --informat=turtle --use-ontology-graph=true noctua-models/models &&\
-	$(BLAZEGRAPH-RUNNER) update --journal=$@.jnl --properties=blazegraph.properties sparql/delete-non-production-models.ru &&\
-	$(BLAZEGRAPH-RUNNER) dump --journal=$@.jnl --properties=blazegraph.properties --outformat=n-quads $@ && rm $@.jnl
+noctua-models.nq: noctua-models.dir scripts/merge_noctua_models.sc
+	$(SCALA_RUN) scripts/merge_noctua_models.sc --  noctua-models/models $@
 
 signor-models.nq: signor-models
 	rm -f $@.jnl &&\
