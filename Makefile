@@ -14,14 +14,10 @@ BIOLINK=v3.2.5
 owlrl-datalog:
 	git clone https://github.com/balhoff/owlrl-datalog.git
 
-#FIXME commit change for prov:wasDerivedFrom
 owlrl-datalog/bin/owl_rl_abox_quads: owlrl-datalog owlrl-datalog/src/datalog/swrl.dl
 	cd owlrl-datalog &&\
 	mkdir -p bin &&\
 	souffle -c src/datalog/owl_rl_abox_quads.dl -o bin/owl_rl_abox_quads
-
-#owlrl-datalog/src/datalog/swrl.dl: swrl.dl
-#	cp swrl.dl $@
 
 owlrl-datalog/src/datalog/swrl.dl: ontologies-merged.ttl owlrl-datalog
 	$(SCALA_RUN) owlrl-datalog/src/scala/swrl-to-souffle.sc -- ontologies-merged.ttl $@
@@ -73,8 +69,8 @@ ctd-models.nq: CTD_chem_gene_ixns_structured.xml
 	$(JAVA_ENV) ctd-to-owl CTD_chem_gene_ixns_structured.xml $@ chebi_mesh.tsv
 
 # Must concatenate multiple RDF files using riot before loading into Souffle, so that blank nodes don't collide
-quad.facts: noctua-models.nq ctd-models.nq
-	riot -q --output=N-Quads noctua-models.nq ctd-models.nq | sed 's/ /\t/' | sed 's/ /\t/' | sed -E 's/\t(.+) (.+) \.$$/\t\1\t\2/' >$@
+quad.facts: noctua-models.nq #ctd-models.nq
+	riot -q --output=N-Quads $^ | sed 's/ /\t/' | sed 's/ /\t/' | sed -E 's/\t(.+) (.+) \.$$/\t\1\t\2/' >$@
 
 inferred.csv: quad.facts ontology.dir owlrl-datalog/bin/owl_rl_abox_quads
 	./owlrl-datalog/bin/owl_rl_abox_quads
