@@ -15,6 +15,7 @@ import java.io.FileOutputStream
 import java.nio.file.Path
 import java.nio.file.Paths
 import java.nio.file.Files
+import java.util.stream.Collectors
 import org.apache.jena.sparql.core.Quad
 import org.apache.jena.vocabulary.OWL2
 import org.apache.jena.vocabulary.RDF
@@ -41,7 +42,7 @@ object Script extends ZIOAppDefault {
     _ <- ZStream
       .fromIterableZIO(
         ZIO.attemptBlocking(
-          Files.list(Paths.get(modelsFolder)).toList().asScala
+          Files.list(Paths.get(modelsFolder)).collect(Collectors.toList()).asScala
         )
       )
       .mapZIOParUnordered(8)(quads)
