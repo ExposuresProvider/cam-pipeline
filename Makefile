@@ -1,4 +1,4 @@
-JAVA_ENV=JAVA_OPTS="-Xmx96G -XX:+UseParallelGC"
+JAVA_ENV=JAVA_OPTS="-Xmx96G -XX:+UseParallelGC -Dmaven.repo.local=/workspace/maven-local"
 BLAZEGRAPH-RUNNER=$(JAVA_ENV) blazegraph-runner
 
 ROBOT_ENV=ROBOT_JAVA_ARGS="-Xmx96G -XX:+UseParallelGC"
