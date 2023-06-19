@@ -1,8 +1,8 @@
 //> using scala "2.13"
-//> using dep "dev.zio::zio:2.0.12"
-//> using dep "dev.zio::zio-streams:2.0.12"
+//> using dep "dev.zio::zio:2.0.15"
+//> using dep "dev.zio::zio-streams:2.0.15"
 //> using dep "dev.zio::zio-json:0.5.0"
-//> using dep "org.apache.jena:apache-jena-libs:4.6.1"
+//> using dep "org.apache.jena:apache-jena-libs:4.8.0"
 
 import zio._
 import zio.Console._
