@@ -9,7 +9,7 @@ ARQ=$(JVM_ARGS) arq
 
 SCALA_RUN=$(JAVA_ENV) COURSIER_CACHE=/home/cam/coursier-cache scala-cli run
 
-BIOLINK=v3.2.5
+BIOLINK=v3.4.3
 
 owlrl-datalog:
 	git clone https://github.com/balhoff/owlrl-datalog.git
