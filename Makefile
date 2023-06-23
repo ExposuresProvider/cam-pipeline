@@ -1,26 +1,15 @@
-JAVA_ENV=JAVA_OPTS="-Xmx120G -XX:+UseParallelGC"
+JAVA_ENV=JAVA_OPTS="-Xmx96G -XX:+UseParallelGC"
 BLAZEGRAPH-RUNNER=$(JAVA_ENV) blazegraph-runner
-MAT=$(JAVA_ENV) materializer
 
-# set ROBOT_JAVA_ARGS=-Xmx64G before running make for robot
-ROBOT_ENV=ROBOT_JAVA_ARGS="-Xmx120G -XX:+UseParallelGC"
+ROBOT_ENV=ROBOT_JAVA_ARGS="-Xmx96G -XX:+UseParallelGC"
 ROBOT=$(ROBOT_ENV) robot
 
-JVM_ARGS=JVM_ARGS="-Xmx120G -XX:+UseParallelGC"
+JVM_ARGS=JVM_ARGS="-Xmx96G -XX:+UseParallelGC"
 ARQ=$(JVM_ARGS) arq
 
-SCALA_RUN=$(JAVA_ENV) scala-cli run --home /tools
+SCALA_RUN=$(JAVA_ENV) COURSIER_CACHE=/home/cam/coursier-cache scala-cli run
 
-# git clone git@github.com:geneontology/noctua-models.git
-NOCTUA_MODELS_REPO=gene-data/noctua-models
-BIOLINK=2.1.0
-
-.PHONY: clean validate all
-
-all: cam-db-reasoned.jnl
-clean:
-	rm -rf gene-data
-	rm -rf noctua-models.jnl
+BIOLINK=v3.2.5
 
 owlrl-datalog:
 	git clone https://github.com/balhoff/owlrl-datalog.git
@@ -30,157 +19,125 @@ owlrl-datalog/bin/owl_rl_abox_quads: owlrl-datalog owlrl-datalog/src/datalog/swr
 	mkdir -p bin &&\
 	souffle -c src/datalog/owl_rl_abox_quads.dl -o bin/owl_rl_abox_quads
 
-owlrl-datalog/src/datalog/swrl.dl: swrl.dl
-	cp swrl.dl $@
-
-#owlrl-datalog/src/datalog/swrl.dl: ontologies-merged.ttl owlrl-datalog
-#	$(JAVA_ENV) ./owlrl-datalog/src/scala/swrl-to-souffle ontologies-merged.ttl $@
+owlrl-datalog/src/datalog/swrl.dl: ontologies-merged.ttl owlrl-datalog
+	$(SCALA_RUN) owlrl-datalog/src/scala/swrl-to-souffle.sc -- ontologies-merged.ttl $@
 
 owlrl-datalog/bin/owl_from_rdf: owlrl-datalog
 	cd owlrl-datalog &&\
 	mkdir -p bin &&\
 	souffle -c src/datalog/owl_from_rdf.dl -o bin/owl_from_rdf
 
-ontology.nt: ontologies-merged.ttl
-	riot --nocheck --output=ntriples $< >$@
+scripts/kg_edges: scripts/kg_edges.dl
+	souffle -c $< -o $@
 
-ontology.facts: ontology.nt
-	sed 's/ /\t/' <$< | sed 's/ /\t/' | sed 's/ \.$$//' >$@
+# Step 3. Convert ontologies-merged.ttl into a format that can be read by Souffle.
+# RIOT is a Jena tool that converts Turtle into n-Triples using streaming, and
+# turn it into a TSV with three columns (?s ?p ?o).
+ontology.facts: ontologies-merged.ttl
+	riot --nocheck --output=ntriples $< | sed 's/ /\t/' | sed 's/ /\t/' | sed 's/ \.$$//' >$@
 
-ontology: owlrl-datalog/bin/owl_from_rdf ontology.facts
-	mkdir -p $@ && ./owlrl-datalog/bin/owl_from_rdf -D $@ && touch ontology
+# Step 4. owl_from_rdf converts RDF triples (in TSV) into OWL data structures.
+ontology.dir: owlrl-datalog/bin/owl_from_rdf ontology.facts
+	mkdir -p ontology && ./owlrl-datalog/bin/owl_from_rdf -D ontology && touch $@
 
-quad.facts: ctd-models.nq
-	riot -q --output=N-Quads ctd-models.nq | sed 's/ /\t/' | sed 's/ /\t/' | sed -E 's/\t(.+) (.+)\.$$/\t\1\t\2/' >$@
-
-inferred.csv: quad.facts ontology owlrl-datalog/bin/owl_rl_abox_quads
-	./owlrl-datalog/bin/owl_rl_abox_quads
-
-## Generate validation reports from sparql queries
-validate: missing-biolink-terms.ttl missing-biolink-relation.ttl
-
-missing-biolink-terms.ttl: sparql/reports/owl-missing-biolink-term.rq cam-db-reasoned.jnl
-	$(BLAZEGRAPH-RUNNER) select --journal=cam-db-reasoned.jnl --properties=blazegraph.properties --outformat=TSV $< $@
-
-missing-biolink-relation.ttl: sparql/reports/owl-missing-biolink-relation.rq cam-db-reasoned.jnl
-	$(BLAZEGRAPH-RUNNER) select --journal=cam-db-reasoned.jnl --properties=blazegraph.properties --outformat=TSV $< $@
-
-$(NOCTUA_MODELS_REPO):
-	mkdir -p gene-data
-	git clone --depth 1 https://github.com/geneontology/noctua-models gene-data/noctua-models
-
-noctua-models.jnl: $(NOCTUA_MODELS_REPO) signor-models
-	$(BLAZEGRAPH-RUNNER) load --journal=$@ --properties=blazegraph.properties --informat=turtle --use-ontology-graph=true signor-models &&\
-	$(BLAZEGRAPH-RUNNER) update --journal=$@ --properties=blazegraph.properties sparql/set-provenance-to-signor.ru &&\
-	$(BLAZEGRAPH-RUNNER) load --journal=$@ --properties=blazegraph.properties --informat=turtle --use-ontology-graph=true $(NOCTUA_MODELS_REPO)/models &&\
-	$(BLAZEGRAPH-RUNNER) update --journal=$@ --properties=blazegraph.properties sparql/delete-non-production-models.ru
-
-noctua-models-inferences.nq: $(NOCTUA_MODELS_REPO) sparql/is-production.rq ontologies-merged.ttl
-	$(MAT) --ontology-file ontologies-merged.ttl --input $(NOCTUA_MODELS_REPO)/models --output $@ --output-graph-name '#inferred' --suffix-graph true --mark-direct-types true --output-indirect-types true --parallelism 20 --filter-graph-query sparql/is-production.rq --reasoner arachne
-
-signor-models-inferences.nq: signor-models
-	$(MAT) --ontology-file ontologies-merged.ttl --input signor-models --output $@ --output-graph-name '#inferred' --suffix-graph true --mark-direct-types true --output-indirect-types true --parallelism 20 --reasoner arachne
-
-CTD_chem_gene_ixns_structured.xml:
-	curl -L -O 'http://ctdbase.org/reports/CTD_chem_gene_ixns_structured.xml.gz' &&\
-	gunzip CTD_chem_gene_ixns_structured.xml.gz
-
-ctd-models.nq: CTD_chem_gene_ixns_structured.xml
-	$(JAVA_ENV) ctd-to-owl CTD_chem_gene_ixns_structured.xml $@ chebi_mesh.tsv
-
-ctd-models-inferences.nq: inferred.csv
-	sed 's/$$/ \./' <$< >$@
-	#$(MAT) --ontology-file ontologies-merged.ttl --input $< --output $@ --output-graph-name '#inferred' --suffix-graph true --mark-direct-types true --output-indirect-types true --parallelism 20 --reasoner arachne
-
-noctua-reactome-ctd-models.jnl: noctua-models.jnl ctd-models.nq
-	cp $< $@ &&\
-	$(BLAZEGRAPH-RUNNER) load --journal=$@ --properties=blazegraph.properties --informat=nquads ctd-models.nq
-
-cam-db-reasoned.jnl: noctua-reactome-ctd-models-ubergraph.jnl noctua-models-inferences.nq ctd-models-inferences.nq signor-models-inferences.nq
-	cp $< $@ &&\
-	$(BLAZEGRAPH-RUNNER) load --journal=$@ --properties=blazegraph.properties --informat=n-quads noctua-models-inferences.nq &&\
-	$(BLAZEGRAPH-RUNNER) load --journal=$@ --properties=blazegraph.properties --informat=n-quads signor-models-inferences.nq &&\
-	$(BLAZEGRAPH-RUNNER) load --journal=$@ --properties=blazegraph.properties --informat=n-quads ctd-models-inferences.nq
-
-ncbi-gene-classes.ttl: uniprot-to-ncbi-rules.ofn
-	$(ROBOT) query --input uniprot-to-ncbi-rules.ofn --query sparql/construct-ncbi-gene-classes.rq ncbi-gene-classes.ttl
-
-protein-subclasses.ttl: noctua-reactome-ctd-models.jnl sparql/construct-protein-subclasses.rq
-	$(BLAZEGRAPH-RUNNER) construct --journal=$< --properties=blazegraph.properties --outformat=turtle sparql/construct-protein-subclasses.rq $@
-
-mesh-chebi-links.ttl: noctua-reactome-ctd-models.jnl
-	$(BLAZEGRAPH-RUNNER) construct --journal=$< --properties=blazegraph.properties --outformat=turtle sparql/construct-mesh-chebi-links.rq $@
-
+# Step 1. Import all the ontologies in ontologies.ofn into the `mirror/` directory.
+# Also writes out a catalog file which will be used in future Robot.
+# TODO: replace with the ontology.dir pattern of creating a directory and then touching mirror.dir
 mirror: ontologies.ofn
 	rm -rf $@ &&\
 	$(ROBOT) mirror -i $< -d $@ -o $@/catalog-v001.xml
 
-reacto-uniprot-rules.ttl: mirror
-	$(ARQ) -q --data=mirror/purl.obolibrary.org/obo/go/extensions/reacto.owl --query=sparql/construct-reacto-uniprot-rules.rq --results=ttl >$@
-
-biolink-class-hierarchy.ttl: biolink-model.ttl
-	$(ARQ) -q --data=$< --query=sparql/construct-biolink-class-hierachy.rq --results=ttl >$@
-
-ont-biolink-subclasses.ttl: biolink-model.ttl biolink-local.ttl
-	$(ARQ) -q --data=biolink-model.ttl --data=biolink-local.ttl --query=sparql/construct-ont-biolink-subclasses.rq --results=ttl >$@
-
-slot-mappings.ttl: biolink-model.ttl biolink-local.ttl
-	$(ARQ) -q --data=biolink-model.ttl --data=biolink-local.ttl --query=sparql/construct-slot-mappings.rq --results=ttl >$@
-
-ontologies-merged.ttl: ontologies.ofn ubergraph-axioms.ofn ncbi-gene-classes.ttl protein-subclasses.ttl mesh-chebi-links.ttl uniprot-to-ncbi-rules.ofn reacto-uniprot-rules.ttl biolink-class-hierarchy.ttl ont-biolink-subclasses.ttl slot-mappings.ttl mirror
+# Step 2. Create ontologies-merged.ttl by merging the ontologies in mirror with the Ubergraph axioms.
+# Unsatisfiable classes are dumped into the debug file (debug.ofn), which is not created if there are
+# no problems.
+#FIXME stop disabling disjoint checks
+ontologies-merged.ttl: ontologies.ofn ubergraph-axioms.ofn mirror
 	$(ROBOT) merge --catalog mirror/catalog-v001.xml --include-annotations true \
 	-i $< -i ubergraph-axioms.ofn \
-	-i ncbi-gene-classes.ttl \
-	-i protein-subclasses.ttl \
-	-i mesh-chebi-links.ttl \
-	-i uniprot-to-ncbi-rules.ofn \
-	-i reacto-uniprot-rules.ttl \
-	-i biolink-class-hierarchy.ttl \
-	-i ont-biolink-subclasses.ttl \
-	-i slot-mappings.ttl \
 	remove --axioms 'disjoint' --trim true --preserve-structure false \
 	remove --term 'owl:Nothing' --trim true --preserve-structure false \
 	remove --term 'http://purl.obolibrary.org/obo/caro#part_of' --term 'http://purl.obolibrary.org/obo/caro#develops_from' --trim true --preserve-structure false \
 	reason -r ELK -D debug.ofn -o $@
 
-subclass_closure.ttl: ontologies-merged.ttl sparql/subclass-closure.rq
-	$(ARQ) -q --data=$< --query=sparql/subclass-closure.rq --results=ttl --optimize=off >$@
+# Step 5. Download all the Noctua models.
+noctua-models.dir:
+	git clone --depth 1 https://github.com/geneontology/noctua-models && touch $@
 
-is_defined_by.ttl: ontologies-merged.ttl
-	$(ARQ) -q --data=$< --query=sparql/isDefinedBy.rq --results=ttl >$@
+# Step 6. Merge all the Noctua models. For each model:
+# 	- Loads the model.
+#	- Identifies the ontology IRI.
+#	- Filters out non-production/non-Reactome models.
+#	- Outputs nquads where the graph is the ontology IRI.
+noctua-models.nq: noctua-models.dir scripts/merge_noctua_models.sc
+	$(SCALA_RUN) scripts/merge_noctua_models.sc --  noctua-models/models $@
 
-properties-nonredundant.ttl: ontologies-merged.ttl
-	$(NCIT-UTILS) materialize-property-expressions ontologies-merged.ttl properties-nonredundant.ttl properties-redundant.ttl &&\
-	touch properties-redundant.ttl
+# Step 7. Prepare the Signor models.
+# TODO: replace with a Scala script similar to the one for noctua-models.nq.
+signor-models.nq: signor-models
+	rm -f $@.jnl &&\
+	$(BLAZEGRAPH-RUNNER) load --journal=$@.jnl --properties=blazegraph.properties --informat=turtle --use-ontology-graph=true signor-models &&\
+	$(BLAZEGRAPH-RUNNER) update --journal=$@.jnl --properties=blazegraph.properties sparql/set-provenance-to-signor.ru &&\
+	$(BLAZEGRAPH-RUNNER) dump --journal=$@.jnl --properties=blazegraph.properties --outformat=n-quads $@ && rm $@.jnl
 
-properties-redundant.ttl: properties-nonredundant.ttl
+# Step 8. Download CTD file.
+CTD_chem_gene_ixns_structured.xml:
+	curl -L -O 'http://ctdbase.org/reports/CTD_chem_gene_ixns_structured.xml.gz' &&\
+	gunzip CTD_chem_gene_ixns_structured.xml.gz
 
-antonyms_HP.txt:
-	curl -L 'https://raw.githubusercontent.com/Phenomics/phenopposites/master/opposites/antonyms_HP.txt' -o $@
+# Step 9. Generate an n-quads file from CTD.
+# (ctd-to-owl is in the Docker container that we use).
+ctd-models.nq: CTD_chem_gene_ixns_structured.xml
+	$(JAVA_ENV) ctd-to-owl CTD_chem_gene_ixns_structured.xml $@ chebi_mesh.tsv
 
-opposites.ttl: antonyms_HP.txt
-	echo "@prefix HP: <http://purl.obolibrary.org/obo/HP_> ." >$@
-	awk 'NR > 2 { print $$1, "<http://purl.obolibrary.org/obo/RO_0002604>", $$2, "."}; NR > 2 { print $$2, "<http://reasoner.renci.org/opposite_of>", $$1, "."; } ' antonyms_HP.txt >>$@
+# Step 10. Concatenate all RDF files using a single RIOT instance (to make sure blank nodes don't collapse)
+# to create quad.facts. Each quad has a graph IRI that tells you were the quad came from.
+# Must concatenate multiple RDF files using riot before loading into Souffle, so that blank nodes don't collide
+quad.facts: noctua-models.nq #ctd-models.nq
+	riot -q --output=N-Quads $^ | sed 's/ /\t/' | sed 's/ /\t/' | sed -E 's/\t(.+) (.+) \.$$/\t\1\t\2/' >$@
 
-# This includes a hack to workaround JSON-LD context problems with biolink
-biolink-model.ttl:
-	curl -L 'https://raw.githubusercontent.com/biolink/biolink-model/$(BIOLINK)/biolink-model.ttl' -o $@.tmp
-	riot --syntax=turtle --output=ntriples $@.tmp | sed -E 's/<https:\/\/w3id.org\/biolink\/vocab\/([^[:space:]][^[:space:]]*):/<http:\/\/purl.obolibrary.org\/obo\/\1_/g' >$@
+# Step 11. Reason over the quad.facts, which:
+# - 1. Load the ontology from ontology.dir
+# - 2. Read asserted triples from quad.facts
+# - 3. Create inferred graphs for every asserted graph, adding insertions.
+#
+# This uses a bunch of rules:
+# - All the OWL RL rules (but with graphs to prevent inferencing between graphs).
+# 	(Note that ontology-related rules will use triples but data-related rules will use quads.)
+#
+# Note that the output file -- inferred.csv -- is actually a TSV file.
+inferred.csv: quad.facts ontology.dir owlrl-datalog/bin/owl_rl_abox_quads
+	./owlrl-datalog/bin/owl_rl_abox_quads
 
-# Map of predicates between sources and targets
-predicates.tsv: cam-db-reasoned.jnl sparql/predicates.rq
-	$(BLAZEGRAPH-RUNNER) select --journal=$< --properties=blazegraph.properties --outformat=tsv sparql/predicates.rq $@
-	sed -i -e 's;<https://w3id.org/biolink/vocab/;;g' -e 's;>;;g' -e 's;\t;,;g' $@
-	sed -i 1d $@
+# Step 12. Download the Biolink model.
+biolink-model.owl.ttl:
+	curl -L -O 'https://raw.githubusercontent.com/biolink/biolink-model/$(BIOLINK)/biolink-model.owl.ttl'
 
-# Removed dependencies properties-nonredundant.ttl properties-redundant.ttl due to the build time they require
-noctua-reactome-ctd-models-ubergraph.jnl: noctua-reactome-ctd-models.jnl ontologies-merged.ttl subclass_closure.ttl is_defined_by.ttl opposites.ttl biolink-model.ttl biolink-local.ttl
-	cp $< $@ &&\
-	$(BLAZEGRAPH-RUNNER) load --journal=$@ --properties=blazegraph.properties --informat=turtle --graph='http://reasoner.renci.org/ontology' ontologies-merged.ttl &&\
-	$(BLAZEGRAPH-RUNNER) load --journal=$@ --properties=blazegraph.properties --informat=turtle --graph='http://reasoner.renci.org/ontology' opposites.ttl &&\
-	$(BLAZEGRAPH-RUNNER) load --journal=$@ --properties=blazegraph.properties --informat=turtle --graph='http://reasoner.renci.org/ontology' biolink-model.ttl biolink-local.ttl &&\
-	$(BLAZEGRAPH-RUNNER) load --journal=$@ --properties=blazegraph.properties --informat=turtle --graph='http://reasoner.renci.org/ontology/closure' subclass_closure.ttl &&\
-	$(BLAZEGRAPH-RUNNER) load --journal=$@ --properties=blazegraph.properties --informat=turtle --graph='http://reasoner.renci.org/ontology' is_defined_by.ttl #&&\
-#	$(BLAZEGRAPH-RUNNER) load --journal=$@ --properties=blazegraph.properties --informat=turtle --graph='http://reasoner.renci.org/nonredundant' properties-nonredundant.ttl &&\
-#	$(BLAZEGRAPH-RUNNER) load --journal=$@ --properties=blazegraph.properties --informat=turtle --graph='http://reasoner.renci.org/redundant' properties-redundant.ttl
+# Step 13. Convert Biolink model into an n-triples file.
+biolink.facts: biolink-model.owl.ttl
+	riot -q --syntax=turtle --output=ntriples $< | sed 's/ /\t/' | sed 's/ /\t/' | sed 's/ \.$$//' >$@
 
+# Step 14. Download the Biolink Model prefix map.
+biolink-model-prefix-map.json:
+	curl -L -O 'https://raw.githubusercontent.com/biolink/biolink-model/$(BIOLINK)/prefix-map/biolink-model-prefix-map.json'
+
+# Step 15. Load all the data and ontologies.
+# - ./scripts/kg_edges: compiled from ./scripts/kg_edges.dl with Souffle (see above).
+# - inferred.csv: All inferred quads.
+# - quad.facts: All asserted quads.
+# - biolink.facts: Biolink model.
+# - ontology.facts: only used to convert REACTOME identifiers into UniProtKB identifiers.
+# - Also uses: ro-to-biolink-local-mappings.tsv to map from RO to Biolink.
+#	- TODO: add as a prereq
+# Creates a TSV file named kg_edge.csv with five columns:
+# - subj: direct type of subject
+# - pred: Biolink predicate
+# - obj: direct type of object
+# - ps: primary_source
+# - prov: graph that this is coming from (without brackets -- if it had brackets, it would
+#   be ignored by scripts/compact_iris.sc)
+kg_edge.csv: scripts/kg_edges inferred.csv quad.facts biolink.facts ontology.facts
+	./scripts/kg_edges
+
+# Step 16. Compact IRIs in the kg_edge.csv file using the specified prefixes.
+kg.tsv: kg_edge.csv scripts/compact_iris.sc biolink-model-prefix-map.json supplemental-namespaces.json
+	$(SCALA_RUN) scripts/compact_iris.sc --  biolink-model-prefix-map.json supplemental-namespaces.json kg_edge.csv $@
