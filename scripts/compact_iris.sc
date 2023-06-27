@@ -1,6 +1,6 @@
 //> using scala "2.13"
-//> using dep "dev.zio::zio:2.0.10"
-//> using dep "dev.zio::zio-streams:2.0.10"
+//> using dep "dev.zio::zio:2.0.15"
+//> using dep "dev.zio::zio-streams:2.0.15"
 //> using dep "dev.zio::zio-json:0.5.0"
 
 import zio._

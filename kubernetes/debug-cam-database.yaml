@@ -10,11 +10,12 @@ metadata:
 spec:
   containers:
   - name: pipeline-tools
-    image: "renciorg/cam-pipeline-tools:v1.4"
+    image: "renciorg/cam-pipeline-tools:latest"
     resources:
       limits:
         cpu: '8'
         memory: 150G
+        ephemeral-storage: 10G
     command: ["sh", "-c", "while true; echo 'alive'; do sleep 10; done"]
     volumeMounts:
     - mountPath: "/workspace"
