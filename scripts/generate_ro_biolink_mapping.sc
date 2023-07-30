@@ -11,6 +11,34 @@ import zio.stream._
 import zio.json._
 import com.typesafe.scalalogging._
 
+/* Data structures */
+
+/** A labeled IRI consists of an IRI and an optional number of labels. */
+case class LabeledIRI(
+                       iri: String,
+                       label: Set[String]
+                     )
+
+/** A single TRAPI qualifier. */
+final case class TRAPIQualifier(qualifier_type_id: String, qualifier_value: String)
+
+/** A TRAPI qualifier constraint consists of a list of TRAPI Qualifiers */
+final case class TRAPIQualifierConstraint(qualifier_set: List[TRAPIQualifier])
+
+/**
+ * A PredicateMapping defines a mapping from a "predicate", a Relation Ontology (RO) term to a
+ * "qualified Biolink Predicate", which consists of a Biolink Predicate and a Biolink Qualifier Constraint.
+ * The goal is for this mapping to be reversible: we can replace the RO term with the qualified Biolink predicate,
+ * or replace the qualified Biolink predicate with the RO term.
+ *
+ * TODO: rename biolinkQualifiers to biolinkQualifiedConstraint to make it clearly that it isn't a list of constraints.
+ */
+case class PredicateMapping(
+                             predicate: LabeledIRI,
+                             biolinkPredicate: Option[LabeledIRI],
+                             biolinkQualifiers: Option[TRAPIQualifierConstraint]
+                           )
+
 /**
  * CAM-Pipeline (including the CAMs and the relevant ontologies) express relations between concepts using predicates
  * from the Relation Ontology (RO). When we provide these edges to Orion, we need to do so as qualified Biolink
@@ -33,6 +61,12 @@ object ROBiolinkMappingsGenerator extends ZIOAppDefault with LazyLogging {
     outputFilename: String
                   )
 
+  override def run = for {
+    conf <- readCommandLineArgs
+
+    _ = logger.info(s"Output filename: ${conf.outputFilename}")
+  } yield ()
+
   /**
    * We might need to set up more complex command line parsing later, but for now we only have a single argument
    * that is the output filename, so that's all we need to submit.
@@ -47,13 +81,6 @@ object ROBiolinkMappingsGenerator extends ZIOAppDefault with LazyLogging {
       outputFilename = outputFilename
     )
   }
-
-
-  override def run = for {
-    conf <- readCommandLineArgs
-    _ = logger.info(s"Output filename: ${conf.outputFilename}")
-  } yield ()
-
 }
 
 ROBiolinkMappingsGenerator.main(args)
