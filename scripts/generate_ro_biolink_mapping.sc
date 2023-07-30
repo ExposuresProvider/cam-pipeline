@@ -28,10 +28,30 @@ import com.typesafe.scalalogging._
  */
 
 object ROBiolinkMappingsGenerator extends ZIOAppDefault with LazyLogging {
-  override def run = for {
+  /* Configuration for this generator */
+  case class Conf (
+    outputFilename: String
+                  )
+
+  /**
+   * We might need to set up more complex command line parsing later, but for now we only have a single argument
+   * that is the output filename, so that's all we need to submit.
+   */
+  val readCommandLineArgs: ZIO[ZIOAppArgs, Throwable, Conf] = for {
     args <- getArgs
-    outputFilename <- ZIO.fromOption(args.headOption).orElseFail("One argument required: first argument should be filename to write mappings to.")
-    _ = logger.info(s"Output filename: ${outputFilename}")
+    outputFilename <- ZIO.fromOption(args.headOption).orElseFail(new RuntimeException(
+      "One argument required: first argument should be filename to write mappings to."
+    ))
+  } yield {
+    Conf(
+      outputFilename = outputFilename
+    )
+  }
+
+
+  override def run = for {
+    conf <- readCommandLineArgs
+    _ = logger.info(s"Output filename: ${conf.outputFilename}")
   } yield ()
 
 }
