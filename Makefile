@@ -127,7 +127,6 @@ biolink-model-prefix-map.json:
 # - biolink.facts: Biolink model.
 # - ontology.facts: only used to convert REACTOME identifiers into UniProtKB identifiers.
 # - Also uses: ro-to-biolink-local-mappings.tsv to map from RO to Biolink.
-#	- TODO: add as a prereq
 # Creates a TSV file named kg_edge.csv with five columns:
 # - subj: direct type of subject
 # - pred: Biolink predicate
@@ -135,7 +134,7 @@ biolink-model-prefix-map.json:
 # - ps: primary_source
 # - prov: graph that this is coming from (without brackets -- if it had brackets, it would
 #   be ignored by scripts/compact_iris.sc)
-kg_edge.csv: scripts/kg_edges inferred.csv quad.facts biolink.facts ontology.facts
+kg_edge.csv: scripts/kg_edges inferred.csv quad.facts biolink.facts ontology.facts ro-to-biolink-local-mappings.tsv
 	./scripts/kg_edges
 
 # Step 16. Compact IRIs in the kg_edge.csv file using the specified prefixes.
