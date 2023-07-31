@@ -2,14 +2,24 @@
 //> using dep "dev.zio::zio:2.0.15"
 //> using dep "dev.zio::zio-streams:2.0.15"
 //> using dep "dev.zio::zio-json:0.6.0"
+//> using dep "io.circe::circe-core:0.14.5"
+//> using dep "io.circe::circe-generic:0.14.5"
+//> using dep "io.circe::circe-parser:0.14.5"
+//> using dep "io.circe::circe-yaml:0.14.2"
 //> using dep "com.typesafe.scala-logging::scala-logging:3.9.5"
 //> using dep "ch.qos.logback:logback-classic:1.4.8"
+
+import scala.io._
+
+import java.io._
 
 import zio._
 import zio.Console._
 import zio.stream._
 import zio.json._
 import com.typesafe.scalalogging._
+import io.circe._
+import io.circe.generic.auto._
 
 /* Data structures */
 
@@ -58,13 +68,16 @@ case class PredicateMapping(
 object ROBiolinkMappingsGenerator extends ZIOAppDefault with LazyLogging {
   /* Configuration for this generator */
   case class Conf (
-    outputFilename: String
+    outputFilename: String,
+    biolinkVersion: String = "v3.5.2"
                   )
 
   override def run = for {
     conf <- readCommandLineArgs
+    githubPredicateMappings <- getPredicateMappingsFromGitHub(conf)
 
     _ = logger.info(s"Output filename: ${conf.outputFilename}")
+    _ = logger.info(s"GitHub predicate mappings: ${githubPredicateMappings}")
   } yield ()
 
   /**
@@ -81,6 +94,80 @@ object ROBiolinkMappingsGenerator extends ZIOAppDefault with LazyLogging {
       outputFilename = outputFilename
     )
   }
+
+
+  /** A case class for predicate mappings. */
+  case class PredicateMappingRow(
+                                  `mapped predicate`: String,
+                                  `object aspect qualifier`: Option[String],
+                                  `object direction qualifier`: Option[String],
+                                  predicate: String,
+                                  `qualified predicate`: Option[String],
+                                  `exact matches`: Option[Set[String]]
+                                ) {
+
+    def qualifiers: Seq[TRAPIQualifier] = (`object aspect qualifier` match {
+      case Some(aspect: String) =>
+        List(TRAPIQualifier(qualifier_type_id = "biolink:object_aspect_qualifier", qualifier_value = aspect.replace(' ', '_')))
+      case _ => List()
+    }) ++ (`object direction qualifier` match {
+      case Some(direction: String) =>
+        List(TRAPIQualifier(qualifier_type_id = "biolink:object_direction_qualifier", qualifier_value = direction.replace(' ', '_')))
+      case _ => List()
+    }) ++ (`qualified predicate` match {
+      case Some(qualified_predicate: String) =>
+        List(
+          TRAPIQualifier(qualifier_type_id = "biolink:qualified_predicate",
+            qualifier_value = qualified_predicate.replace(' ', '_')
+        ))
+      case _ => List()
+    })
+
+    def qualifierConstraint: TRAPIQualifierConstraint = TRAPIQualifierConstraint(qualifier_set = qualifiers.toList)
+
+    def qualifierConstraintList = List(qualifierConstraint)
+  }
+
+  case class PredicateMappings(
+                                `predicate mappings`: List[PredicateMappingRow]
+                              )
+
+  /** To initialize this object, we need to download and parse the predicate_mapping.yaml file from the Biolink model, which needs to be
+   * downloaded to the package resources (src/main/resources) from
+   * https://github.com/biolink/biolink-model/blob/${biolinkVersion}/predicate_mapping.yaml (the raw version is available from
+   * https://raw.githubusercontent.com/biolink/biolink-model/v3.2.1/predicate_mapping.yaml)
+   */
+  def getPredicateMappingsFromGitHub(conf: Conf): RIO[Any, List[PredicateMappingRow]] =
+    for {
+      predicateMappingText <- ZIO.attempt {
+        Source
+          .fromURL(s"https://raw.githubusercontent.com/biolink/biolink-model/${conf.biolinkVersion}/predicate_mapping.yaml")
+          .getLines()
+          .mkString("\n")
+      }
+      predicateMappingsYaml <- ZIO.fromEither(io.circe.yaml.parser.parse(predicateMappingText))
+      predicateMappings <- ZIO.fromEither(predicateMappingsYaml.as[PredicateMappings])
+    } yield predicateMappings.`predicate mappings`
+
+  /** Compares two qualifier lists. */
+  def compareQualifierConstraints(ql1: List[TRAPIQualifier], ql2: List[TRAPIQualifier]): Boolean = {
+
+    val set1 = ql1.map(q => (q.qualifier_value, q.qualifier_type_id)).toSet
+    val set2 = ql2.map(q => (q.qualifier_value, q.qualifier_type_id)).toSet
+
+    (set1 == set2)
+  }
+
+  /** Convert predicate data into a list of QualifiedBiolinkPredicates in case anyone wants a list of all the predicates we understand.
+   */
+    /*
+  val qualifiedPredicatesData: Seq[QualifiedBiolinkPredicate] = predicatesData
+    .flatMap {
+      case PredicateMapping(_, Some(biolinkPredicate), None) => Some(QualifiedBiolinkPredicate(biolinkPredicate))
+      case PredicateMapping(_, Some(biolinkPredicate), Some(TRAPIQualifierConstraint(qualifierList))) =>
+        Some(QualifiedBiolinkPredicate(biolinkPredicate, qualifierList))
+      case _ => None
+    }*/
 }
 
 ROBiolinkMappingsGenerator.main(args)
