@@ -143,37 +143,35 @@ object ROBiolinkMappingsGenerator extends ZIOAppDefault with LazyLogging {
       biolinkModelYaml <- ZIO.fromEither(io.circe.yaml.parser.parse(biolinkModelText))
       biolinkModelCursor = biolinkModelYaml.hcursor
       slotsCursor = biolinkModelCursor.downField("slots")
-      slots <- ZIO.fromOption(slotsCursor.keys)
-      roMapping <- ZStream.fromIterable(slots)
-        .flatMap(slot => {
+      slots = slotsCursor.keys.getOrElse(List())
+      roMappings = slots.toList.flatMap(slot => {
           val slotCursor = slotsCursor.downField(slot)
 
-          for {
-            exactMappings <- ZIO.fromEither(slotCursor.downField("exact_mappings").as[List[String]])
-            closeMappings <- ZIO.fromEither(slotCursor.downField("close_mappings").as[List[String]])
-            broadMappings <- ZIO.fromEither(slotCursor.downField("broad_mappings").as[List[String]])
-            narrowMappings <- ZIO.fromEither(slotCursor.downField("narrow_mappings").as[List[String]])
-            mappings = exactMappings.map(m => ("exact", m)) ++
-              closeMappings.map(m => ("close", m)) ++
-              broadMappings.map(m => ("broad", m)) ++
-              narrowMappings.map(m => ("narrow", m))
-            roMappings = mappings
-              .filter({ case (_, mapp) => mapp.startsWith("RO:") })
-              .map({ case (mtype, mapp) => (mtype, "http://purl.obolibrary.org/obo/RO_" + mapp.substring(2)) })
-          } yield {
-            ZStream.fromIterable(roMappings).map(roMapping =>
-              PredicateMappingRow(
-                `mapped predicate` = "biolink:" + slot.replace(' ', '_'),
-                `object aspect qualifier` = None,
-                `object direction qualifier` = None,
-                predicate = roMapping._2,
-                `qualified predicate` = None,
-                `exact matches` = None
-              )
+          val exactMappings = slotCursor.downField("exact_mappings").as[List[String]].getOrElse(List())
+          val closeMappings = slotCursor.downField("close_mappings").as[List[String]].getOrElse(List())
+          val broadMappings = slotCursor.downField("broad_mappings").as[List[String]].getOrElse(List())
+          val narrowMappings = slotCursor.downField("narrow_mappings").as[List[String]].getOrElse(List())
+
+          val mappings = exactMappings.map(m => ("exact", m)) ++
+            closeMappings.map(m => ("close", m)) ++
+            broadMappings.map(m => ("broad", m)) ++
+            narrowMappings.map(m => ("narrow", m))
+
+          mappings
+            .filter({ case (_, mapp) => mapp.startsWith("RO:") })
+            .map({ case (mtype, mapp) => (mtype, "http://purl.obolibrary.org/obo/RO_" + mapp.substring(2)) })
+            .map(roMapping =>
+            PredicateMappingRow(
+              `mapped predicate` = "biolink:" + slot.replace(' ', '_'),
+              `object aspect qualifier` = None,
+              `object direction qualifier` = None,
+              predicate = roMapping._2,
+              `qualified predicate` = None,
+              `exact matches` = None
             )
-          }
+          )
         })
-    } yield roMapping
+    } yield roMappings
 
   /** To initialize this object, we need to download and parse the predicate_mapping.yaml file from the Biolink model, which needs to be
    * downloaded to the package resources (src/main/resources) from
