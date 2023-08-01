@@ -217,7 +217,7 @@ object ROBiolinkMappingsGenerator extends ZIOAppDefault with LazyLogging {
           `object aspect qualifier` = mapping.`object aspect qualifier`,
           `object direction qualifier` = mapping.`object direction qualifier`,
           predicate = "biolink:" + mapping.predicate.replace(' ', '_'),
-          `qualified predicate` = mapping.`qualified predicate`,
+          `qualified predicate` = mapping.`qualified predicate`.map(qp => "biolink:" + qp.replace(' ', '_')),
           `exact matches` = mapping.`exact matches`,
           `close matches` = mapping.`close matches`,
           `broad matches` = mapping.`broad matches`,
