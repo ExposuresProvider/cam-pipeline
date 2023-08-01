@@ -67,10 +67,10 @@ case class PredicateMapping(
 
 object ROBiolinkMappingsGenerator extends ZIOAppDefault with LazyLogging {
   /* Configuration for this generator */
-  case class Conf (
-    outputFilename: String,
-    biolinkVersion: String = "v3.5.2"
-                  )
+  case class Conf(
+                   outputFilename: String,
+                   biolinkVersion: String = "v3.5.2"
+                 )
 
   override def run = for {
     conf <- readCommandLineArgs
@@ -119,7 +119,7 @@ object ROBiolinkMappingsGenerator extends ZIOAppDefault with LazyLogging {
         List(
           TRAPIQualifier(qualifier_type_id = "biolink:qualified_predicate",
             qualifier_value = qualified_predicate.replace(' ', '_')
-        ))
+          ))
       case _ => List()
     })
 
@@ -131,6 +131,49 @@ object ROBiolinkMappingsGenerator extends ZIOAppDefault with LazyLogging {
   case class PredicateMappings(
                                 `predicate mappings`: List[PredicateMappingRow]
                               )
+
+  def getPredicateMappingsFromBiolinkModel(conf: Conf): RIO[Any, List[PredicateMappingRow]] =
+    for {
+      biolinkModelText <- ZIO.attempt {
+        Source
+          .fromURL(s"https://raw.githubusercontent.com/biolink/biolink-model/${conf.biolinkVersion}/biolink_model.yaml")
+          .getLines()
+          .mkString("\n")
+      }
+      biolinkModelYaml <- ZIO.fromEither(io.circe.yaml.parser.parse(biolinkModelText))
+      biolinkModelCursor = biolinkModelYaml.hcursor
+      slotsCursor = biolinkModelCursor.downField("slots")
+      slots <- ZIO.fromOption(slotsCursor.keys)
+      roMapping <- ZStream.fromIterable(slots)
+        .flatMap(slot => {
+          val slotCursor = slotsCursor.downField(slot)
+
+          for {
+            exactMappings <- ZIO.fromEither(slotCursor.downField("exact_mappings").as[List[String]])
+            closeMappings <- ZIO.fromEither(slotCursor.downField("close_mappings").as[List[String]])
+            broadMappings <- ZIO.fromEither(slotCursor.downField("broad_mappings").as[List[String]])
+            narrowMappings <- ZIO.fromEither(slotCursor.downField("narrow_mappings").as[List[String]])
+            mappings = exactMappings.map(m => ("exact", m)) ++
+              closeMappings.map(m => ("close", m)) ++
+              broadMappings.map(m => ("broad", m)) ++
+              narrowMappings.map(m => ("narrow", m))
+            roMappings = mappings
+              .filter({ case (_, mapp) => mapp.startsWith("RO:") })
+              .map({ case (mtype, mapp) => (mtype, "http://purl.obolibrary.org/obo/RO_" + mapp.substring(2)) })
+          } yield {
+            ZStream.fromIterable(roMappings).map(roMapping =>
+              PredicateMappingRow(
+                `mapped predicate` = "biolink:" + slot.replace(' ', '_'),
+                `object aspect qualifier` = None,
+                `object direction qualifier` = None,
+                predicate = roMapping._2,
+                `qualified predicate` = None,
+                `exact matches` = None
+              )
+            )
+          }
+        })
+    } yield roMapping
 
   /** To initialize this object, we need to download and parse the predicate_mapping.yaml file from the Biolink model, which needs to be
    * downloaded to the package resources (src/main/resources) from
