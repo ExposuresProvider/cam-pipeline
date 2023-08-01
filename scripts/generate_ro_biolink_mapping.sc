@@ -115,7 +115,7 @@ object ROBiolinkMappingsGenerator extends ZIOAppDefault with LazyLogging {
    * [1] https://github.com/biolink/biolink-model/blob/68d4e3d7612275d0d7e832a9919bf8666e1d5fde/predicate_mapping.yaml
    */
   case class PredicateMappingRow(
-                                  `mapped predicate`: String,
+                                  `mapped predicate`: Option[String],
                                   `object aspect qualifier`: Option[String],
                                   `object direction qualifier`: Option[String],
                                   predicate: String,
@@ -143,7 +143,7 @@ object ROBiolinkMappingsGenerator extends ZIOAppDefault with LazyLogging {
       biolinkModelCursor = biolinkModelYaml.hcursor
       slotsCursor = biolinkModelCursor.downField("slots")
       slots = slotsCursor.keys.getOrElse(List())
-      roMappings = slots.toList.flatMap(slot => {
+      roMappings = slots.toList.map(slot => {
           val slotCursor = slotsCursor.downField(slot)
 
           val exactMappings = slotCursor.downField("exact_mappings").as[List[String]].getOrElse(List())
@@ -156,20 +156,22 @@ object ROBiolinkMappingsGenerator extends ZIOAppDefault with LazyLogging {
             broadMappings.map(m => ("broad", m)) ++
             narrowMappings.map(m => ("narrow", m))
 
-          mappings
+          // mappings
             // .filter({ case (_, mapp) => mapp.startsWith("RO:") })
             // .map({ case (mtype, mapp) => (mtype, "http://purl.obolibrary.org/obo/RO_" + mapp.substring(3)) })
-            .map(roMapping =>
-            PredicateMappingRow(
-              `mapped predicate` = "biolink:" + slot.replace(' ', '_'),
+
+          PredicateMappingRow(
+              `mapped predicate` = None,
               `object aspect qualifier` = None,
               `object direction qualifier` = None,
-              predicate = roMapping._2,
+              predicate = "biolink:" + slot.replace(' ', '_'),
               `qualified predicate` = None,
-              `exact matches` = None
+              `exact matches` = Some(exactMappings.toSet),
+              `close matches` = Some(closeMappings.toSet),
+              `broad matches` = Some(broadMappings.toSet),
+              `narrow matches` = Some(narrowMappings.toSet)
             )
-          )
-        })
+          })
     } yield roMappings
 
   /** To initialize this object, we need to download and parse the predicate_mapping.yaml file from the Biolink model, which needs to be
@@ -186,7 +188,22 @@ object ROBiolinkMappingsGenerator extends ZIOAppDefault with LazyLogging {
           })
       predicateMappingsYaml <- ZIO.fromEither(io.circe.yaml.parser.parse(predicateMappingText))
       predicateMappings <- ZIO.fromEither(predicateMappingsYaml.as[PredicateMappings])
-    } yield predicateMappings.`predicate mappings`
+      mappings = predicateMappings.`predicate mappings`
+    } yield {
+      mappings.map(mapping =>
+        PredicateMappingRow(
+          `mapped predicate` = mapping.`mapped predicate`,
+          `object aspect qualifier` = mapping.`object aspect qualifier`,
+          `object direction qualifier` = mapping.`object direction qualifier`,
+          predicate = "biolink:" + mapping.predicate.replace(' ', '_'),
+          `qualified predicate` = mapping.`qualified predicate`,
+          `exact matches` = mapping.`exact matches`,
+          `close matches` = mapping.`close matches`,
+          `broad matches` = mapping.`broad matches`,
+          `narrow matches` = mapping.`narrow matches`
+        )
+      )
+    }
 
 
 }
