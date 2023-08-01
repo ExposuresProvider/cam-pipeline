@@ -49,10 +49,31 @@ object ROBiolinkMappingsGenerator extends ZIOAppDefault with LazyLogging {
     conf <- readCommandLineArgs
     githubBiolinkModel <- getPredicateMappingsFromBiolinkModel(conf)
     githubPredicateMappings <- getPredicateMappingsFromGitHub(conf)
+    countPredsWritten <- writePredicates(githubBiolinkModel ++ githubPredicateMappings, conf.outputFilename)
 
     _ = logger.info(s"Output filename: ${conf.outputFilename}")
     _ = logger.info(s"Loaded ${githubBiolinkModel.length} mappings from the Biolink model and ${githubPredicateMappings.length} mappings from the predicate mappings file.")
   } yield ()
+
+  /**
+   * Write the predicates into a tab-delimited file.
+   *
+   * @param predicates
+   * @param outputFilename
+   * @return
+   */
+  def writePredicates(predicates: Iterable[PredicateMappingRow], outputFilename: String): RIO[Scope, Int] = for {
+    outputFile <- ZIO.acquireRelease(ZIO.attemptBlockingIO(new FileWriter(outputFilename)))(fw => ZIO.succeedBlocking(fw.close()))
+    _ = outputFile.write("predicate\tbiolink_predicate\tobject_aspect_qualifier\tobject direction qualifier\tqualified_predicate\texact_matches\n")
+  } yield {
+    predicates.foreach(predicate => {
+      outputFile.write(
+        s"${predicate.predicate}\t${predicate.`mapped predicate`}\t${predicate.`object aspect qualifier`.getOrElse("")}\t" +
+          s"${predicate.`object direction qualifier`.getOrElse("")}\t${predicate.`qualified predicate`.getOrElse("")}\t" +
+          s"${predicate.`exact matches`.mkString("|")}\n")
+    })
+    predicates.size
+  }
 
   /**
    * We might need to set up more complex command line parsing later, but for now we only have a single argument
@@ -79,7 +100,6 @@ object ROBiolinkMappingsGenerator extends ZIOAppDefault with LazyLogging {
   /** A ZIO wrapper for scala Sources. */
   def sourceForURL(url: => String): ZIO[Scope, IOException, Source] =
     ZIO.acquireRelease(acquireSourceByURL(url))(releaseSource(_))
-
 
   /** A case class for predicate mappings from the Biolink predicate_mappings.yaml file [1].
    *
@@ -125,8 +145,8 @@ object ROBiolinkMappingsGenerator extends ZIOAppDefault with LazyLogging {
             narrowMappings.map(m => ("narrow", m))
 
           mappings
-            .filter({ case (_, mapp) => mapp.startsWith("RO:") })
-            .map({ case (mtype, mapp) => (mtype, "http://purl.obolibrary.org/obo/RO_" + mapp.substring(3)) })
+            // .filter({ case (_, mapp) => mapp.startsWith("RO:") })
+            // .map({ case (mtype, mapp) => (mtype, "http://purl.obolibrary.org/obo/RO_" + mapp.substring(3)) })
             .map(roMapping =>
             PredicateMappingRow(
               `mapped predicate` = "biolink:" + slot.replace(' ', '_'),
