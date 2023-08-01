@@ -21,34 +21,6 @@ import com.typesafe.scalalogging._
 import io.circe._
 import io.circe.generic.auto._
 
-/* Data structures */
-
-/** A labeled IRI consists of an IRI and an optional number of labels. */
-case class LabeledIRI(
-                       iri: String,
-                       label: Set[String]
-                     )
-
-/** A single TRAPI qualifier. */
-final case class TRAPIQualifier(qualifier_type_id: String, qualifier_value: String)
-
-/** A TRAPI qualifier constraint consists of a list of TRAPI Qualifiers */
-final case class TRAPIQualifierConstraint(qualifier_set: List[TRAPIQualifier])
-
-/**
- * A PredicateMapping defines a mapping from a "predicate", a Relation Ontology (RO) term to a
- * "qualified Biolink Predicate", which consists of a Biolink Predicate and a Biolink Qualifier Constraint.
- * The goal is for this mapping to be reversible: we can replace the RO term with the qualified Biolink predicate,
- * or replace the qualified Biolink predicate with the RO term.
- *
- * TODO: rename biolinkQualifiers to biolinkQualifiedConstraint to make it clearly that it isn't a list of constraints.
- */
-case class PredicateMapping(
-                             predicate: LabeledIRI,
-                             biolinkPredicate: Option[LabeledIRI],
-                             biolinkQualifiers: Option[TRAPIQualifierConstraint]
-                           )
-
 /**
  * CAM-Pipeline (including the CAMs and the relevant ontologies) express relations between concepts using predicates
  * from the Relation Ontology (RO). When we provide these edges to Orion, we need to do so as qualified Biolink
@@ -72,14 +44,14 @@ object ROBiolinkMappingsGenerator extends ZIOAppDefault with LazyLogging {
                    biolinkVersion: String = "v3.5.2"
                  )
 
+  /** Overall code for running this generator. */
   override def run = for {
     conf <- readCommandLineArgs
     githubBiolinkModel <- getPredicateMappingsFromBiolinkModel(conf)
     githubPredicateMappings <- getPredicateMappingsFromGitHub(conf)
 
     _ = logger.info(s"Output filename: ${conf.outputFilename}")
-    _ = logger.info(s"GitHub Biolink model mappings: ${githubBiolinkModel}")
-    // _ = logger.info(s"GitHub predicate mappings: ${githubPredicateMappings}")
+    _ = logger.info(s"Loaded ${githubBiolinkModel.length} mappings from the Biolink model and ${githubPredicateMappings.length} mappings from the predicate mappings file.")
   } yield ()
 
   /**
@@ -106,30 +78,10 @@ object ROBiolinkMappingsGenerator extends ZIOAppDefault with LazyLogging {
                                   predicate: String,
                                   `qualified predicate`: Option[String],
                                   `exact matches`: Option[Set[String]]
-                                ) {
+                                )
 
-    def qualifiers: Seq[TRAPIQualifier] = (`object aspect qualifier` match {
-      case Some(aspect: String) =>
-        List(TRAPIQualifier(qualifier_type_id = "biolink:object_aspect_qualifier", qualifier_value = aspect.replace(' ', '_')))
-      case _ => List()
-    }) ++ (`object direction qualifier` match {
-      case Some(direction: String) =>
-        List(TRAPIQualifier(qualifier_type_id = "biolink:object_direction_qualifier", qualifier_value = direction.replace(' ', '_')))
-      case _ => List()
-    }) ++ (`qualified predicate` match {
-      case Some(qualified_predicate: String) =>
-        List(
-          TRAPIQualifier(qualifier_type_id = "biolink:qualified_predicate",
-            qualifier_value = qualified_predicate.replace(' ', '_')
-          ))
-      case _ => List()
-    })
-
-    def qualifierConstraint: TRAPIQualifierConstraint = TRAPIQualifierConstraint(qualifier_set = qualifiers.toList)
-
-    def qualifierConstraintList = List(qualifierConstraint)
-  }
-
+  /** Since the predicate mappings file consists of a top level `predicate mappings` element, we need to
+   * replicate that in order to be able to read it. */
   case class PredicateMappings(
                                 `predicate mappings`: List[PredicateMappingRow]
                               )
@@ -192,25 +144,7 @@ object ROBiolinkMappingsGenerator extends ZIOAppDefault with LazyLogging {
       predicateMappings <- ZIO.fromEither(predicateMappingsYaml.as[PredicateMappings])
     } yield predicateMappings.`predicate mappings`
 
-  /** Compares two qualifier lists. */
-  def compareQualifierConstraints(ql1: List[TRAPIQualifier], ql2: List[TRAPIQualifier]): Boolean = {
 
-    val set1 = ql1.map(q => (q.qualifier_value, q.qualifier_type_id)).toSet
-    val set2 = ql2.map(q => (q.qualifier_value, q.qualifier_type_id)).toSet
-
-    (set1 == set2)
-  }
-
-  /** Convert predicate data into a list of QualifiedBiolinkPredicates in case anyone wants a list of all the predicates we understand.
-   */
-    /*
-  val qualifiedPredicatesData: Seq[QualifiedBiolinkPredicate] = predicatesData
-    .flatMap {
-      case PredicateMapping(_, Some(biolinkPredicate), None) => Some(QualifiedBiolinkPredicate(biolinkPredicate))
-      case PredicateMapping(_, Some(biolinkPredicate), Some(TRAPIQualifierConstraint(qualifierList))) =>
-        Some(QualifiedBiolinkPredicate(biolinkPredicate, qualifierList))
-      case _ => None
-    }*/
 }
 
 ROBiolinkMappingsGenerator.main(args)
