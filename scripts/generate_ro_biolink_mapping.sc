@@ -69,8 +69,22 @@ object ROBiolinkMappingsGenerator extends ZIOAppDefault with LazyLogging {
     )
   }
 
+  /* Code taken from https://zio.dev/reference/resource/scope */
+  def acquireSourceByURL(url: => String): ZIO[Any, IOException, Source] =
+    ZIO.attemptBlockingIO(Source.fromURL(url))
 
-  /** A case class for predicate mappings. */
+  def releaseSource(source: => Source): ZIO[Any, Nothing, Unit] =
+    ZIO.succeedBlocking(source.close())
+
+  /** A ZIO wrapper for scala Sources. */
+  def sourceForURL(url: => String): ZIO[Scope, IOException, Source] =
+    ZIO.acquireRelease(acquireSourceByURL(url))(releaseSource(_))
+
+
+  /** A case class for predicate mappings from the Biolink predicate_mappings.yaml file [1].
+   *
+   * [1] https://github.com/biolink/biolink-model/blob/68d4e3d7612275d0d7e832a9919bf8666e1d5fde/predicate_mapping.yaml
+   */
   case class PredicateMappingRow(
                                   `mapped predicate`: String,
                                   `object aspect qualifier`: Option[String],
@@ -86,14 +100,13 @@ object ROBiolinkMappingsGenerator extends ZIOAppDefault with LazyLogging {
                                 `predicate mappings`: List[PredicateMappingRow]
                               )
 
-  def getPredicateMappingsFromBiolinkModel(conf: Conf): RIO[Any, List[PredicateMappingRow]] =
+  def getPredicateMappingsFromBiolinkModel(conf: Conf): RIO[Scope, List[PredicateMappingRow]] =
     for {
-      biolinkModelText <- ZIO.attempt {
-        Source
-          .fromURL(s"https://raw.githubusercontent.com/biolink/biolink-model/${conf.biolinkVersion}/biolink-model.yaml")
-          .getLines()
-          .mkString("\n")
-      }
+      biolinkModelText <-
+        sourceForURL(s"https://raw.githubusercontent.com/biolink/biolink-model/${conf.biolinkVersion}/biolink-model.yaml")
+          .flatMap(source => {
+              ZIO.attemptBlockingIO(source.getLines().mkString("\n"))
+          })
       biolinkModelYaml <- ZIO.fromEither(io.circe.yaml.parser.parse(biolinkModelText))
       biolinkModelCursor = biolinkModelYaml.hcursor
       slotsCursor = biolinkModelCursor.downField("slots")
@@ -132,14 +145,13 @@ object ROBiolinkMappingsGenerator extends ZIOAppDefault with LazyLogging {
    * https://github.com/biolink/biolink-model/blob/${biolinkVersion}/predicate_mapping.yaml (the raw version is available from
    * https://raw.githubusercontent.com/biolink/biolink-model/v3.2.1/predicate_mapping.yaml)
    */
-  def getPredicateMappingsFromGitHub(conf: Conf): RIO[Any, List[PredicateMappingRow]] =
+  def getPredicateMappingsFromGitHub(conf: Conf): RIO[Scope, List[PredicateMappingRow]] =
     for {
-      predicateMappingText <- ZIO.attempt {
-        Source
-          .fromURL(s"https://raw.githubusercontent.com/biolink/biolink-model/${conf.biolinkVersion}/predicate_mapping.yaml")
-          .getLines()
-          .mkString("\n")
-      }
+      predicateMappingText <-
+        sourceForURL(s"https://raw.githubusercontent.com/biolink/biolink-model/${conf.biolinkVersion}/predicate_mapping.yaml")
+          .flatMap(source => {
+            ZIO.attemptBlockingIO(source.getLines().mkString("\n"))
+          })
       predicateMappingsYaml <- ZIO.fromEither(io.circe.yaml.parser.parse(predicateMappingText))
       predicateMappings <- ZIO.fromEither(predicateMappingsYaml.as[PredicateMappings])
     } yield predicateMappings.`predicate mappings`
