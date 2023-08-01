@@ -47,30 +47,39 @@ object ROBiolinkMappingsGenerator extends ZIOAppDefault with LazyLogging {
   /** Overall code for running this generator. */
   override def run = for {
     conf <- readCommandLineArgs
+    _ = logger.info(s"Output filename: ${conf.outputFilename}")
+
     githubBiolinkModel <- getPredicateMappingsFromBiolinkModel(conf)
     githubPredicateMappings <- getPredicateMappingsFromGitHub(conf)
-    countPredsWritten <- writePredicates(githubBiolinkModel ++ githubPredicateMappings, conf.outputFilename)
-
-    _ = logger.info(s"Output filename: ${conf.outputFilename}")
     _ = logger.info(s"Loaded ${githubBiolinkModel.length} mappings from the Biolink model and ${githubPredicateMappings.length} mappings from the predicate mappings file.")
+
+    countPredsWritten <- writePredicates(githubBiolinkModel ++ githubPredicateMappings, conf.outputFilename)
+    _ = logger.info(s"Wrote out ${countPredsWritten} to ${conf.outputFilename}.")
   } yield ()
 
   /**
    * Write the predicates into a tab-delimited file.
    *
-   * @param predicates
-   * @param outputFilename
-   * @return
+   * @param predicates An Iterable of the predicates to write (as PredicateMappingRows)
+   * @param outputFilename The output filename to write to.
+   * @return A ZIO that resolves to an integer that indicates the number of predicates written out.
    */
   def writePredicates(predicates: Iterable[PredicateMappingRow], outputFilename: String): RIO[Scope, Int] = for {
     outputFile <- ZIO.acquireRelease(ZIO.attemptBlockingIO(new FileWriter(outputFilename)))(fw => ZIO.succeedBlocking(fw.close()))
-    _ = outputFile.write("predicate\tbiolink_predicate\tobject_aspect_qualifier\tobject direction qualifier\tqualified_predicate\texact_matches\n")
+    _ = outputFile.write("mapping_type\tpredicate\tbiolink_predicate\tobject_aspect_qualifier\tobject direction qualifier\tqualified_predicate\n")
   } yield {
     predicates.foreach(predicate => {
-      outputFile.write(
-        s"${predicate.predicate}\t${predicate.`mapped predicate`}\t${predicate.`object aspect qualifier`.getOrElse("")}\t" +
-          s"${predicate.`object direction qualifier`.getOrElse("")}\t${predicate.`qualified predicate`.getOrElse("")}\t" +
-          s"${predicate.`exact matches`.mkString("|")}\n")
+      def writePredicatesOfMappingType(mapping_type: String, predicate_id: String, predicateMappingRow: PredicateMappingRow) = {
+        outputFile.write(
+          s"${mapping_type}\t${predicate_id}\t${predicateMappingRow.predicate}\t${predicateMappingRow.`object aspect qualifier`.getOrElse("")}\t" +
+            s"${predicateMappingRow.`object direction qualifier`.getOrElse("")}\t${predicateMappingRow.`qualified predicate`.getOrElse("")}\n")
+      }
+
+      // Write out all four possible types.
+      predicate.`exact matches`.getOrElse(Set()).foreach(writePredicatesOfMappingType("exact", _, predicate))
+      predicate.`close matches`.getOrElse(Set()).foreach(writePredicatesOfMappingType("close", _, predicate))
+      predicate.`broad matches`.getOrElse(Set()).foreach(writePredicatesOfMappingType("broad", _, predicate))
+      predicate.`narrow matches`.getOrElse(Set()).foreach(writePredicatesOfMappingType("narrow", _, predicate))
     })
     predicates.size
   }
@@ -111,7 +120,10 @@ object ROBiolinkMappingsGenerator extends ZIOAppDefault with LazyLogging {
                                   `object direction qualifier`: Option[String],
                                   predicate: String,
                                   `qualified predicate`: Option[String],
-                                  `exact matches`: Option[Set[String]]
+                                  `exact matches`: Option[Set[String]],
+                                  `close matches`: Option[Set[String]] = None,
+                                  `broad matches`: Option[Set[String]] = None,
+                                  `narrow matches`: Option[Set[String]] = None
                                 )
 
   /** Since the predicate mappings file consists of a top level `predicate mappings` element, we need to
