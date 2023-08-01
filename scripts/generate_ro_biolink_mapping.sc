@@ -38,6 +38,27 @@ import io.circe.generic.auto._
  */
 
 object ROBiolinkMappingsGenerator extends ZIOAppDefault with LazyLogging {
+  /* Some manual annotations (we should try to move these into Biolink model so we don't need to deal with them ourselves. */
+
+  val manualPredicateMappingRows = Seq(
+    PredicateMappingRow(
+      predicate = "biolink:regulates", // Is this the best one?
+      `mapped predicate` = None,
+      `object aspect qualifier` = None,
+      `object direction qualifier` = Some("downregulated"),
+      `qualified predicate` = None,
+      `exact matches` = Some(Set("RO:0002305")), // causally upstream of, negative effect
+    ),
+    PredicateMappingRow(
+      predicate = "biolink:regulates", // Is this the best one?
+      `mapped predicate` = None,
+      `object aspect qualifier` = None,
+      `object direction qualifier` = Some("upregulated"),
+      `qualified predicate` = None,
+      `exact matches` = Some(Set("RO:0002304")), // causally upstream of, positive effect
+    )
+  )
+
   /* Configuration for this generator */
   case class Conf(
                    outputFilename: String,
@@ -53,7 +74,7 @@ object ROBiolinkMappingsGenerator extends ZIOAppDefault with LazyLogging {
     githubPredicateMappings <- getPredicateMappingsFromGitHub(conf)
     _ = logger.info(s"Loaded ${githubBiolinkModel.length} mappings from the Biolink model and ${githubPredicateMappings.length} mappings from the predicate mappings file.")
 
-    countPredsWritten <- writePredicates(githubBiolinkModel ++ githubPredicateMappings, conf.outputFilename)
+    countPredsWritten <- writePredicates(githubBiolinkModel ++ githubPredicateMappings ++ manualPredicateMappingRows, conf.outputFilename)
     _ = logger.info(s"Wrote out ${countPredsWritten} to ${conf.outputFilename}.")
   } yield ()
 
