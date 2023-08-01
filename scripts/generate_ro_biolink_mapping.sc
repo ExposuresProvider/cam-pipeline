@@ -74,10 +74,12 @@ object ROBiolinkMappingsGenerator extends ZIOAppDefault with LazyLogging {
 
   override def run = for {
     conf <- readCommandLineArgs
+    githubBiolinkModel <- getPredicateMappingsFromBiolinkModel(conf)
     githubPredicateMappings <- getPredicateMappingsFromGitHub(conf)
 
     _ = logger.info(s"Output filename: ${conf.outputFilename}")
-    _ = logger.info(s"GitHub predicate mappings: ${githubPredicateMappings}")
+    _ = logger.info(s"GitHub Biolink model mappings: ${githubBiolinkModel}")
+    // _ = logger.info(s"GitHub predicate mappings: ${githubPredicateMappings}")
   } yield ()
 
   /**
@@ -136,7 +138,7 @@ object ROBiolinkMappingsGenerator extends ZIOAppDefault with LazyLogging {
     for {
       biolinkModelText <- ZIO.attempt {
         Source
-          .fromURL(s"https://raw.githubusercontent.com/biolink/biolink-model/${conf.biolinkVersion}/biolink_model.yaml")
+          .fromURL(s"https://raw.githubusercontent.com/biolink/biolink-model/${conf.biolinkVersion}/biolink-model.yaml")
           .getLines()
           .mkString("\n")
       }
@@ -159,7 +161,7 @@ object ROBiolinkMappingsGenerator extends ZIOAppDefault with LazyLogging {
 
           mappings
             .filter({ case (_, mapp) => mapp.startsWith("RO:") })
-            .map({ case (mtype, mapp) => (mtype, "http://purl.obolibrary.org/obo/RO_" + mapp.substring(2)) })
+            .map({ case (mtype, mapp) => (mtype, "http://purl.obolibrary.org/obo/RO_" + mapp.substring(3)) })
             .map(roMapping =>
             PredicateMappingRow(
               `mapped predicate` = "biolink:" + slot.replace(' ', '_'),
