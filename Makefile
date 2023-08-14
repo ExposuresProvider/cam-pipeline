@@ -124,7 +124,7 @@ biolink-model-prefix-map.json:
 ro-to-biolink-predicate-mappings.tsv:
 	$(SCALA_RUN) scripts/generate_ro_biolink_mappings.sc -- $@
 
-# Step 15. Load all the data and ontologies.
+# Step 16. Load all the data and ontologies.
 # - ./scripts/kg_edges: compiled from ./scripts/kg_edges.dl with Souffle (see above).
 # - inferred.csv: All inferred quads.
 # - quad.facts: All asserted quads.
@@ -138,9 +138,9 @@ ro-to-biolink-predicate-mappings.tsv:
 # - ps: primary_source
 # - prov: graph that this is coming from (without brackets -- if it had brackets, it would
 #   be ignored by scripts/compact_iris.sc)
-kg_edge.csv: scripts/kg_edges inferred.csv quad.facts biolink.facts ontology.facts ro-to-biolink-local-mappings.tsv
+kg_edge.csv: scripts/kg_edges inferred.csv quad.facts biolink.facts ontology.facts ro-to-biolink-local-mappings.tsv ro-to-biolink-predicate-mappings.tsv
 	./scripts/kg_edges
 
-# Step 16. Compact IRIs in the kg_edge.csv file using the specified prefixes.
+# Step 17. Compact IRIs in the kg_edge.csv file using the specified prefixes.
 kg.tsv: kg_edge.csv scripts/compact_iris.sc biolink-model-prefix-map.json supplemental-namespaces.json
 	$(SCALA_RUN) scripts/compact_iris.sc --  biolink-model-prefix-map.json supplemental-namespaces.json kg_edge.csv $@
