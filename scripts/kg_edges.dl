@@ -31,7 +31,6 @@
 .decl biolink(s: symbol, p: symbol, o: symbol)
 .decl mapped_to(term: symbol, other: symbol, qualifiers: symbol)
 .decl local_mapping(ro: symbol, biolink: symbol, scope: symbol)
-.decl predicate_mapping(scope: symbol, ro: symbol, biolink: symbol, qualifiers: symbol)
 .decl subprop(sub: symbol, super: symbol)
 .decl primary_source(graph: symbol, source: symbol)
 .decl direct_type(ind: symbol, type: symbol)
