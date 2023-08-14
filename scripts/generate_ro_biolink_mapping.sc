@@ -74,7 +74,7 @@ object ROBiolinkMappingsGenerator extends ZIOAppDefault with LazyLogging {
   /* Configuration for this generator */
   case class Conf(
                    outputFilename: String,
-                   biolinkVersion: String = "v3.5.2"
+                   biolinkVersion: String = "v3.5.4"
                  )
 
   /** Overall code for running this generator. */
@@ -116,7 +116,14 @@ object ROBiolinkMappingsGenerator extends ZIOAppDefault with LazyLogging {
             s"${mapping_type}\t${predicate_url}\t${predicateMappingRow.predicate}\t" +
               // s"${predicateMappingRow.`object aspect qualifier`.getOrElse("")}\t${predicateMappingRow.`object direction qualifier`.getOrElse("")}\t${predicateMappingRow.`qualified predicate`.getOrElse("")}\t" +
               s"${predicateMappingRow.asQualifierList.mkString("||")}\n")
-        } else {}
+        } else if (predicate_id.startsWith("GOREL_")) {
+          val predicate_url = "<http://purl.obolibrary.org/obo/GOREL_" + predicate_id.substring(6) + ">"
+
+          outputFile.write(
+            s"${mapping_type}\t${predicate_url}\t${predicateMappingRow.predicate}\t" +
+              // s"${predicateMappingRow.`object aspect qualifier`.getOrElse("")}\t${predicateMappingRow.`object direction qualifier`.getOrElse("")}\t${predicateMappingRow.`qualified predicate`.getOrElse("")}\t" +
+              s"${predicateMappingRow.asQualifierList.mkString("||")}\n")
+        }
       }
 
       // Write out all four possible types.
