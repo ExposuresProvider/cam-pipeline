@@ -27,7 +27,10 @@ import io.circe.generic.auto._
  * In order for these PredicateMappings to make sense in Biolink, we need to map
  * them into the format that is needed for a TRAPIEdge, which is a list of TRAPIQualifiers.
  */
-case class TRAPIQualifier(qualifier_type_id: String, qualifier_value: String)
+case class TRAPIQualifier(qualifier_type_id: String, qualifier_value: String) {
+  // Some day I will get io.circe.syntax._ to work so we can emit JSON, but it is not this day.
+  override val toString = s"""{"${qualifier_type_id}":"${qualifier_value}"}"""
+}
 
 
 /**
@@ -98,14 +101,22 @@ object ROBiolinkMappingsGenerator extends ZIOAppDefault with LazyLogging {
    */
   def writePredicates(predicates: Iterable[PredicateMappingRow], outputFilename: String): RIO[Scope, Int] = for {
     outputFile <- ZIO.acquireRelease(ZIO.attemptBlockingIO(new FileWriter(outputFilename)))(fw => ZIO.succeedBlocking(fw.close()))
-    _ = outputFile.write("mapping_type\tpredicate\tbiolink_predicate\tobject_aspect_qualifier\tobject_direction_qualifier\tqualified_predicate\tqualifier_set\n")
+    _ = outputFile.write("mapping_type\tpredicate\tbiolink_predicate\t" +
+      // "object_aspect_qualifier\tobject_direction_qualifier\tqualified_predicate\t" +
+      "qualifier_set\n")
   } yield {
-    predicates.foreach(predicate => {
+    predicates
+      .foreach(predicate => {
       def writePredicatesOfMappingType(mapping_type: String, predicate_id: String, predicateMappingRow: PredicateMappingRow) = {
-        outputFile.write(
-          s"${mapping_type}\t${predicate_id}\t${predicateMappingRow.predicate}\t${predicateMappingRow.`object aspect qualifier`.getOrElse("")}\t" +
-            s"${predicateMappingRow.`object direction qualifier`.getOrElse("")}\t${predicateMappingRow.`qualified predicate`.getOrElse("")}\t" +
-            s"${predicateMappingRow.asQualifierList}\n")
+        // We're only interested in RO: predicates for now, and to simplify things, we'll expand them.
+        if (predicate_id.startsWith("RO:")) {
+          val predicate_url = "<http://purl.obolibrary.org/obo/RO_" + predicate_id.substring(3) + ">"
+
+          outputFile.write(
+            s"${mapping_type}\t${predicate_url}\t${predicateMappingRow.predicate}\t" +
+              // s"${predicateMappingRow.`object aspect qualifier`.getOrElse("")}\t${predicateMappingRow.`object direction qualifier`.getOrElse("")}\t${predicateMappingRow.`qualified predicate`.getOrElse("")}\t" +
+              s"${predicateMappingRow.asQualifierList.mkString("||")}\n")
+        } else {}
       }
 
       // Write out all four possible types.
@@ -161,9 +172,9 @@ object ROBiolinkMappingsGenerator extends ZIOAppDefault with LazyLogging {
 
     val asQualifierList: List[TRAPIQualifier] = {
       (
+        `qualified predicate`.map(q => List(TRAPIQualifier("biolink:qualified_predicate", q))) ++
         `object aspect qualifier`.map(q => List(TRAPIQualifier("biolink:object_aspect_qualifier", q))) ++
-        `object direction qualifier`.map(q => List(TRAPIQualifier("biolink:object_direction_qualifier", q))) ++
-        `qualified predicate`.map(q => List(TRAPIQualifier("biolink:qualified_predicate", q)))
+        `object direction qualifier`.map(q => List(TRAPIQualifier("biolink:object_direction_qualifier", q)))
       )
         .flatten.toList
     }
