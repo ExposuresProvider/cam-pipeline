@@ -54,7 +54,7 @@ quad(s, p, o, g) :- inferred(s, p, o, inf), inferred(inf, PROV_WAS_DERIVED_FROM,
 //mapped_to(t, o) :- biolink(t, SKOS_NARROW_MATCH, o).
 //mapped_to(t, o) :- biolink(t, SKOS_BROAD_MATCH, o).
 mapped_to(t, o, "") :- local_mapping(o, t, _).
-mapped_to(biolink, ro, qualifiers) :- predicate_mapping(_, ro, biolink, qualifiers)
+mapped_to(biolink, ro, qualifiers) :- predicate_mapping(_, ro, biolink, qualifiers).
 
 subprop(sub, super) :- biolink(sub, RDFS_SUBPROPERTY_OF, super).
 subprop(sub, supersuper) :- subprop(sub, super), biolink(super, RDFS_SUBPROPERTY_OF, supersuper).
