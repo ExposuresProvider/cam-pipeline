@@ -120,6 +120,10 @@ biolink.facts: biolink-model.owl.ttl
 biolink-model-prefix-map.json:
 	curl -L -O 'https://raw.githubusercontent.com/biolink/biolink-model/$(BIOLINK)/prefix-map/biolink-model-prefix-map.json'
 
+# Step 15. Download the Biolink Model predicate mappings.
+ro-to-biolink-predicate-mappings.tsv:
+	$(SCALA_RUN) scripts/generate_ro_biolink_mappings.sc -- $@
+
 # Step 15. Load all the data and ontologies.
 # - ./scripts/kg_edges: compiled from ./scripts/kg_edges.dl with Souffle (see above).
 # - inferred.csv: All inferred quads.
