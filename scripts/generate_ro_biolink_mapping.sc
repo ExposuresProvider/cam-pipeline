@@ -107,30 +107,28 @@ object ROBiolinkMappingsGenerator extends ZIOAppDefault with LazyLogging {
   } yield {
     predicates
       .foreach(predicate => {
-      def writePredicatesOfMappingType(mapping_type: String, predicate_id: String, predicateMappingRow: PredicateMappingRow) = {
-        // We're only interested in RO: predicates for now, and to simplify things, we'll expand them.
-        if (predicate_id.startsWith("RO:")) {
-          val predicate_url = "<http://purl.obolibrary.org/obo/RO_" + predicate_id.substring(3) + ">"
+        def writePredicatesOfMappingType(mapping_type: String, predicate_id: String, predicateMappingRow: PredicateMappingRow) = {
+          // We're only interested in RO: predicates for now, and to simplify things, we'll expand them.
+          val predicate_url = if (predicate_id.startsWith("RO:")) {
+            "<http://purl.obolibrary.org/obo/RO_" + predicate_id.substring(3) + ">"
+          } else if (predicate_id.startsWith("GOREL:")) {
+            "<http://purl.obolibrary.org/obo/GOREL_" + predicate_id.substring(6) + ">"
+          } else {
+            predicate_id
+          }
 
-          outputFile.write(
-            s"${mapping_type}\t${predicate_url}\t${predicateMappingRow.predicate}\t" +
-              // s"${predicateMappingRow.`object aspect qualifier`.getOrElse("")}\t${predicateMappingRow.`object direction qualifier`.getOrElse("")}\t${predicateMappingRow.`qualified predicate`.getOrElse("")}\t" +
-              s"${predicateMappingRow.asQualifierList.mkString("||")}\n")
-        } else if (predicate_id.startsWith("GOREL_")) {
-          val predicate_url = "<http://purl.obolibrary.org/obo/GOREL_" + predicate_id.substring(6) + ">"
-
-          outputFile.write(
-            s"${mapping_type}\t${predicate_url}\t${predicateMappingRow.predicate}\t" +
-              // s"${predicateMappingRow.`object aspect qualifier`.getOrElse("")}\t${predicateMappingRow.`object direction qualifier`.getOrElse("")}\t${predicateMappingRow.`qualified predicate`.getOrElse("")}\t" +
-              s"${predicateMappingRow.asQualifierList.mkString("||")}\n")
+          if (predicate_url.startsWith("<"))
+            outputFile.write(
+              s"${mapping_type}\t${predicate_url}\t${predicateMappingRow.predicate}\t" +
+                // s"${predicateMappingRow.`object aspect qualifier`.getOrElse("")}\t${predicateMappingRow.`object direction qualifier`.getOrElse("")}\t${predicateMappingRow.`qualified predicate`.getOrElse("")}\t" +
+                s"${predicateMappingRow.asQualifierList.mkString("||")}\n")
         }
-      }
 
-      // Write out all four possible types.
-      predicate.`exact matches`.getOrElse(Set()).foreach(writePredicatesOfMappingType("exact", _, predicate))
-      predicate.`close matches`.getOrElse(Set()).foreach(writePredicatesOfMappingType("close", _, predicate))
-      predicate.`broad matches`.getOrElse(Set()).foreach(writePredicatesOfMappingType("broad", _, predicate))
-      predicate.`narrow matches`.getOrElse(Set()).foreach(writePredicatesOfMappingType("narrow", _, predicate))
+        // Write out all four possible types.
+        predicate.`exact matches`.getOrElse(Set()).foreach(writePredicatesOfMappingType("exact", _, predicate))
+        predicate.`close matches`.getOrElse(Set()).foreach(writePredicatesOfMappingType("close", _, predicate))
+        predicate.`broad matches`.getOrElse(Set()).foreach(writePredicatesOfMappingType("broad", _, predicate))
+        predicate.`narrow matches`.getOrElse(Set()).foreach(writePredicatesOfMappingType("narrow", _, predicate))
     })
     predicates.size
   }
