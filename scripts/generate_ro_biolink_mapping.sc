@@ -70,11 +70,11 @@ object ROBiolinkMappingsGenerator extends ZIOAppDefault with LazyLogging {
     conf <- readCommandLineArgs
     _ = logger.info(s"Output filename: ${conf.outputFilename}")
 
-    githubBiolinkModel <- getPredicateMappingsFromBiolinkModel(conf)
+    // githubBiolinkModel <- getPredicateMappingsFromBiolinkModel(conf)
     githubPredicateMappings <- getPredicateMappingsFromGitHub(conf)
-    _ = logger.info(s"Loaded ${githubBiolinkModel.length} mappings from the Biolink model and ${githubPredicateMappings.length} mappings from the predicate mappings file.")
+    _ = logger.info(s"Loaded ${githubPredicateMappings.length} mappings from the predicate mappings file.")
 
-    countPredsWritten <- writePredicates(githubBiolinkModel ++ githubPredicateMappings ++ manualPredicateMappingRows, conf.outputFilename)
+    countPredsWritten <- writePredicates(githubPredicateMappings ++ manualPredicateMappingRows, conf.outputFilename)
     _ = logger.info(s"Wrote out ${countPredsWritten} to ${conf.outputFilename}.")
   } yield ()
 
@@ -153,6 +153,16 @@ object ROBiolinkMappingsGenerator extends ZIOAppDefault with LazyLogging {
                                 `predicate mappings`: List[PredicateMappingRow]
                               )
 
+  /**
+   * Download the Biolink Model and extract predicates from it.
+   *
+   * We don't currently use this, as the mappings in ./ro-to-biolink-local-mappings.tsv are
+   * the manually curated mappings we prefer. But I'm going to leave this code here in case
+   * it becomes useful in the future.
+   *
+   * @param conf The configuration settings to use.
+   * @return A RIO resolving to a list of PredicateMappingRows.
+   */
   def getPredicateMappingsFromBiolinkModel(conf: Conf): RIO[Scope, List[PredicateMappingRow]] =
     for {
       biolinkModelText <-
@@ -172,10 +182,13 @@ object ROBiolinkMappingsGenerator extends ZIOAppDefault with LazyLogging {
           val broadMappings = slotCursor.downField("broad_mappings").as[List[String]].getOrElse(List())
           val narrowMappings = slotCursor.downField("narrow_mappings").as[List[String]].getOrElse(List())
 
+        /*
           val mappings = exactMappings.map(m => ("exact", m)) ++
             closeMappings.map(m => ("close", m)) ++
             broadMappings.map(m => ("broad", m)) ++
             narrowMappings.map(m => ("narrow", m))
+
+         */
 
           // mappings
             // .filter({ case (_, mapp) => mapp.startsWith("RO:") })
@@ -195,10 +208,11 @@ object ROBiolinkMappingsGenerator extends ZIOAppDefault with LazyLogging {
           })
     } yield roMappings
 
-  /** To initialize this object, we need to download and parse the predicate_mapping.yaml file from the Biolink model, which needs to be
-   * downloaded to the package resources (src/main/resources) from
-   * https://github.com/biolink/biolink-model/blob/${biolinkVersion}/predicate_mapping.yaml (the raw version is available from
-   * https://raw.githubusercontent.com/biolink/biolink-model/v3.2.1/predicate_mapping.yaml)
+  /**
+   * Download the predicate_mapping.yaml file for the Biolink model specified in the configuration.
+   *
+   * @param conf Configuration to use.
+   * @return A RIO resolving to a list of predicate mapping rows.
    */
   def getPredicateMappingsFromGitHub(conf: Conf): RIO[Scope, List[PredicateMappingRow]] =
     for {
