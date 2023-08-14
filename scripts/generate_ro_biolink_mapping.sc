@@ -117,9 +117,13 @@ object ROBiolinkMappingsGenerator extends ZIOAppDefault with LazyLogging {
             predicate_id
           }
 
+          val biolink_predicate_url = if(predicateMappingRow.predicate.startsWith("biolink:"))
+            "<https://w3id.org/biolink/vocab/" + predicateMappingRow.predicate.substring(8) + ">"
+          else predicateMappingRow.predicate
+
           if (predicate_url.startsWith("<"))
             outputFile.write(
-              s"${mapping_type}\t${predicate_url}\t${predicateMappingRow.predicate}\t" +
+              s"${mapping_type}\t${predicate_url}\t${biolink_predicate_url}\t" +
                 // s"${predicateMappingRow.`object aspect qualifier`.getOrElse("")}\t${predicateMappingRow.`object direction qualifier`.getOrElse("")}\t${predicateMappingRow.`qualified predicate`.getOrElse("")}\t" +
                 s"${predicateMappingRow.asQualifierList.mkString("||")}\n")
         }
