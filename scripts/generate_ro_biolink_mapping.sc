@@ -69,6 +69,8 @@ object ROBiolinkMappingsGenerator extends ZIOAppDefault with LazyLogging {
   override def run = for {
     conf <- readCommandLineArgs
     _ = logger.info(s"Output filename: ${conf.outputFilename}")
+    
+    _ = logger.info(s"Loaded ${manualPredicateMappingRows.length} manually curated predicate mapping rows.")
 
     // githubBiolinkModel <- getPredicateMappingsFromBiolinkModel(conf)
     githubPredicateMappings <- getPredicateMappingsFromGitHub(conf)
