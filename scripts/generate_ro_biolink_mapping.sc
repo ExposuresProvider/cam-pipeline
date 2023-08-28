@@ -72,16 +72,20 @@ object ROBiolinkMappingsGenerator extends ZIOAppDefault with LazyLogging {
   )
 
   /* Configuration for this generator */
-  case class Conf(
+  final case class Conf(
                    outputFilename: String,
-                   biolinkVersion: String = "v3.5.4"
+                   biolinkVersion: String = "v3.5.4",
+                   localMappingsFilename: String = "ro-to-biolink-local-mappings.tsv"
                  )
 
   /** Overall code for running this generator. */
   override def run = for {
     conf <- readCommandLineArgs
     _ = logger.info(s"Output filename: ${conf.outputFilename}")
-    
+
+    localMappings <- readLocalMappings(new File(conf.localMappingsFilename))
+    _ = logger.info(s"Loaded local mappings: ${localMappings}")
+    /*
     _ = logger.info(s"Loaded ${manualPredicateMappingRows.length} manually curated predicate mapping rows.")
 
     // githubBiolinkModel <- getPredicateMappingsFromBiolinkModel(conf)
@@ -90,6 +94,8 @@ object ROBiolinkMappingsGenerator extends ZIOAppDefault with LazyLogging {
 
     countPredsWritten <- writePredicates(githubPredicateMappings ++ manualPredicateMappingRows, conf.outputFilename)
     _ = logger.info(s"Wrote out ${countPredsWritten} to ${conf.outputFilename}.")
+
+     */
   } yield ()
 
   /**
@@ -156,12 +162,18 @@ object ROBiolinkMappingsGenerator extends ZIOAppDefault with LazyLogging {
   def acquireSourceByURL(url: => String): ZIO[Any, IOException, Source] =
     ZIO.attemptBlockingIO(Source.fromURL(url))
 
+  def acquireSourceByFile(file: => File): ZIO[Any, IOException, Source] =
+    ZIO.attemptBlockingIO(Source.fromFile(file))
+
   def releaseSource(source: => Source): ZIO[Any, Nothing, Unit] =
     ZIO.succeedBlocking(source.close())
 
   /** A ZIO wrapper for scala Sources. */
   def sourceForURL(url: => String): ZIO[Scope, IOException, Source] =
     ZIO.acquireRelease(acquireSourceByURL(url))(releaseSource(_))
+
+  def sourceForFile(file: => File): ZIO[Scope, IOException, Source] =
+    ZIO.acquireRelease(acquireSourceByFile(file))(releaseSource(_))
 
   /** A case class for predicate mappings from the Biolink predicate_mappings.yaml file [1].
    *
@@ -282,7 +294,58 @@ object ROBiolinkMappingsGenerator extends ZIOAppDefault with LazyLogging {
       )
     }
 
+  /**
+   * A case class to hold local mappings.
+   *
+   * @param roTerm The RO term being mapped. (May also be from another ontology.)
+   * @param biolinkTerm The Biolink term being mapped to.
+   * @param mappingType The mapping type ("exact", "close", "broad", "narrow").
+   */
+  case class LocalMapping(
+      roTerm: String,
+      biolinkTerm: String,
+      mappingType: String
+                          )
 
+  /**
+   * Read local mappings from the `ro-to-biolink-local-mappings.tsv` file as PredicateMappingRow entries.
+   *
+   * @param localMappingFile The local mapping TSV file to read.
+   */
+  def readLocalMappings(localMappingFile: File): RIO[Scope, List[LocalMapping]] = for {
+    localMappingsLines <-
+      sourceForFile(localMappingFile)
+        .flatMap(source => {
+          ZIO.attemptBlockingIO(source.getLines())
+        })
+    predMappings <- ZStream.fromIterator(localMappingsLines).mapZIO(mappingLine => {
+      val values = mappingLine.split('\t')
+
+      val roTerm = values(0) match {
+        case s"<http://purl.obolibrary.org/obo/BFO_${id}>" => s"BFO:${id}"
+        case s"<http://purl.obolibrary.org/obo/GOREL_${id}>" => s"GOREL:${id}"
+        case s"<http://purl.obolibrary.org/obo/RO_${id}>" => s"RO:${id}"
+        case s"<http://purl.obolibrary.org/obo/UPHENO_${id}>" => s"UPHENO:${id}"
+        case s"<http://purl.obolibrary.org/obo/emapa#${id}>" => s"emapa:${id}"
+        case _ => return ZIO.fail(new RuntimeException(s"Expected RO term but got ${values(0)} instead."))
+      }
+
+      // TODO: we should really use the Biolink predicate code from CAM-KP for this part.
+      val biolinkTerm = values(1) match {
+        case s"<https://w3id.org/biolink/vocab/${id}>" => s"biolink:${id}"
+        case _ => return ZIO.fail(new RuntimeException(s"Expected Biolink term but got ${values(1)} instead."))
+      }
+
+      values(2) match {
+        case "exact" | "close" | "broad" | "narrow" => ZIO.succeed(LocalMapping(
+          roTerm = roTerm,
+          biolinkTerm = biolinkTerm,
+          mappingType = values(2)
+        ))
+        case _ => ZIO.fail(new RuntimeException(s"Expected mapping type but got ${values(2)} instead."))
+      }
+    }).runCollect
+  } yield predMappings.toList
 }
 
 ROBiolinkMappingsGenerator.main(args)
