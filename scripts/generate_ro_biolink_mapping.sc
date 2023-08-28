@@ -209,6 +209,9 @@ object ROBiolinkMappingsGenerator extends ZIOAppDefault with LazyLogging {
       )
         .flatten.toList
     }
+
+    /** Return a list of all RO terms in this predicate mapping row. */
+    val roTerms: Set[String] = (`exact matches` ++ `close matches` ++ `broad matches` ++ `narrow matches`).flatten.toSet
   }
 
   /** Since the predicate mappings file consists of a top level `predicate mappings` element, we need to
@@ -371,28 +374,60 @@ object ROBiolinkMappingsGenerator extends ZIOAppDefault with LazyLogging {
       case (roTerm, occurrences) if occurrences.length > 1 => (roTerm, occurrences.map(_.biolinkTerm))
     }.map(t => s"Local mapping file maps ${t._1} to multiple Biolink terms: ${t._2}")
 
-    val predicateMappingsAsSimpleMappings = outputPredicates.flatMap(pred => {
-      def generateSimpleMapping(predicate: PredicateMappingRow, mappingType: String, roMappings: Set[String]): Seq[SimpleMapping] = {
-        roMappings.map(roMapping => SimpleMapping(
-          roTerm = roMapping,
-          biolinkTerm = predicate.predicate,
-          mappingType = mappingType
-        )).toSeq
+    val outputPredicatesByROTerms = outputPredicates.flatMap(op => op.roTerms.map(ro => (ro, op)))
+      .groupBy(_._1)
+      .collect {
+        case (roTerm, occurrences) if occurrences.length > 1 => (roTerm, occurrences.map(_._2))
+      }
+    val predicateMappingsDuplicateWarnings = outputPredicatesByROTerms.map(t => s"Generated predicate mapping file maps ${t._1} to multiple Biolink terms: ${t._2}")
+
+    val localMappingsAsPredicateMappings = localMappings.map(localMapping => {
+      localMapping.mappingType match {
+        case "exact" => PredicateMappingRow(
+          predicate = localMapping.biolinkTerm,
+          `mapped predicate` = None,
+          `object aspect qualifier` = None,
+          `object direction qualifier` = None,
+          `qualified predicate` = None,
+          `exact matches` = Some(Set(localMapping.roTerm))
+        )
+        case "close" => PredicateMappingRow(
+          predicate = localMapping.biolinkTerm,
+          `mapped predicate` = None,
+          `object aspect qualifier` = None,
+          `object direction qualifier` = None,
+          `qualified predicate` = None,
+          `exact matches` = None,
+          `close matches` = Some(Set(localMapping.roTerm))
+        )
+        case "broad" => PredicateMappingRow(
+          predicate = localMapping.biolinkTerm,
+          `mapped predicate` = None,
+          `object aspect qualifier` = None,
+          `object direction qualifier` = None,
+          `qualified predicate` = None,
+          `exact matches` = None,
+          `broad matches` = Some(Set(localMapping.roTerm))
+        )
+        case "narrow" => PredicateMappingRow(
+          predicate = localMapping.biolinkTerm,
+          `mapped predicate` = None,
+          `object aspect qualifier` = None,
+          `object direction qualifier` = None,
+          `qualified predicate` = None,
+          `exact matches` = None,
+          `narrow matches` = Some(Set(localMapping.roTerm))
+        )
+        case _ => throw new RuntimeException(s"Unknown mapping type: ${localMapping.mappingType}, expected 'exact', 'close', 'broad', 'narrow'.")
+      }
+    })
+    val allMappingsByROTerms = (localMappingsAsPredicateMappings ++ outputPredicates).flatMap(op => op.roTerms.map(ro => (ro, op)))
+      .groupBy(_._1)
+      .collect {
+        case (roTerm, occurrences) if occurrences.length > 1 => (roTerm, occurrences.map(_._2))
       }
 
-      pred.`exact matches`.map(em => generateSimpleMapping(pred, "exact", em)) ++
-      pred.`close matches`.map(em => generateSimpleMapping(pred, "close", em)) ++
-      pred.`broad matches`.map(em => generateSimpleMapping(pred, "broad", em)) ++
-      pred.`narrow matches`.map(em => generateSimpleMapping(pred, "narrow", em))
-    }).flatten
-
-    val predicateMappingsDuplicateWarnings = localMappings.groupBy(_.roTerm).collect {
-      case (roTerm, occurrences) if occurrences.length > 1 => (roTerm, occurrences.map(_.biolinkTerm))
-    }.map(t => s"Generated predicate mapping file maps ${t._1} to multiple Biolink terms: ${t._2}")
-
-    val allMappingsDuplicateWarnings = localMappings.groupBy(_.roTerm).collect {
-      case (roTerm, occurrences) if occurrences.length > 1 => (roTerm, occurrences.map(_.biolinkTerm))
-    }.map(t => s"Duplicate predicate mappings between generated and local mapping: ${t._1} mapped to multiple Biolink terms: ${t._2}")
+    val allMappingsDuplicateWarnings = allMappingsByROTerms.map(t => s"Combined predicate mappings maps ${t._1} to multiple Biolink terms: ${t._2}")
 
     (localDuplicateWarnings ++ predicateMappingsDuplicateWarnings ++ allMappingsDuplicateWarnings).toSeq
   }
