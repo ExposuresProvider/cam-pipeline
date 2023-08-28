@@ -90,14 +90,14 @@ object ROBiolinkMappingsGenerator extends ZIOAppDefault with LazyLogging {
     localMappings <- readLocalMappings(new File(conf.localMappingsFilename))
     _ = logger.info(s"Loaded ${localMappings.size} local mappings.")
 
-    // githubBiolinkModel <- getPredicateMappingsFromBiolinkModel(conf)
     githubPredicateMappings <- getPredicateMappingsFromGitHub(conf)
     _ = logger.info(s"Loaded ${githubPredicateMappings.length} mappings from the predicate mappings file.")
 
     outputPredicates: Seq[PredicateMappingRow] = githubPredicateMappings ++ manualPredicateMappingRows
 
     // Check for unusual predicates.
-    warnings = checkMappings(localMappings, outputPredicates)
+    biolinkPredicates <- getBiolinkPredicatesFromBiolinkModel(conf)
+    warnings = checkMappings(conf, localMappings, outputPredicates, biolinkPredicates)
 
     _ = if(warnings.nonEmpty) {
       logger.warn(s"Found ${warnings.size} mapping warnings:")
@@ -221,16 +221,13 @@ object ROBiolinkMappingsGenerator extends ZIOAppDefault with LazyLogging {
                               )
 
   /**
-   * Download the Biolink Model and extract predicates from it.
-   *
-   * We don't currently use this, as the mappings in ./ro-to-biolink-local-mappings.tsv are
-   * the manually curated mappings we prefer. But I'm going to leave this code here in case
-   * it becomes useful in the future.
+   * Download the Biolink Model and extract the list of valid Biolink predicates from it.
+   * We use this to make sure we don't have any Biolink predicates that are not valid.
    *
    * @param conf The configuration settings to use.
    * @return A RIO resolving to a list of PredicateMappingRows.
    */
-  def getPredicateMappingsFromBiolinkModel(conf: Conf): RIO[Scope, List[PredicateMappingRow]] =
+  def getBiolinkPredicatesFromBiolinkModel(conf: Conf): RIO[Scope, List[String]] =
     for {
       biolinkModelText <-
         sourceForURL(s"https://raw.githubusercontent.com/biolink/biolink-model/${conf.biolinkVersion}/biolink-model.yaml")
@@ -241,38 +238,7 @@ object ROBiolinkMappingsGenerator extends ZIOAppDefault with LazyLogging {
       biolinkModelCursor = biolinkModelYaml.hcursor
       slotsCursor = biolinkModelCursor.downField("slots")
       slots = slotsCursor.keys.getOrElse(List())
-      roMappings = slots.toList.map(slot => {
-          val slotCursor = slotsCursor.downField(slot)
-
-          val exactMappings = slotCursor.downField("exact_mappings").as[List[String]].getOrElse(List())
-          val closeMappings = slotCursor.downField("close_mappings").as[List[String]].getOrElse(List())
-          val broadMappings = slotCursor.downField("broad_mappings").as[List[String]].getOrElse(List())
-          val narrowMappings = slotCursor.downField("narrow_mappings").as[List[String]].getOrElse(List())
-
-        /*
-          val mappings = exactMappings.map(m => ("exact", m)) ++
-            closeMappings.map(m => ("close", m)) ++
-            broadMappings.map(m => ("broad", m)) ++
-            narrowMappings.map(m => ("narrow", m))
-
-         */
-
-          // mappings
-            // .filter({ case (_, mapp) => mapp.startsWith("RO:") })
-            // .map({ case (mtype, mapp) => (mtype, "http://purl.obolibrary.org/obo/RO_" + mapp.substring(3)) })
-
-          PredicateMappingRow(
-              `mapped predicate` = None,
-              `object aspect qualifier` = None,
-              `object direction qualifier` = None,
-              predicate = "biolink:" + slot.replace(' ', '_'),
-              `qualified predicate` = None,
-              `exact matches` = Some(exactMappings.toSet),
-              `close matches` = Some(closeMappings.toSet),
-              `broad matches` = Some(broadMappings.toSet),
-              `narrow matches` = Some(narrowMappings.toSet)
-            )
-          })
+      roMappings = slots.toList.map(slot => "biolink:" + slot.replace(' ', '_'))
     } yield roMappings
 
   /**
@@ -368,18 +334,23 @@ object ROBiolinkMappingsGenerator extends ZIOAppDefault with LazyLogging {
    *                         mappings already in use -- if they do, we'll get duplicate entries in the output!
    * @return A list of warnings as strings (we can turn this into a case class if needed).
    */
-  def checkMappings(localMappings: Seq[SimpleMapping], outputPredicates: Seq[PredicateMappingRow]): Seq[String] = {
+  def checkMappings(conf: Conf, localMappings: Seq[SimpleMapping], outputPredicates: Seq[PredicateMappingRow], biolinkPredicates: Seq[String]): Seq[String] = {
+    val biolinkPredicatesAsSet = biolinkPredicates.toSet
 
     val localDuplicateWarnings = localMappings.groupBy(_.roTerm).collect {
       case (roTerm, occurrences) if occurrences.length > 1 => (roTerm, occurrences.map(_.biolinkTerm))
     }.map(t => s"Local mapping file maps ${t._1} to multiple Biolink terms: ${t._2}")
+    val localInvalidBiolinkPredicateWarnings = localMappings.map(_.biolinkTerm).filterNot(biolinkPredicatesAsSet.contains)
+      .map(bt => s"Local mapping file uses Biolink predicate ${bt}, which is not present in Biolink ${conf.biolinkVersion}.")
 
     val outputPredicatesByROTerms = outputPredicates.flatMap(op => op.roTerms.map(ro => (ro, op)))
       .groupBy(_._1)
       .collect {
         case (roTerm, occurrences) if occurrences.length > 1 => (roTerm, occurrences.map(_._2))
       }
-    val predicateMappingsDuplicateWarnings = outputPredicatesByROTerms.map(t => s"Generated predicate mapping file maps ${t._1} to multiple Biolink terms: ${t._2}")
+    val outputMappingsDuplicateWarnings = outputPredicatesByROTerms.map(t => s"Generated predicate mapping file maps ${t._1} to multiple Biolink terms: ${t._2}")
+    val outputInvalidBiolinkPredicateWarnings = outputPredicates.map(_.predicate).filterNot(biolinkPredicatesAsSet.contains)
+      .map(bt => s"Generated predicate mapping file uses Biolink predicate ${bt}, which is not present in Biolink ${conf.biolinkVersion}.")
 
     val localMappingsAsPredicateMappings = localMappings.map(localMapping => {
       localMapping.mappingType match {
@@ -429,7 +400,7 @@ object ROBiolinkMappingsGenerator extends ZIOAppDefault with LazyLogging {
 
     val allMappingsDuplicateWarnings = allMappingsByROTerms.map(t => s"Combined predicate mappings maps ${t._1} to multiple Biolink terms: ${t._2}")
 
-    (localDuplicateWarnings ++ predicateMappingsDuplicateWarnings ++ allMappingsDuplicateWarnings).toSeq
+    (localDuplicateWarnings ++ localInvalidBiolinkPredicateWarnings ++ outputMappingsDuplicateWarnings ++ outputInvalidBiolinkPredicateWarnings ++ allMappingsDuplicateWarnings).toSeq
   }
 }
 
