@@ -27,9 +27,9 @@ import io.circe.generic.auto._
  * In order for these PredicateMappings to make sense in Biolink, we need to map
  * them into the format that is needed for a TRAPIEdge, which is a list of TRAPIQualifiers.
  */
-case class TRAPIQualifier(qualifier_type_id: String, qualifier_value: String) {
+case class TRAPIQualifier(qualifierTypeId: String, qualifierValue: String) {
   // Some day I will get io.circe.syntax._ to work so we can emit JSON, but it is not this day.
-  override val toString = s"""{"${qualifier_type_id}":"${qualifier_value}"}"""
+  override val toString = s"""{"${qualifierTypeId}":"${qualifierValue}"}"""
 }
 
 
@@ -50,8 +50,9 @@ case class TRAPIQualifier(qualifier_type_id: String, qualifier_value: String) {
  */
 
 object ROBiolinkMappingsGenerator extends ZIOAppDefault with LazyLogging {
-  /* Some manual annotations (we should try to move these into Biolink model so we don't need to deal with them ourselves. */
-
+  /*
+   * Some manual annotations (we should try to move these into Biolink model so we don't need to deal with them ourselves.
+   */
   val manualPredicateMappingRows = Seq(
     PredicateMappingRow(
       predicate = "biolink:regulates", // Is this the best one?
@@ -113,23 +114,23 @@ object ROBiolinkMappingsGenerator extends ZIOAppDefault with LazyLogging {
   } yield {
     predicates
       .foreach(predicate => {
-        def writePredicatesOfMappingType(mapping_type: String, predicate_id: String, predicateMappingRow: PredicateMappingRow) = {
+        def writePredicatesOfMappingType(mappingType: String, predicateId: String, predicateMappingRow: PredicateMappingRow) = {
           // We're only interested in RO: predicates for now, and to simplify things, we'll expand them.
-          val predicate_url = if (predicate_id.startsWith("RO:")) {
-            "<http://purl.obolibrary.org/obo/RO_" + predicate_id.substring(3) + ">"
-          } else if (predicate_id.startsWith("GOREL:")) {
-            "<http://purl.obolibrary.org/obo/GOREL_" + predicate_id.substring(6) + ">"
+          val predicateURL = if (predicateId.startsWith("RO:")) {
+            "<http://purl.obolibrary.org/obo/RO_" + predicateId.substring(3) + ">"
+          } else if (predicateId.startsWith("GOREL:")) {
+            "<http://purl.obolibrary.org/obo/GOREL_" + predicateId.substring(6) + ">"
           } else {
-            predicate_id
+            predicateId
           }
 
-          val biolink_predicate_url = if(predicateMappingRow.predicate.startsWith("biolink:"))
+          val biolinkPredicateURL = if(predicateMappingRow.predicate.startsWith("biolink:"))
             "<https://w3id.org/biolink/vocab/" + predicateMappingRow.predicate.substring(8) + ">"
           else predicateMappingRow.predicate
 
-          if (predicate_url.startsWith("<"))
+          if (predicateURL.startsWith("<"))
             outputFile.write(
-              s"${mapping_type}\t${predicate_url}\t${biolink_predicate_url}\t" +
+              s"${mappingType}\t${predicateURL}\t${biolinkPredicateURL}\t" +
                 // s"${predicateMappingRow.`object aspect qualifier`.getOrElse("")}\t${predicateMappingRow.`object direction qualifier`.getOrElse("")}\t${predicateMappingRow.`qualified predicate`.getOrElse("")}\t" +
                 s"${predicateMappingRow.asQualifierList.mkString("||")}\n")
         }
