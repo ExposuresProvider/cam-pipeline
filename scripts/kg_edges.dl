@@ -8,6 +8,10 @@
 #define MOLECULAR_FUNCTION "<http://purl.obolibrary.org/obo/GO_0003674>"
 #define BIOLOGICAL_PROCESS "<http://purl.obolibrary.org/obo/GO_0008150>"
 #define CELLULAR_COMPONENT "<http://purl.obolibrary.org/obo/GO_0005575>"
+#define HUMAN "<http://purl.obolibrary.org/obo/NCBITaxon_9606>"
+#define MOUSE "<http://purl.obolibrary.org/obo/NCBITaxon_10090>"
+#define RAT "<http://purl.obolibrary.org/obo/NCBITaxon_10116>"
+#define ZEBRAFISH "<http://purl.obolibrary.org/obo/NCBITaxon_7955>"
 #define CANONICAL_RECORD "<http://geneontology.org/lego/canonical_record>"
 #define MOLECULAR_EVENT "<http://purl.obolibrary.org/obo/go/extensions/reacto.owl#molecular_event>"
 
@@ -61,6 +65,10 @@ direct_type(i, t) :-
     t != BIOLOGICAL_PROCESS,
     t != CELLULAR_COMPONENT,
     t != MOLECULAR_EVENT,
+    t != HUMAN,
+    t != MOUSE,
+    t != RAT,
+    t != ZEBRAFISH,
     !contains("http://purl.obolibrary.org/obo/BFO_", t),
     !contains("http://purl.obolibrary.org/obo/CARO_", t).
 
