@@ -51,6 +51,7 @@ subprop(sub, supersuper) :- subprop(sub, super), biolink(super, RDFS_SUBPROPERTY
 graph(g) :- quad(_, _, _, g).
 
 primary_source(g, "infores:go-cam") :- graph(g), contains("model.geneontology.org", g).
+primary_source(g, "infores:aop-cam") :- graph(g), contains("model/AOP_", g).
 primary_source(g, "infores:ctd") :- graph(g), contains("ctdbase.org", g).
 // signor?
 
