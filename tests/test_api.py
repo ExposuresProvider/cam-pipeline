@@ -11,6 +11,10 @@
 # - GET /cam-kp/{source_type}/{target_type}/{curie}
 # - GET /cam-kp/{node_type}/{curie}
 # - GET /cam-kp/simple_spec
+#
+# These tests assume that some edges will always be in Automat-CAM-KP:
+# - NCBIGene:15481 ("heat shock protein 8 [Mus musculus (house mouse)]")
+#   biolink:active_in UBERON:0002240 ("spinal cord")
 
 import os
 import urllib.parse
@@ -176,3 +180,41 @@ def test_sri_testing_data():
         "biolink:Protein",
         "biolink:SmallMolecule",
     }
+
+
+def test_node_type_curie():
+    """
+    Test the GET /cam-kp/{node_type}/{curie} endpoint.
+    """
+    node_type_curies = [
+        {
+            "node_type": "biolink:AnatomicalEntity",
+            "curie": "UBERON:0002240",
+            "expected": {
+                "name": "spinal cord",
+                "description": "Part of the central nervous system located in the vertebral canal continuous with and caudal to the brain; demarcated from brain by plane of foramen magnum. It is composed of an inner core of gray matter in which nerve cells predominate, and an outer layer of white matter in which myelinated nerve fibers predominate, and surrounds the central canal. (CUMBO).",
+                "id": "UBERON:0002240",
+                "information_content": 57.9,
+                "equivalent_identifiers": [
+                    "UBERON:0002240",
+                    "UMLS:C0037925",
+                    "MESH:D013116",
+                    "NCIT:C12464",
+                ],
+            },
+        }
+    ]
+
+    for node_type_curie in node_type_curies:
+        node_type_curie_url = (
+            CAM_KP_API_ENDPOINT
+            + f"{node_type_curie['node_type']}/{node_type_curie['curie']}"
+        )
+        response = requests.get(node_type_curie_url)
+        assert (
+            response.ok
+        ), f"Could not retrieve node-type/CURIE information at {node_type_curie_url}."
+        node_type_data = response.json()
+
+        assert len(node_type_data) == 1
+        assert node_type_data[0] == node_type_curie["expected"]
