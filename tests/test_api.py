@@ -199,6 +199,56 @@ def test_sri_testing_data():
     }
 
 
+def test_source_target_curie_one_hop():
+    """
+    Test the GET /cam-kp/{source_type}/{target_type}/{curie} endpoint.
+    """
+    source_target_curies = [
+        {
+            "source_type": "biolink:AnatomicalEntity",
+            "target_type": "biolink:Gene",
+            "curie": "UBERON:0002240",
+            "expected_node_ids": {
+                "UBERON:0002240",
+                "NCBIGene:15481"
+            },
+            "expected_xrefs": {
+                "http://model.geneontology.org/SYNGO_2911"
+            },
+            "expected_knowledge_sources": { "infores:go-cam" },
+        }
+    ]
+
+    for source_target_curie in source_target_curies:
+        source_target_url = (
+            CAM_KP_API_ENDPOINT
+            + f"{source_target_curie['source_type']}/{source_target_curie['target_type']}/{source_target_curie['curie']}"
+        )
+        response = requests.get(source_target_url)
+        assert response.ok, f"Could not retrieve source-target-curie response from {source_target_url}."
+        results = response.json()
+
+        xrefs = set()
+        knowledge_sources = set()
+        node_ids = set()
+        for result in results:
+            edge = result[1]
+            if "xref" in edge:
+                xrefs.update(edge["xref"])
+            if "biolink:primary_knowledge_source" in edge:
+                knowledge_sources.add(edge["biolink:primary_knowledge_source"])
+
+            if "id" in result[0]:
+                node_ids.add(result[0]["id"])
+
+            if "id" in result[2]:
+                node_ids.add(result[2]["id"])
+
+        assert source_target_curie["expected_node_ids"] <= node_ids, f"All node IDs in {source_target_curie['expected_node_ids']} are not present in the list of node IDs obtained: {node_ids}"
+        assert source_target_curie["expected_xrefs"] <= xrefs, f"All expected xrefs in {source_target_curie['expected_xrefs']} are not present in the list of xrefs obtained: {xrefs}"
+        assert source_target_curie["expected_knowledge_sources"] <= knowledge_sources, f"All expected knowledge sources in {source_target_curie['expected_knowledge_sources']} are not present in the list of knowledge sources obtained: {knowledge_sources}"
+
+
 def test_node_type_curie():
     """
     Test the GET /cam-kp/{node_type}/{curie} endpoint.
