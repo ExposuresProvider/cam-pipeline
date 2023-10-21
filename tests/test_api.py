@@ -241,7 +241,6 @@ def test_source_target_curie_one_hop_and_simple_spec():
         }
     ]
 
-    subject_object_predicate_mappings = {}
     for source_target_curie in source_target_curies:
         source_target_url = (
             CAM_KP_API_ENDPOINT
@@ -250,14 +249,6 @@ def test_source_target_curie_one_hop_and_simple_spec():
         response = requests.get(source_target_url)
         assert response.ok, f"Could not retrieve source-target-curie response from {source_target_url}."
         results = response.json()
-
-        # Ideally, we would like to make sure that the predicates work in the correct direction, i.e. if we query
-        # biolink:AnatomicalEntity --> biolink:Gene, we would not expect to see biolink:occurs_in. However, it looks
-        # like source-target-CURIE allows the inverted query as well (biolink:Gene --> biolink:AnatomicalEntity), so
-        # that won't work.
-        #
-        # TODO: figure out exactly what's going on here.
-        predicates = set()
 
         xrefs = set()
         knowledge_sources = set()
@@ -282,7 +273,6 @@ def test_source_target_curie_one_hop_and_simple_spec():
         assert source_target_curie["expected_node_ids"] <= node_ids, f"All node IDs in {source_target_curie['expected_node_ids']} are not present in the list of node IDs obtained: {node_ids}"
         assert source_target_curie["expected_xrefs"] <= xrefs, f"All expected xrefs in {source_target_curie['expected_xrefs']} are not present in the list of xrefs obtained: {xrefs}"
         assert source_target_curie["expected_knowledge_sources"] <= knowledge_sources, f"All expected knowledge sources in {source_target_curie['expected_knowledge_sources']} are not present in the list of knowledge sources obtained: {knowledge_sources}"
-        assert source_target_curie["expected_predicates"] == predicates
 
 
 def test_node_type_curie():
