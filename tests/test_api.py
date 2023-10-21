@@ -15,7 +15,7 @@
 # These tests assume that some edges will always be in Automat-CAM-KP:
 # - NCBIGene:15481 ("heat shock protein 8 [Mus musculus (house mouse)]")
 #   biolink:active_in UBERON:0002240 ("spinal cord")
-
+import logging
 import os
 import urllib.parse
 
@@ -199,9 +199,30 @@ def test_sri_testing_data():
     }
 
 
-def test_source_target_curie_one_hop():
+def test_simple_spec():
     """
-    Test the GET /cam-kp/{source_type}/{target_type}/{curie} endpoint.
+    Test the GET /cam-kp/simple_spec endpoint.
+    """
+    simple_spec_tests = [{
+        'source': 'UBERON:0002240',
+        'target': 'NCBIGene:15481',
+        # TODO: wait, what?
+        'expected_predicates': {'biolink:overlaps'}
+    }]
+
+    simple_spec_endpoint = urllib.parse.urljoin(CAM_KP_API_ENDPOINT, "simple_spec")
+    for simple_spec_test in simple_spec_tests:
+        response = requests.get(simple_spec_endpoint, {"source": simple_spec_test["source"], "target": simple_spec_test["target"]})
+        assert response.ok, f"Unable to look up {simple_spec_endpoint} with source: {simple_spec_test['source']} and target: {simple_spec_test['target']}."
+        predicates = set(map(lambda res: res['edge_type'], response.json()))
+        logging.debug(f"Retrieved predicates predicates_for_edge for {simple_spec_test['source']} to {simple_spec_test['target']}: {predicates}")
+
+        assert simple_spec_test["expected_predicates"] == predicates, f"When querying for {simple_spec_test['source']} to {simple_spec_test['target']}, expected predicates {simple_spec_test['expected_predicates']} did not match {predicates}."
+
+
+def test_source_target_curie_one_hop_and_simple_spec():
+    """
+    Test the GET /cam-kp/{source_type}/{target_type}/{curie} endpoint and the /cam-kp/simple_spec endpoint.
     """
     source_target_curies = [
         {
@@ -215,10 +236,12 @@ def test_source_target_curie_one_hop():
             "expected_xrefs": {
                 "http://model.geneontology.org/SYNGO_2911"
             },
+            "expected_predicates": {},
             "expected_knowledge_sources": { "infores:go-cam" },
         }
     ]
 
+    subject_object_predicate_mappings = {}
     for source_target_curie in source_target_curies:
         source_target_url = (
             CAM_KP_API_ENDPOINT
@@ -227,6 +250,14 @@ def test_source_target_curie_one_hop():
         response = requests.get(source_target_url)
         assert response.ok, f"Could not retrieve source-target-curie response from {source_target_url}."
         results = response.json()
+
+        # Ideally, we would like to make sure that the predicates work in the correct direction, i.e. if we query
+        # biolink:AnatomicalEntity --> biolink:Gene, we would not expect to see biolink:occurs_in. However, it looks
+        # like source-target-CURIE allows the inverted query as well (biolink:Gene --> biolink:AnatomicalEntity), so
+        # that won't work.
+        #
+        # TODO: figure out exactly what's going on here.
+        predicates = set()
 
         xrefs = set()
         knowledge_sources = set()
@@ -238,15 +269,20 @@ def test_source_target_curie_one_hop():
             if "biolink:primary_knowledge_source" in edge:
                 knowledge_sources.add(edge["biolink:primary_knowledge_source"])
 
+            subject_id = ""
             if "id" in result[0]:
-                node_ids.add(result[0]["id"])
+                subject_id = result[0]["id"]
+                node_ids.add(subject_id)
 
+            object_id = ""
             if "id" in result[2]:
-                node_ids.add(result[2]["id"])
+                object_id = result[2]["id"]
+                node_ids.add(object_id)
 
         assert source_target_curie["expected_node_ids"] <= node_ids, f"All node IDs in {source_target_curie['expected_node_ids']} are not present in the list of node IDs obtained: {node_ids}"
         assert source_target_curie["expected_xrefs"] <= xrefs, f"All expected xrefs in {source_target_curie['expected_xrefs']} are not present in the list of xrefs obtained: {xrefs}"
         assert source_target_curie["expected_knowledge_sources"] <= knowledge_sources, f"All expected knowledge sources in {source_target_curie['expected_knowledge_sources']} are not present in the list of knowledge sources obtained: {knowledge_sources}"
+        assert source_target_curie["expected_predicates"] == predicates
 
 
 def test_node_type_curie():
