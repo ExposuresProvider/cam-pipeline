@@ -26,6 +26,23 @@ CAM_KP_API_ENDPOINT = os.getenv(
 )
 TRAPI_VERSION = os.getenv("TRAPI_VERSION", "1.4")
 
+# Some data that is used by multiple tests.
+uberon_0002240_node_info = {
+    "name": "spinal cord",
+    "description": "Part of the central nervous system located in the vertebral canal continuous with and caudal to "
+    "the brain; demarcated from brain by plane of foramen magnum. It is composed of an inner core of "
+    "gray matter in which nerve cells predominate, and an outer layer of white matter in which "
+    "myelinated nerve fibers predominate, and surrounds the central canal. (CUMBO).",
+    "id": "UBERON:0002240",
+    "information_content": 57.9,
+    "equivalent_identifiers": [
+        "UBERON:0002240",
+        "UMLS:C0037925",
+        "MESH:D013116",
+        "NCIT:C12464",
+    ],
+}
+
 
 def test_metadata():
     """
@@ -190,18 +207,7 @@ def test_node_type_curie():
         {
             "node_type": "biolink:AnatomicalEntity",
             "curie": "UBERON:0002240",
-            "expected": {
-                "name": "spinal cord",
-                "description": "Part of the central nervous system located in the vertebral canal continuous with and caudal to the brain; demarcated from brain by plane of foramen magnum. It is composed of an inner core of gray matter in which nerve cells predominate, and an outer layer of white matter in which myelinated nerve fibers predominate, and surrounds the central canal. (CUMBO).",
-                "id": "UBERON:0002240",
-                "information_content": 57.9,
-                "equivalent_identifiers": [
-                    "UBERON:0002240",
-                    "UMLS:C0037925",
-                    "MESH:D013116",
-                    "NCIT:C12464",
-                ],
-            },
+            "expected": uberon_0002240_node_info,
         }
     ]
 
