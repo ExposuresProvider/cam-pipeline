@@ -20,7 +20,7 @@ import requests
 CAM_KP_API_ENDPOINT = os.getenv(
     "CAM_KP_API_ENDPOINT", "https://automat.renci.org/cam-kp/"
 )
-TRAPI_VERSION = os.getenv("TRAPI_VERSION", "1,4")
+TRAPI_VERSION = os.getenv("TRAPI_VERSION", "1.4")
 
 
 def test_metadata():
@@ -29,7 +29,7 @@ def test_metadata():
     """
     metadata_url = urllib.parse.urljoin(CAM_KP_API_ENDPOINT, "metadata")
     response = requests.get(metadata_url)
-    assert response.ok, f"Could not retrieve {metadata_url}"
+    assert response.ok, f"Could not retrieve metadata from {metadata_url}."
 
     metadata = response.json()
 
@@ -82,3 +82,85 @@ def test_metadata():
     assert set(metadata["qc_results"]["warnings"]["invalid_knowledge_sources"]) == {
         "infores:aop-cam"
     }
+
+
+def test_sri_testing_data():
+    """
+    Test the SRI Testing Data output at GET /cam-kp/1.4/sri_testing_data.
+    """
+    sri_testing_url = urllib.parse.urljoin(CAM_KP_API_ENDPOINT, f"{TRAPI_VERSION}/sri_testing_data")
+    response = requests.get(sri_testing_url)
+    assert response.ok, f"Could not retrieve SRI Testing Data URL at {sri_testing_url}."
+    sri_testing_data = response.json()
+
+    edges = sri_testing_data['edges']
+    assert len(edges) > 500, f"Expected at least 100 edges in SRI Testing Data but got {len(edges)}."
+
+    # Make sure all _id fields look like CURIEs.
+    all_subject_ids = list(map(lambda edge: (edge['subject_id'], edge), edges))
+    all_object_ids = list(map(lambda edge: (edge['object_id'], edge), edges))
+    for ident, id_edge in (all_subject_ids + all_object_ids):
+        assert ':' in ident, f"CURIE {ident} in edge {id_edge} does not look like a valid CURIE."
+
+    all_predicates = set(map(lambda edge: edge['predicate'], edges))
+    assert all_predicates == {'biolink:active_in',
+                              'biolink:actively_involved_in',
+                              'biolink:acts_upstream_of_negative_effect',
+                              'biolink:acts_upstream_of_or_within',
+                              'biolink:acts_upstream_of_or_within_negative_effect',
+                              'biolink:acts_upstream_of_or_within_positive_effect',
+                              'biolink:acts_upstream_of_positive_effect',
+                              'biolink:affects',
+                              'biolink:capable_of',
+                              'biolink:causes',
+                              'biolink:coexists_with',
+                              'biolink:colocalizes_with',
+                              'biolink:directly_physically_interacts_with',
+                              'biolink:enables',
+                              'biolink:has_input',
+                              'biolink:has_output',
+                              'biolink:has_part',
+                              'biolink:has_participant',
+                              'biolink:interacts_with',
+                              'biolink:located_in',
+                              'biolink:occurs_in',
+                              'biolink:overlaps',
+                              'biolink:precedes',
+                              'biolink:regulates',
+                              'biolink:temporally_related_to'}
+
+    all_subject_categories = set(map(lambda edge: edge['subject_category'], edges))
+    assert all_subject_categories == {'biolink:AnatomicalEntity',
+                                      'biolink:BiologicalProcess',
+                                      'biolink:Cell',
+                                      'biolink:CellularComponent',
+                                      'biolink:ChemicalEntity',
+                                      'biolink:ChemicalMixture',
+                                      'biolink:ComplexMolecularMixture',
+                                      'biolink:Drug',
+                                      'biolink:Gene',
+                                      'biolink:GrossAnatomicalStructure',
+                                      'biolink:MolecularActivity',
+                                      'biolink:MolecularMixture',
+                                      'biolink:Pathway',
+                                      'biolink:Polypeptide',
+                                      'biolink:Protein',
+                                      'biolink:SmallMolecule'}
+
+    all_edge_categories = set(map(lambda edge: edge['object_category'], edges))
+    assert all_edge_categories == {'biolink:AnatomicalEntity',
+                                   'biolink:BiologicalProcess',
+                                   'biolink:Cell',
+                                   'biolink:CellularComponent',
+                                   'biolink:ChemicalEntity',
+                                   'biolink:ChemicalMixture',
+                                   'biolink:ComplexMolecularMixture',
+                                   'biolink:Gene',
+                                   'biolink:GrossAnatomicalStructure',
+                                   'biolink:MacromolecularComplex',
+                                   'biolink:MolecularActivity',
+                                   'biolink:MolecularMixture',
+                                   'biolink:Pathway',
+                                   'biolink:Polypeptide',
+                                   'biolink:Protein',
+                                   'biolink:SmallMolecule'}
