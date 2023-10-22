@@ -260,15 +260,11 @@ def test_source_target_curie_one_hop_and_simple_spec():
             if "biolink:primary_knowledge_source" in edge:
                 knowledge_sources.add(edge["biolink:primary_knowledge_source"])
 
-            subject_id = ""
             if "id" in result[0]:
-                subject_id = result[0]["id"]
-                node_ids.add(subject_id)
+                node_ids.add(result[0]["id"])
 
-            object_id = ""
             if "id" in result[2]:
-                object_id = result[2]["id"]
-                node_ids.add(object_id)
+                node_ids.add(result[2]["id"])
 
         assert source_target_curie["expected_node_ids"] <= node_ids, f"All node IDs in {source_target_curie['expected_node_ids']} are not present in the list of node IDs obtained: {node_ids}"
         assert source_target_curie["expected_xrefs"] <= xrefs, f"All expected xrefs in {source_target_curie['expected_xrefs']} are not present in the list of xrefs obtained: {xrefs}"
