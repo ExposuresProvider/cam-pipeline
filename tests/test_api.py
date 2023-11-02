@@ -27,6 +27,27 @@ CAM_KP_API_ENDPOINT = os.getenv(
 TRAPI_VERSION = os.getenv("TRAPI_VERSION", "1.4")
 
 # Some data that is used by multiple tests.
+trapi_query_what_is_hsp8_mus_musculus_active_in = {
+    "message": {
+        "query_graph": {
+            "nodes": {
+                "n0": {
+                    "ids": ["NCBIGene:15481"],
+                },
+                "n1": {
+                    "categories": ["biolink:AnatomicalEntity"]
+                }
+            },
+            "edges": {
+                "e0": {
+                    "subject": "n0",
+                    "object": "n1",
+                    "predicates": ["biolink:active_in"]
+                }
+            }
+        }
+    }
+}
 uberon_0002240_node_info = {
     "name": "spinal cord",
     "description": "Part of the central nervous system located in the vertebral canal continuous with and caudal to "
@@ -2130,3 +2151,72 @@ def test_node_type_curie():
 
         assert len(node_type_data) == 1
         assert node_type_data[0] == node_type_curie["expected"]
+
+
+def test_query():
+    f"""
+    Test the POST /cam-kp/{TRAPI_VERSION}/query endpoint.
+    """
+
+    query_post_url = f"{CAM_KP_API_ENDPOINT}{TRAPI_VERSION}/query"
+    response = requests.post(query_post_url, json=trapi_query_what_is_hsp8_mus_musculus_active_in)
+    assert response.ok, f"Got response {response} when attempting to post example TRAPI message to {query_post_url}: {trapi_query_what_is_hsp8_mus_musculus_active_in}"
+
+    assert "message" in response.json()
+    message = response.json()["message"]
+
+    assert "query_graph" in message
+    assert "knowledge_graph" in message
+
+    # Check the knowledge graph nodes
+    assert "nodes" in message["knowledge_graph"]
+    nodes = message["knowledge_graph"]["nodes"]
+    node_ids = set(nodes.keys())
+
+    assert len(node_ids) > 0
+    assert "UBERON:0002240" in node_ids
+    assert nodes["UBERON:0002240"]["name"] == "spinal cord"
+
+    # Check the knowledge graph edges
+    assert "edges" in message["knowledge_graph"]
+    edges = message["knowledge_graph"]["edges"]
+
+    edge_values_spinal_cord = list(filter(lambda edge: edge["object"] == "UBERON:0002240", edges.values()))
+    assert len(edge_values_spinal_cord) == 1
+    spinal_cord_edge = edge_values_spinal_cord[0]
+
+    assert spinal_cord_edge["subject"] == "NCBIGene:15481"
+    assert spinal_cord_edge["predicate"] == "biolink:active_in"
+    assert spinal_cord_edge["object"] == "UBERON:0002240"
+    assert spinal_cord_edge["sources"] == [
+        {
+            "resource_id": "infores:automat-cam-kp",
+            "resource_role": "aggregator_knowledge_source",
+            "upstream_resource_ids": [
+                "infores:go-cam"
+            ],
+            "source_record_urls": None
+        },
+        {
+            "resource_id": "infores:go-cam",
+            "resource_role": "primary_knowledge_source",
+            "upstream_resource_ids": None,
+            "source_record_urls": None,
+        }
+    ]
+    assert spinal_cord_edge["qualifiers"] is None
+    assert spinal_cord_edge["attributes"] == [
+        {
+            "attribute_type_id": "biolink:xref",
+            "value": [
+                "http://model.geneontology.org/SYNGO_2911"
+            ],
+            "value_type_id": "EDAM:data_0006",
+            "original_attribute_name": "xref",
+            "value_url": None,
+            "attribute_source": None,
+            "description": None,
+            "attributes": None,
+        }
+    ]
+
