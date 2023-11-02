@@ -4,13 +4,15 @@
 # This API provides some basic tests for every endpoint:
 # - POST /cam-kp/1.4/query
 # - POST /cam-kp/cypher
-# - POST /cam-kp/overlay
 # - GET /cam-kp/1.4/meta_knowledge_graph
 # - GET /cam-kp/1.4/sri_testing_data
 # - GET /cam-kp/metadata
 # - GET /cam-kp/{source_type}/{target_type}/{curie}
 # - GET /cam-kp/{node_type}/{curie}
 # - GET /cam-kp/simple_spec
+#
+# However, the following endpoints are not currently being tested:
+# - POST /cam-kp/overlay
 #
 # These tests assume that some edges will always be in Automat-CAM-KP:
 # - NCBIGene:15481 ("heat shock protein 8 [Mus musculus (house mouse)]")
