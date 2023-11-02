@@ -15,6 +15,8 @@
 # These tests assume that some edges will always be in Automat-CAM-KP:
 # - NCBIGene:15481 ("heat shock protein 8 [Mus musculus (house mouse)]")
 #   biolink:active_in UBERON:0002240 ("spinal cord")
+import copy
+import json
 import logging
 import os
 import urllib.parse
@@ -27,26 +29,16 @@ CAM_KP_API_ENDPOINT = os.getenv(
 TRAPI_VERSION = os.getenv("TRAPI_VERSION", "1.4")
 
 # Some data that is used by multiple tests.
-trapi_query_what_is_hsp8_mus_musculus_active_in = {
-    "message": {
-        "query_graph": {
-            "nodes": {
-                "n0": {
-                    "ids": ["NCBIGene:15481"],
-                },
-                "n1": {
-                    "categories": ["biolink:AnatomicalEntity"]
-                }
-            },
-            "edges": {
-                "e0": {
-                    "subject": "n0",
-                    "object": "n1",
-                    "predicates": ["biolink:active_in"]
-                }
-            }
-        }
-    }
+trapi_query_graph_what_is_hsp8_mus_musculus_active_in = {
+    "nodes": {
+        "n0": {
+            "ids": ["NCBIGene:15481"],
+        },
+        "n1": {"categories": ["biolink:AnatomicalEntity"]},
+    },
+    "edges": {
+        "e0": {"subject": "n0", "object": "n1", "predicates": ["biolink:active_in"]}
+    },
 }
 uberon_0002240_node_info = {
     "name": "spinal cord",
@@ -2154,13 +2146,22 @@ def test_node_type_curie():
 
 
 def test_query():
-    f"""
+    """
     Test the POST /cam-kp/{TRAPI_VERSION}/query endpoint.
     """
 
     query_post_url = f"{CAM_KP_API_ENDPOINT}{TRAPI_VERSION}/query"
-    response = requests.post(query_post_url, json=trapi_query_what_is_hsp8_mus_musculus_active_in)
-    assert response.ok, f"Got response {response} when attempting to post example TRAPI message to {query_post_url}: {trapi_query_what_is_hsp8_mus_musculus_active_in}"
+    response = requests.post(
+        query_post_url,
+        json={
+            "message": {
+                "query_graph": trapi_query_graph_what_is_hsp8_mus_musculus_active_in
+            }
+        },
+    )
+    assert (
+        response.ok
+    ), f"Got response {response} when attempting to post example TRAPI message to {query_post_url}: {trapi_query_graph_what_is_hsp8_mus_musculus_active_in}"
 
     assert "message" in response.json()
     message = response.json()["message"]
@@ -2181,7 +2182,9 @@ def test_query():
     assert "edges" in message["knowledge_graph"]
     edges = message["knowledge_graph"]["edges"]
 
-    edge_values_spinal_cord = list(filter(lambda edge: edge["object"] == "UBERON:0002240", edges.values()))
+    edge_values_spinal_cord = list(
+        filter(lambda edge: edge["object"] == "UBERON:0002240", edges.values())
+    )
     assert len(edge_values_spinal_cord) == 1
     spinal_cord_edge = edge_values_spinal_cord[0]
 
@@ -2192,25 +2195,21 @@ def test_query():
         {
             "resource_id": "infores:automat-cam-kp",
             "resource_role": "aggregator_knowledge_source",
-            "upstream_resource_ids": [
-                "infores:go-cam"
-            ],
-            "source_record_urls": None
+            "upstream_resource_ids": ["infores:go-cam"],
+            "source_record_urls": None,
         },
         {
             "resource_id": "infores:go-cam",
             "resource_role": "primary_knowledge_source",
             "upstream_resource_ids": None,
             "source_record_urls": None,
-        }
+        },
     ]
     assert spinal_cord_edge["qualifiers"] is None
     assert spinal_cord_edge["attributes"] == [
         {
             "attribute_type_id": "biolink:xref",
-            "value": [
-                "http://model.geneontology.org/SYNGO_2911"
-            ],
+            "value": ["http://model.geneontology.org/SYNGO_2911"],
             "value_type_id": "EDAM:data_0006",
             "original_attribute_name": "xref",
             "value_url": None,
@@ -2220,3 +2219,214 @@ def test_query():
         }
     ]
 
+    # Check results
+    assert "results" in message
+    results = message["results"]
+    results_spinal_cord = list(filter(lambda result: result["node_bindings"]["n1"][0]["id"] == "UBERON:0002240", results))
+    assert len(results_spinal_cord) == 1
+    result_spinal_cord = results_spinal_cord[0]
+    assert result_spinal_cord["node_bindings"]["n0"][0]["id"] == "NCBIGene:15481"
+    assert result_spinal_cord["analyses"][0]["resource_id"] == "infores:automat-cam-kp"
+
+
+def test_overlay():
+    """
+    Test the POST /cam-kp/overlap endpoint.
+    """
+
+    trapi_query_graph_what_is_hsp8_mus_musculus_related_to = copy.deepcopy(
+        trapi_query_graph_what_is_hsp8_mus_musculus_active_in
+    )
+    trapi_query_graph_what_is_hsp8_mus_musculus_related_to["edges"]["e0"][
+        "predicates"
+    ] = ["biolink:related_to"]
+    trapi_response_to_overlay = {
+        "message": {
+            "query_graph": trapi_query_graph_what_is_hsp8_mus_musculus_related_to,
+            "knowledge_graph": {
+                "nodes": {
+                    "NCBIGene:15481": {
+                        "categories": [
+                            "biolink:OntologyClass",
+                            "biolink:BiologicalEntity",
+                            "biolink:GeneOrGeneProduct",
+                            "biolink:PhysicalEssenceOrOccurrent",
+                            "biolink:PhysicalEssence",
+                            "biolink:Gene",
+                            "biolink:MacromolecularMachineMixin",
+                            "biolink:GenomicEntity",
+                            "biolink:ChemicalEntityOrGeneOrGeneProduct",
+                            "biolink:Entity",
+                            "biolink:ThingWithTaxon",
+                            "biolink:NamedThing",
+                        ],
+                        "name": "Hspa8",
+                        "attributes": [
+                            {
+                                "attribute_type_id": "biolink:same_as",
+                                "value": [
+                                    "NCBIGene:15481",
+                                    "ENSEMBL:ENSMUSG00000015656",
+                                    "MGI:105384",
+                                ],
+                                "value_type_id": "metatype:uriorcurie",
+                                "original_attribute_name": "equivalent_identifiers",
+                                "value_url": None,
+                                "attribute_source": None,
+                                "description": None,
+                                "attributes": None,
+                            },
+                            {
+                                "attribute_type_id": "biolink:Attribute",
+                                "value": 92.7,
+                                "value_type_id": "EDAM:data_0006",
+                                "original_attribute_name": "information_content",
+                                "value_url": None,
+                                "attribute_source": None,
+                                "description": None,
+                                "attributes": None,
+                            },
+                        ],
+                    },
+                    "UBERON:0002240": {
+                        "categories": [
+                            "biolink:OrganismalEntity",
+                            "biolink:SubjectOfInvestigation",
+                            "biolink:BiologicalEntity",
+                            "biolink:PhysicalEssenceOrOccurrent",
+                            "biolink:PhysicalEssence",
+                            "biolink:Entity",
+                            "biolink:ThingWithTaxon",
+                            "biolink:GrossAnatomicalStructure",
+                            "biolink:AnatomicalEntity",
+                            "biolink:NamedThing",
+                        ],
+                        "name": "spinal cord",
+                        "attributes": [
+                            {
+                                "attribute_type_id": "dct:description",
+                                "value": "Part of the central nervous system located in the vertebral canal continuous with and caudal to the brain; demarcated from brain by plane of foramen magnum. It is composed of an inner core of gray matter in which nerve cells predominate, and an outer layer of white matter in which myelinated nerve fibers predominate, and surrounds the central canal. (CUMBO).",
+                                "value_type_id": "EDAM:data_0006",
+                                "original_attribute_name": "description",
+                                "value_url": None,
+                                "attribute_source": None,
+                                "description": None,
+                                "attributes": None,
+                            },
+                            {
+                                "attribute_type_id": "biolink:same_as",
+                                "value": [
+                                    "UBERON:0002240",
+                                    "UMLS:C0037925",
+                                    "MESH:D013116",
+                                    "NCIT:C12464",
+                                ],
+                                "value_type_id": "metatype:uriorcurie",
+                                "original_attribute_name": "equivalent_identifiers",
+                                "value_url": None,
+                                "attribute_source": None,
+                                "description": None,
+                                "attributes": None,
+                            },
+                            {
+                                "attribute_type_id": "biolink:Attribute",
+                                "value": 57.9,
+                                "value_type_id": "EDAM:data_0006",
+                                "original_attribute_name": "information_content",
+                                "value_url": None,
+                                "attribute_source": None,
+                                "description": None,
+                                "attributes": None,
+                            },
+                        ],
+                    },
+                },
+                "edges": {
+                    "6099": {
+                        "subject": "NCBIGene:15481",
+                        "object": "UBERON:0002240",
+                        "predicate": "biolink:active_in",
+                        "sources": [
+                            {
+                                "resource_id": "infores:automat-cam-kp",
+                                "resource_role": "aggregator_knowledge_source",
+                                "upstream_resource_ids": ["infores:go-cam"],
+                                "source_record_urls": None,
+                            },
+                            {
+                                "resource_id": "infores:go-cam",
+                                "resource_role": "primary_knowledge_source",
+                                "upstream_resource_ids": None,
+                                "source_record_urls": None,
+                            },
+                        ],
+                        "qualifiers": None,
+                        "attributes": [
+                            {
+                                "attribute_type_id": "biolink:xref",
+                                "value": ["http://model.geneontology.org/SYNGO_2911"],
+                                "value_type_id": "EDAM:data_0006",
+                                "original_attribute_name": "xref",
+                                "value_url": None,
+                                "attribute_source": None,
+                                "description": None,
+                                "attributes": None,
+                            }
+                        ],
+                    },
+                },
+            },
+            "results": [
+                {
+                    "node_bindings": {
+                        "n0": [
+                            {
+                                "id": "NCBIGene:15481",
+                                "query_id": None,
+                                "attributes": None,
+                                "qnode_id": "NCBIGene:15481"
+                            }
+                        ],
+                        "n1": [
+                            {
+                                "id": "UBERON:0002240",
+                                "query_id": None,
+                                "attributes": None
+                            }
+                        ]
+                    },
+                    "analyses": [
+                        {
+                            "resource_id": "infores:automat-cam-kp",
+                            "edge_bindings": {
+                                "e0": [
+                                    {
+                                        "id": "6099",
+                                        "attributes": None
+                                    }
+                                ]
+                            },
+                            "score": None,
+                            "support_graphs": None,
+                            "scoring_method": None,
+                            "attributes": None
+                        }
+                    ]
+                },
+            ],
+            "auxiliary_graphs": None
+        },
+        "workflow": [
+            {
+                "id": "lookup"
+            }
+        ]
+    }
+
+    response = requests.post(
+        f"{CAM_KP_API_ENDPOINT}overlay",
+        json=trapi_response_to_overlay,
+    )
+    assert response.ok, f"Posting TRAPI response to {CAM_KP_API_ENDPOINT}overlay produced response {response}: {trapi_response_to_overlay}"
+
+    assert False, json.dumps(trapi_response_to_overlay, sort_keys=True, indent=2)
