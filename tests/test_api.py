@@ -2222,3 +2222,37 @@ def test_query():
         }
     ]
 
+
+def test_cypher():
+    """
+    Test the /cam-kp/cypher endpoint.
+    """
+    # TODO: expand this to include the Biolink predicate as well.
+
+    cypher_query = {
+        "query": "MATCH (s{id: 'NCBIGene:15481'})-[p]-(o{id: 'UBERON:0002240'}) RETURN s, p, o LIMIT 10"
+    }
+    response = requests.post(f"{CAM_KP_API_ENDPOINT}cypher", json=cypher_query)
+    assert response.ok, f"Received response {response} when POSTing request to {CAM_KP_API_ENDPOINT}cypher: {cypher_query}"
+
+    assert "results" in response.json()
+    results = response.json()["results"]
+    assert len(results) == 1
+    result = results[0]
+
+    assert "columns" in result
+    assert result["columns"] == ["s", "p", "o"]
+
+    assert "data" in result
+    data = result["data"]
+    assert len(data) == 3 # Not sure why there are three results here.
+
+    for edges in data:
+        s = edges["row"][0]
+        p = edges["row"][1]
+        o = edges["row"][2]
+
+        assert s["id"] == "NCBIGene:15481"
+        assert p["xref"] == ["http://model.geneontology.org/SYNGO_2911"]
+        assert p["biolink:primary_knowledge_source"] == "infores:go-cam"
+        assert o["id"] == "UBERON:0002240"
