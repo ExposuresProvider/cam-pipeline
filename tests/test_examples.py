@@ -34,19 +34,19 @@ def assertion_expected_result_counts(assertion: dict, response_json):
     assert len(unexpected_keys) == 0, f"ExpectedResultCount contains unexpected keys: {unexpected_keys}"
 
     # Assert those keys.
-    did_we_test_something = False
+    did_we_test_anything = False
 
     results = response_json["message"]["results"]
     results_count = len(results)
     if "min" in assertion:
-        did_we_test_something = True
+        did_we_test_anything = True
         assert results_count >= assertion["min"], f"Expected a minimum of {assertion['min']} results, but got {results_count} results instead."
 
     if "max" in assertion:
-        did_we_test_something = True
+        did_we_test_anything = True
         assert results_count <= assertion["max"], f"Expected a maximum of {assertion['max']} results, but got {results_count} results instead."
 
-    if not did_we_test_something:
+    if not did_we_test_anything:
         assert False, f"Effectively empty ExpectedResultCounts assertion {assertion}"
 
 
