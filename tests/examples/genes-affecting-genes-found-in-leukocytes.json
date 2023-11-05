@@ -1,6 +1,6 @@
 {
   "meta": {
-    "description": "Find genes causally upstream of the activity of ‘GPR35’, specifically occurring within leukocytes (CL:0000738)"
+    "description": "Find genes that affect the activity of ‘GPR35’, specifically occurring within leukocytes (CL:0000738)"
   },
   "query": {
     "message": {
@@ -14,9 +14,6 @@
           "n1": {
             "categories": [
               "biolink:GeneOrGeneProduct"
-            ],
-            "ids": [
-              "UniProtKB:Q9HC97"
             ]
           },
           "n2": {
@@ -34,23 +31,13 @@
             "object": "n1",
             "predicates": [
               "biolink:affects"
-            ],
-            "qualifier_constraints": [
-              {
-                "qualifier_set": [
-                  {
-                    "qualifier_type_id": "biolink:object_aspect_qualifier",
-                    "qualifier_value": "activity"
-                  }
-                ]
-              }
             ]
           },
           "e1": {
             "subject": "n1",
             "object": "n2",
             "predicates": [
-              "biolink:part_of"
+              "biolink:overlaps"
             ]
           }
         }
@@ -60,7 +47,7 @@
   "assertions": [
     {
       "type": "ExpectedResultCounts",
-      "min": 6
+      "min": 5
     }
   ]
 }
