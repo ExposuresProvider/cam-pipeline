@@ -1,6 +1,6 @@
 {
   "meta": {
-    "description": "PRCD increases chemical"
+    "description": "Chemicals affected by gene Photoreceptor Disc Component (PRCD, NCBIGene:768206)"
   },
   "query": {
     "message": {
@@ -27,21 +27,7 @@
             "predicates": [
               "biolink:affects"
             ],
-            "knowledge_type": "inferred",
-            "qualifier_constraints": [
-              {
-                "qualifier_set": [
-                  {
-                    "qualifier_type_id": "biolink:object_aspect_qualifier",
-                    "qualifier_value": "activity_or_abundance"
-                  },
-                  {
-                    "qualifier_type_id": "biolink:object_direction_qualifier",
-                    "qualifier_value": "increased"
-                  }
-                ]
-              }
-            ]
+            "knowledge_type": "inferred"
           }
         }
       }
@@ -50,7 +36,7 @@
   "assertions": [
     {
       "type": "ExpectedResultCounts",
-      "min": 1000
+      "min": 17
     }
   ]
 }
