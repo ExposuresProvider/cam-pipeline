@@ -1,0 +1,48 @@
+{
+  "meta": {
+    "description": "The query used as our example query in Swagger"
+  },
+  "query": {
+    "message": {
+      "query_graph": {
+        "nodes": {
+          "n0": {
+            "categories": [
+              "biolink:BiologicalProcessOrActivity"
+            ]
+          },
+          "n1": {
+            "ids": [
+              "GO:0004707"
+            ]
+          }
+        },
+        "edges": {
+          "e0": {
+            "predicates": [
+              "biolink:regulates"
+            ],
+            "qualifier_constraints": [
+              {
+                "qualifier_set": [
+                  {
+                    "qualifier_type_id": "biolink:object_direction_qualifier",
+                    "qualifier_value": "upregulated"
+                  }
+                ]
+              }
+            ],
+            "subject": "n0",
+            "object": "n1"
+          }
+        }
+      }
+    }
+  },
+  "assertions": [
+    {
+      "type": "ExpectedResultCounts",
+      "min": 34
+    }
+  ]
+}
