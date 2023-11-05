@@ -7,13 +7,13 @@
       "query_graph": {
         "nodes": {
           "n0": {
-            "ids": [
-              "PUBCHEM.COMPOUND:107735"
+            "categories": [
+              "biolink:Protein"
             ]
           },
           "n1": {
-            "categories": [
-              "biolink:Protein"
+            "ids": [
+              "PUBCHEM.COMPOUND:107735"
             ]
           }
         },
@@ -36,7 +36,7 @@
     },
     {
       "type": "ExpectedNodeResults",
-      "node": "n1",
+      "node": "n0",
       "resultEquals": ["UniProtKB:P21796", "UniProtKB:P26297", "UniProtKB:Q9BYZ2", "UniProtKB:Q1EHB4",
         "UniProtKB:P11498", "UniProtKB:Q8N695"]
     }
