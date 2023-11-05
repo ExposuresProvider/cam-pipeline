@@ -1,6 +1,6 @@
 {
   "meta": {
-    "description": "Named things related to valproic acid (CHEBI:39867)"
+    "description": "Molecular activity that has valproic acid (PUBCHEM.COMPOUND:3121) as an input"
   },
   "query": {
     "message": {
@@ -33,6 +33,12 @@
     {
       "type": "ExpectedResultCounts",
       "min": 1
+    },
+    {
+      "type": "ExpectedNodeResults",
+      "node": "n0",
+      "resultEquals": ["GO:0005488"],
+      "description": "Expected binding (GO:0005488) to have valproic acid (PUBCHEM.COMPOUND:3121) as an input."
     }
   ]
 }

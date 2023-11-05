@@ -29,7 +29,7 @@ def assertion_expected_result_counts(assertion: dict, response_json):
     """
 
     # We only expect a certain set of keys in the assertion.
-    expected_keys = {"type", "min", "max"}
+    expected_keys = {"type", "description", "min", "max"}
     unexpected_keys = [key for key in assertion if key not in expected_keys]
     assert len(unexpected_keys) == 0, f"ExpectedResultCount contains unexpected keys: {unexpected_keys}"
 
@@ -48,6 +48,43 @@ def assertion_expected_result_counts(assertion: dict, response_json):
 
     if not did_we_test_anything:
         assert False, f"Effectively empty ExpectedResultCounts assertion {assertion}"
+
+
+def assertion_expected_node_results(assertion: dict, response_json):
+    """
+    Assert expected node results.
+
+    :param assertion: The assertion to test.
+    :param response_json: The response from Automat-CAM-KP to check the assertion against.
+    """
+
+    # We only expect a certain set of keys in the assertion.
+    expected_keys = {"type", "description", "node", "resultEquals", "resultIncludes", "resultExcludes"}
+    unexpected_keys = [key for key in assertion if key not in expected_keys]
+    assert len(unexpected_keys) == 0, f"ExpectedNodeResults contains unexpected keys: {unexpected_keys}"
+
+    # We always have a node we're comparing values to.
+    assert "node" in assertion, f"Assertion ExpectedNodeResults does not contain a 'node': {assertion}"
+    node_id = assertion["node"]
+
+    # Assert those keys.
+    did_we_test_anything = False
+
+    results = response_json["message"]["results"]
+    node_results = set()
+    for result in results:
+        node_bindings = result["node_bindings"]
+        assert node_id in node_bindings, f"Node binding does not contain node {node_id}: {node_bindings}"
+        node_values = node_bindings[node_id]
+        for nv in node_values:
+            node_results.add(nv["id"])
+
+    if "resultEquals" in assertion:
+        did_we_test_anything = True
+        assert node_results == set(assertion["resultEquals"]), f"Results for node {node_id} do not exactly match expected {assertion['resultEquals']}: {node_results}"
+
+    if not did_we_test_anything:
+        assert False, f"Effectively empty ExpectedNodeResults assertion {assertion}"
 
 
 @pytest.mark.parametrize('example_filename', example_files_to_test)
@@ -90,5 +127,7 @@ def test_example(example_filename):
         match assertion["type"]:
             case "ExpectedResultCounts":
                 assertion_expected_result_counts(assertion, response_json)
+            case "ExpectedNodeResults":
+                assertion_expected_node_results(assertion, response_json)
             case unknown_type:
                 assert False, f"Unknown assertion type {unknown_type} in assertion: {assertion}"
