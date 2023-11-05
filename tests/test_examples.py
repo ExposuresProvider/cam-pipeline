@@ -83,6 +83,16 @@ def assertion_expected_node_results(assertion: dict, response_json):
         did_we_test_anything = True
         assert node_results == set(assertion["resultEquals"]), f"Results for node {node_id} do not exactly match expected {assertion['resultEquals']}: {node_results}"
 
+    if "resultIncludes" in assertion:
+        did_we_test_anything = True
+        assert node_results >= set(assertion["resultIncludes"]),\
+            f"Results for node {node_id} do not include {assertion['resultIncludes']}: {node_results}"
+
+    if "resultExcludes" in assertion:
+        did_we_test_anything = True
+        assert node_results.isdisjoint(set(assertion["resultExcludes"])),\
+            f"Results for node {node_id} do not exclude {assertion['resultExcludes']}: {node_results}"
+
     if not did_we_test_anything:
         assert False, f"Effectively empty ExpectedNodeResults assertion {assertion}"
 

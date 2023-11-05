@@ -1,6 +1,6 @@
 {
   "meta": {
-    "description": "The query used as our example query in Swagger"
+    "description": "What regulates MAP kinase activity (GO:0004707)?"
   },
   "query": {
     "message": {
@@ -8,7 +8,7 @@
         "nodes": {
           "n0": {
             "categories": [
-              "biolink:BiologicalProcessOrActivity"
+              "biolink:NamedThing"
             ]
           },
           "n1": {
@@ -22,16 +22,6 @@
             "predicates": [
               "biolink:regulates"
             ],
-            "qualifier_constraints": [
-              {
-                "qualifier_set": [
-                  {
-                    "qualifier_type_id": "biolink:object_direction_qualifier",
-                    "qualifier_value": "upregulated"
-                  }
-                ]
-              }
-            ],
             "subject": "n0",
             "object": "n1"
           }
@@ -42,7 +32,13 @@
   "assertions": [
     {
       "type": "ExpectedResultCounts",
-      "min": 34
+      "max": 83
+    },
+    {
+      "type": "ExpectedNodeResults",
+      "node": "n0",
+      "resultIncludes": ["GO:0004708", "GO:0004709"],
+      "description": "MAP kinase activity (GO:0004707) is regulated by MAP kinase kinase activity (GO:0004708) and MAP kinase kinase kinase activity (GO:0004709)"
     }
   ]
 }
