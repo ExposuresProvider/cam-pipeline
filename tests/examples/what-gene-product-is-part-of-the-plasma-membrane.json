@@ -1,6 +1,6 @@
 {
   "meta": {
-    "description": "A simple query to test a CAM-KP-API endpoint."
+    "description": "What gene or gene product is part of the plasma membrane?"
   },
   "query": {
     "message": {
@@ -16,7 +16,7 @@
               "biolink:AnatomicalEntity"
             ],
             "ids": [
-              "GO:0005634"
+              "GO:0005886"
             ]
           }
         },
@@ -35,7 +35,7 @@
   "assertions": [
     {
       "type": "ExpectedResultCounts",
-      "min": 23
+      "min": 10
     }
   ]
 }
