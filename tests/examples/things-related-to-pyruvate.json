@@ -1,6 +1,6 @@
 {
   "meta": {
-    "description": "Named things related to pyruvate (CHEBI:15361)"
+    "description": "Named things related to pyruvate (PUBCHEM.COMPOUND:107735)"
   },
   "query": {
     "message": {
@@ -8,12 +8,12 @@
         "nodes": {
           "n0": {
             "ids": [
-              "http://purl.obolibrary.org/obo/CHEBI_15361"
+              "PUBCHEM.COMPOUND:107735"
             ]
           },
           "n1": {
             "categories": [
-              "biolink:NamedThing"
+              "biolink:Protein"
             ]
           }
         },
@@ -22,7 +22,7 @@
             "subject": "n0",
             "object": "n1",
             "predicates": [
-              "biolink:related_to"
+              "biolink:interacts_with"
             ]
           }
         }
@@ -32,7 +32,13 @@
   "assertions": [
     {
       "type": "ExpectedResultCounts",
-      "min": 1035
+      "min": 6
+    },
+    {
+      "type": "ExpectedNodeResults",
+      "node": "n1",
+      "resultEquals": ["UniProtKB:P21796", "UniProtKB:P26297", "UniProtKB:Q9BYZ2", "UniProtKB:Q1EHB4",
+        "UniProtKB:P11498", "UniProtKB:Q8N695"]
     }
   ]
 }
