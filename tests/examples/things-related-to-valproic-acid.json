@@ -7,13 +7,13 @@
       "query_graph": {
         "nodes": {
           "n0": {
-            "ids": [
-              "http://purl.obolibrary.org/obo/CHEBI_39867"
+            "categories": [
+              "biolink:MolecularActivity"
             ]
           },
           "n1": {
-            "categories": [
-              "biolink:NamedThing"
+            "ids": [
+              "PUBCHEM.COMPOUND:3121"
             ]
           }
         },
@@ -22,7 +22,7 @@
             "subject": "n0",
             "object": "n1",
             "predicates": [
-              "biolink:related_to"
+              "biolink:has_input"
             ]
           }
         }
@@ -32,7 +32,7 @@
   "assertions": [
     {
       "type": "ExpectedResultCounts",
-      "min": 9
+      "min": 1
     }
   ]
 }
