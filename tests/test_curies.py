@@ -18,6 +18,7 @@ TRAPI_VERSION = os.getenv("TRAPI_VERSION", "1.4")
 
 # Identifiers to check for.
 CURIES_TO_TEST = [
+    # Identifiers from https://github.com/ExposuresProvider/cam-pipeline/issues/101
     'PUBCHEM.COMPOUND:5865',            # Prednisone |
     'PUBCHEM.COMPOUND:5462351',         # Dextromethorphan hydrobromide (CHEMBL.COMPOUND:CHEMBL1256818) |
     'PUBCHEM.COMPOUND:165363555',       # Trifacta |
@@ -97,13 +98,14 @@ def test_identifier(curie):
             'xref_list': edge['xref'],
             'primary_knowledge_source': edge['biolink:primary_knowledge_source'],
             'id': obj['id'],
-            'label': obj.get('label', ''),
+            'label': obj.get('name', ''),
         }
 
         linked_nodes.append(linked_node)
 
     assert len(linked_nodes) > 0, f"No linked nodes found for CURIE {curie} in {CAM_KP_API_ENDPOINT}"
 
-    print(f"Found linked nodes for CURIE {curie}:")
+    linked_curies = set([n['id'] for n in linked_nodes])
+    print(f"Found {len(linked_nodes)} linked nodes (with {len(linked_curies)} unique CURIEs) for CURIE {curie}:")
     for linked_node in linked_nodes:
         print(f" - {linked_node['id']} ({linked_node['label']}): {linked_node['primary_knowledge_source']} at {linked_node['xref_list']}")
