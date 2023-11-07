@@ -7,7 +7,7 @@ ROBOT=$(ROBOT_ENV) robot
 JVM_ARGS=JVM_ARGS="-Xmx96G -XX:+UseParallelGC"
 ARQ=$(JVM_ARGS) arq
 
-SCALA_RUN=$(JAVA_ENV) COURSIER_CACHE=/workspace/coursier-cache scala-cli run
+SCALA_RUN=$(JAVA_ENV) COURSIER_CACHE=/workspace/coursier-cache scala-cli run --server=false
 
 BIOLINK=v3.4.3
 
@@ -63,13 +63,19 @@ ontologies-merged.ttl: ontologies.ofn ubergraph-axioms.ofn mirror
 noctua-models.dir:
 	git clone --depth 1 https://github.com/geneontology/noctua-models && touch $@
 
+aop-models.dir:
+	git clone --depth 1 https://github.com/ExposuresProvider/noctua-models.git aop-models && touch $@
+
 # Step 6. Merge all the Noctua models. For each model:
 # 	- Loads the model.
 #	- Identifies the ontology IRI.
 #	- Filters out non-production/non-Reactome models.
 #	- Outputs nquads where the graph is the ontology IRI.
 noctua-models.nq: noctua-models.dir scripts/merge_noctua_models.sc
-	$(SCALA_RUN) scripts/merge_noctua_models.sc --  noctua-models/models $@
+	$(SCALA_RUN) scripts/merge_noctua_models.sc -- noctua-models/models $@
+
+aop-models.nq: aop-models.dir scripts/merge_noctua_models.sc
+	$(SCALA_RUN) scripts/merge_noctua_models.sc -- aop-models/models $@
 
 # Step 7. Prepare the Signor models.
 # TODO: replace with a Scala script similar to the one for noctua-models.nq.
@@ -92,7 +98,7 @@ ctd-models.nq: CTD_chem_gene_ixns_structured.xml
 # Step 10. Concatenate all RDF files using a single RIOT instance (to make sure blank nodes don't collapse)
 # to create quad.facts. Each quad has a graph IRI that tells you were the quad came from.
 # Must concatenate multiple RDF files using riot before loading into Souffle, so that blank nodes don't collide
-quad.facts: noctua-models.nq #ctd-models.nq
+quad.facts: noctua-models.nq aop-models.nq ctd-models.nq
 	riot -q --output=N-Quads $^ | sed 's/ /\t/' | sed 's/ /\t/' | sed -E 's/\t(.+) (.+) \.$$/\t\1\t\2/' >$@
 
 # Step 11. Reason over the quad.facts, which:

@@ -8,6 +8,10 @@
 #define MOLECULAR_FUNCTION "<http://purl.obolibrary.org/obo/GO_0003674>"
 #define BIOLOGICAL_PROCESS "<http://purl.obolibrary.org/obo/GO_0008150>"
 #define CELLULAR_COMPONENT "<http://purl.obolibrary.org/obo/GO_0005575>"
+#define HUMAN "<http://purl.obolibrary.org/obo/NCBITaxon_9606>"
+#define MOUSE "<http://purl.obolibrary.org/obo/NCBITaxon_10090>"
+#define RAT "<http://purl.obolibrary.org/obo/NCBITaxon_10116>"
+#define ZEBRAFISH "<http://purl.obolibrary.org/obo/NCBITaxon_7955>"
 #define CANONICAL_RECORD "<http://geneontology.org/lego/canonical_record>"
 #define MOLECULAR_EVENT "<http://purl.obolibrary.org/obo/go/extensions/reacto.owl#molecular_event>"
 
@@ -62,6 +66,7 @@ subprop(sub, supersuper) :- subprop(sub, super), biolink(super, RDFS_SUBPROPERTY
 graph(g) :- quad(_, _, _, g).
 
 primary_source(g, "infores:go-cam") :- graph(g), contains("model.geneontology.org", g).
+primary_source(g, "infores:aop-cam") :- graph(g), contains("model/AOP_", g).
 primary_source(g, "infores:ctd") :- graph(g), contains("ctdbase.org", g).
 // signor?
 
@@ -71,6 +76,10 @@ direct_type(i, t) :-
     t != BIOLOGICAL_PROCESS,
     t != CELLULAR_COMPONENT,
     t != MOLECULAR_EVENT,
+    t != HUMAN,
+    t != MOUSE,
+    t != RAT,
+    t != ZEBRAFISH,
     !contains("http://purl.obolibrary.org/obo/BFO_", t),
     !contains("http://purl.obolibrary.org/obo/CARO_", t).
 

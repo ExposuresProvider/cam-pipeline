@@ -85,4 +85,7 @@ SubObjectPropertyOf(ObjectPropertyChain(<http://purl.obolibrary.org/obo/RO_00022
 SubObjectPropertyOf(ObjectPropertyChain(<http://purl.obolibrary.org/obo/UPHENO_0000001> <http://purl.obolibrary.org/obo/BFO_0000050>) <http://purl.obolibrary.org/obo/UPHENO_0000001>)
 SubObjectPropertyOf(ObjectPropertyChain(:decreasedAmountRole <http://purl.obolibrary.org/obo/RO_0000052>) :is_decrease_of)
 SubObjectPropertyOf(ObjectPropertyChain(:increasedAmountRole <http://purl.obolibrary.org/obo/RO_0000052>) :is_increase_of)
+
+# 'causal agent in process' o 'causally upstream of' o 'has participant' -> 'causally influences'
+SubObjectPropertyOf(ObjectPropertyChain(<http://purl.obolibrary.org/obo/RO_0002500> <http://purl.obolibrary.org/obo/RO_0002411> <http://purl.obolibrary.org/obo/RO_0000057>) <http://purl.obolibrary.org/obo/RO_0002566>)
 )
