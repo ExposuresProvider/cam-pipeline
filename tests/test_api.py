@@ -79,7 +79,7 @@ def test_metadata():
 
     # Check some metadata items.
     assert metadata["graph_id"] == "CAMKP_Automat"
-    assert metadata["graph_name"] == "CAM Provider KG"
+    assert metadata["graph_name"] == "CAM KG"
     assert metadata["final_node_count"] > 111_000
     assert metadata["final_edge_count"] > 3_000_000
 
@@ -172,6 +172,7 @@ def test_sri_testing_data():
         "biolink:has_output",
         "biolink:has_part",
         "biolink:has_participant",
+        "biolink:has_phenotype",
         "biolink:interacts_with",
         "biolink:located_in",
         "biolink:occurs_in",
@@ -190,19 +191,22 @@ def test_sri_testing_data():
         "biolink:ChemicalEntity",
         "biolink:ChemicalMixture",
         "biolink:ComplexMolecularMixture",
+        "biolink:Disease",
         "biolink:Drug",
         "biolink:Gene",
         "biolink:GrossAnatomicalStructure",
         "biolink:MolecularActivity",
         "biolink:MolecularMixture",
+        "biolink:OrganismTaxon",
         "biolink:Pathway",
+        "biolink:PhenotypicFeature",
         "biolink:Polypeptide",
         "biolink:Protein",
         "biolink:SmallMolecule",
     }
 
-    all_edge_categories = set(map(lambda edge: edge["object_category"], edges))
-    assert all_edge_categories == {
+    all_object_categories = set(map(lambda edge: edge["object_category"], edges))
+    assert all_object_categories == {
         "biolink:AnatomicalEntity",
         "biolink:BiologicalProcess",
         "biolink:Cell",
@@ -210,12 +214,15 @@ def test_sri_testing_data():
         "biolink:ChemicalEntity",
         "biolink:ChemicalMixture",
         "biolink:ComplexMolecularMixture",
+        "biolink:Disease",
         "biolink:Gene",
         "biolink:GrossAnatomicalStructure",
         "biolink:MacromolecularComplex",
         "biolink:MolecularActivity",
         "biolink:MolecularMixture",
+        "biolink:OrganismTaxon",
         "biolink:Pathway",
+        "biolink:PhenotypicFeature",
         "biolink:Polypeptide",
         "biolink:Protein",
         "biolink:SmallMolecule",
@@ -239,23 +246,26 @@ def test_meta_knowledge_graph():
     nodes = metakg["nodes"]
     node_types = nodes.keys()
     expected_node_types = {
-        "biolink:SmallMolecule",
-        "biolink:ChemicalEntity",
-        "biolink:ChemicalMixture",
-        "biolink:Polypeptide",
-        "biolink:MolecularMixture",
-        "biolink:Cell",
-        "biolink:MacromolecularComplex",
-        "biolink:ComplexMolecularMixture",
-        "biolink:Gene",
-        "biolink:BiologicalProcess",
-        "biolink:MolecularActivity",
-        "biolink:Pathway",
-        "biolink:CellularComponent",
-        "biolink:Protein",
-        "biolink:Drug",
-        "biolink:GrossAnatomicalStructure",
-        "biolink:AnatomicalEntity",
+        'biolink:BiologicalProcess',
+        'biolink:MolecularActivity',
+        'biolink:CellularComponent',
+        'biolink:Cell',
+        'biolink:AnatomicalEntity',
+        'biolink:Protein',
+        'biolink:Gene',
+        'biolink:Pathway',
+        'biolink:SmallMolecule',
+        'biolink:Polypeptide',
+        'biolink:ChemicalEntity',
+        'biolink:GrossAnatomicalStructure',
+        'biolink:OrganismTaxon',
+        'biolink:MolecularMixture',
+        'biolink:ChemicalMixture',
+        'biolink:PhenotypicFeature',
+        'biolink:ComplexMolecularMixture',
+        'biolink:MacromolecularComplex',
+        'biolink:Disease',
+        'biolink:Drug'
     }
     assert (
         node_types == expected_node_types
