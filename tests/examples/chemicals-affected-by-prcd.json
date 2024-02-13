@@ -1,0 +1,42 @@
+{
+  "meta": {
+    "description": "Chemicals affected by gene Photoreceptor Disc Component (PRCD, NCBIGene:768206)"
+  },
+  "query": {
+    "message": {
+      "query_graph": {
+        "nodes": {
+          "gene": {
+            "categories": [
+              "biolink:Gene"
+            ],
+            "ids": [
+              "NCBIGene:768206"
+            ]
+          },
+          "chemical": {
+            "categories": [
+              "biolink:ChemicalEntity"
+            ]
+          }
+        },
+        "edges": {
+          "t_edge": {
+            "object": "gene",
+            "subject": "chemical",
+            "predicates": [
+              "biolink:affects"
+            ],
+            "knowledge_type": "inferred"
+          }
+        }
+      }
+    }
+  },
+  "assertions": [
+    {
+      "type": "ExpectedResultCounts",
+      "min": 17
+    }
+  ]
+}

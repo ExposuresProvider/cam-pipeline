@@ -1,0 +1,44 @@
+{
+  "meta": {
+    "description": "Molecular activity that has valproic acid (PUBCHEM.COMPOUND:3121) as an input"
+  },
+  "query": {
+    "message": {
+      "query_graph": {
+        "nodes": {
+          "n0": {
+            "categories": [
+              "biolink:MolecularActivity"
+            ]
+          },
+          "n1": {
+            "ids": [
+              "PUBCHEM.COMPOUND:3121"
+            ]
+          }
+        },
+        "edges": {
+          "e0": {
+            "subject": "n0",
+            "object": "n1",
+            "predicates": [
+              "biolink:has_input"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "assertions": [
+    {
+      "type": "ExpectedResultCounts",
+      "min": 1
+    },
+    {
+      "type": "ExpectedNodeResults",
+      "node": "n0",
+      "resultEquals": ["GO:0005488"],
+      "description": "Expected binding (GO:0005488) to have valproic acid (PUBCHEM.COMPOUND:3121) as an input."
+    }
+  ]
+}

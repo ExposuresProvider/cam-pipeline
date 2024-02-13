@@ -1,0 +1,53 @@
+{
+  "meta": {
+    "description": "Find genes that affect the activity of ‘GPR35’, specifically occurring within leukocytes (CL:0000738)"
+  },
+  "query": {
+    "message": {
+      "query_graph": {
+        "nodes": {
+          "n0": {
+            "categories": [
+              "biolink:GeneOrGeneProduct"
+            ]
+          },
+          "n1": {
+            "categories": [
+              "biolink:GeneOrGeneProduct"
+            ]
+          },
+          "n2": {
+            "categories": [
+              "biolink:AnatomicalEntity"
+            ],
+            "ids": [
+              "CL:0000738"
+            ]
+          }
+        },
+        "edges": {
+          "e0": {
+            "subject": "n0",
+            "object": "n1",
+            "predicates": [
+              "biolink:affects"
+            ]
+          },
+          "e1": {
+            "subject": "n1",
+            "object": "n2",
+            "predicates": [
+              "biolink:overlaps"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "assertions": [
+    {
+      "type": "ExpectedResultCounts",
+      "min": 5
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "meta": {
+    "description": "Named things related to pyruvate (PUBCHEM.COMPOUND:107735)"
+  },
+  "query": {
+    "message": {
+      "query_graph": {
+        "nodes": {
+          "n0": {
+            "categories": [
+              "biolink:Protein"
+            ]
+          },
+          "n1": {
+            "ids": [
+              "PUBCHEM.COMPOUND:107735"
+            ]
+          }
+        },
+        "edges": {
+          "e0": {
+            "subject": "n0",
+            "object": "n1",
+            "predicates": [
+              "biolink:interacts_with"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "assertions": [
+    {
+      "type": "ExpectedResultCounts",
+      "min": 6
+    },
+    {
+      "type": "ExpectedNodeResults",
+      "node": "n0",
+      "resultEquals": ["UniProtKB:P21796", "UniProtKB:P26297", "UniProtKB:Q9BYZ2", "UniProtKB:Q1EHB4",
+        "UniProtKB:P11498", "UniProtKB:Q8N695"]
+    }
+  ]
+}

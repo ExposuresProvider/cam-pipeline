@@ -1,0 +1,44 @@
+{
+  "meta": {
+    "description": "What regulates MAP kinase activity (GO:0004707)?"
+  },
+  "query": {
+    "message": {
+      "query_graph": {
+        "nodes": {
+          "n0": {
+            "categories": [
+              "biolink:NamedThing"
+            ]
+          },
+          "n1": {
+            "ids": [
+              "GO:0004707"
+            ]
+          }
+        },
+        "edges": {
+          "e0": {
+            "predicates": [
+              "biolink:regulates"
+            ],
+            "subject": "n0",
+            "object": "n1"
+          }
+        }
+      }
+    }
+  },
+  "assertions": [
+    {
+      "type": "ExpectedResultCounts",
+      "min": 85
+    },
+    {
+      "type": "ExpectedNodeResults",
+      "node": "n0",
+      "resultIncludes": ["GO:0004708", "GO:0004709"],
+      "description": "MAP kinase activity (GO:0004707) is regulated by MAP kinase kinase activity (GO:0004708) and MAP kinase kinase kinase activity (GO:0004709)"
+    }
+  ]
+}
