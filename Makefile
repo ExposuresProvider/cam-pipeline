@@ -9,7 +9,7 @@ ARQ=$(JVM_ARGS) arq
 
 SCALA_RUN=$(JAVA_ENV) COURSIER_CACHE=/workspace/coursier-cache scala-cli run --server=false
 
-BIOLINK=v3.4.3
+BIOLINK=v4.0.0
 
 owlrl-datalog:
 	git clone https://github.com/balhoff/owlrl-datalog.git
@@ -116,7 +116,7 @@ inferred.csv: quad.facts ontology.dir owlrl-datalog/bin/owl_rl_abox_quads
 
 # Step 12. Download the Biolink model.
 biolink-model.owl.ttl:
-	curl -L -O 'https://raw.githubusercontent.com/biolink/biolink-model/$(BIOLINK)/biolink-model.owl.ttl'
+	curl -L -O 'https://raw.githubusercontent.com/biolink/biolink-model/$(BIOLINK)/project/owl/biolink_model.owl.ttl'
 
 # Step 13. Convert Biolink model into an n-triples file.
 biolink.facts: biolink-model.owl.ttl
@@ -124,7 +124,7 @@ biolink.facts: biolink-model.owl.ttl
 
 # Step 14. Download the Biolink Model prefix map.
 biolink-model-prefix-map.json:
-	curl -L -O 'https://raw.githubusercontent.com/biolink/biolink-model/$(BIOLINK)/prefix-map/biolink-model-prefix-map.json'
+	curl -L -O 'https://raw.githubusercontent.com/biolink/biolink-model/$(BIOLINK)/project/prefixmap/biolink_model_prefix_map.json'
 
 # Step 15. Load all the data and ontologies.
 # - ./scripts/kg_edges: compiled from ./scripts/kg_edges.dl with Souffle (see above).
