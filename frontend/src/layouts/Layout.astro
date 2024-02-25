@@ -6,8 +6,9 @@ interface Props {
 
 const { title, description } = Astro.props;
 
-// Import Bootstrap
+// Import Bootstrap (as per https://stackoverflow.com/a/74504073/27310)
 import 'bootstrap/dist/css/bootstrap.css';
+import bootstrap from "bootstrap/dist/js/bootstrap.bundle.min.js?url";
 
 // Import Popper.
 import '@popperjs/core/dist/umd/popper';
@@ -23,6 +24,7 @@ import '@popperjs/core/dist/umd/popper';
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
+		<script src={bootstrap} />
 	</head>
 	<body>
 		<div class="container-fluid">
