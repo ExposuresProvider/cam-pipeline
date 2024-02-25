@@ -1,15 +1,10 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Card from '../components/Card.astro';
+import CAMKPFrontend from '../components/CAMKPFrontend.vue';
 ---
 
-<Layout title="CAM-KP Frontend">
-	<main>
-		<h1>CAM-KP Frontend</h1>
-		<p><strong>Under development.</strong> This frontend allows you to access some parts of CAM-KP without
-		having to use the TRAPI interface. It is primarily intended to ensure that the knowledge from CAM-KP is
-		fully accessible from TRAPI.</p>
-	</main>
+<Layout title="CAM-KP Frontend" description="A frontend to the CAM-KP Knowledge Graph.">
+	<CAMKPFrontend client:only="vue" />
 </Layout>
 
 <style>
