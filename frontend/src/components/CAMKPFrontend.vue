@@ -1,4 +1,15 @@
 <script setup lang="ts">
+import ListCAMs from "./ListCAMs.vue";
+import { ref } from 'vue'
+
+// Some editable
+const automatCAMKPEndpoint = ref("https://automat.renci.org/cam-kp")
+const selectedModel = ref("start")
+
+function changeSelectedModel(modelName: string) {
+  // Allows other components to change the selected model.
+  selectedModel.value = modelName;
+}
 
 </script>
 
@@ -21,6 +32,10 @@
       </div>
     </div>
 
+    <ListCAMs :automatCAMKPEndpoint="automatCAMKPEndpoint" :changeSelectedModel="changeSelectedModel" />
+
+    <p>Selected model: {{selectedModel}}</p>
+
     <div class="accordion" id="advancedOptionsAccordion">
       <div class="accordion-item">
         <h2 class="accordion-header" id="advancedOptionsHeader">
@@ -30,7 +45,12 @@
         </h2>
         <div id="advancedOptions" class="accordion-collapse collapse" aria-labelledby="advancedOptionsHeader" data-bs-parent="#advancedOptionsAccordion">
           <div class="accordion-body">
-            <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+            <form>
+              <div class="mb-3">
+                <label for="automatCAMKPEndpoint" class="form-label">Automat CAM-KP Endpoint</label>
+                <input type="email" class="form-control" id="automatCAMKPEndpoint" aria-describedby="emailHelp" v-model="automatCAMKPEndpoint">
+              </div>
+            </form>
           </div>
         </div>
       </div>
