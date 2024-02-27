@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import ListCAMs from "./ListCAMs.vue";
 import { ref } from 'vue'
+import DisplayCAM from "./DisplayCAM.vue";
 
 // Some editable
 const automatCAMKPEndpoint = ref("https://automat.renci.org/cam-kp")
@@ -34,7 +35,7 @@ function changeSelectedModel(modelName: string) {
 
     <ListCAMs :automatCAMKPEndpoint="automatCAMKPEndpoint" :changeSelectedModel="changeSelectedModel" />
 
-    <p>Selected model: {{selectedModel}}</p>
+    <DisplayCAM :selected-model="selectedModel"></DisplayCAM>
 
     <div class="accordion" id="advancedOptionsAccordion">
       <div class="accordion-item">
