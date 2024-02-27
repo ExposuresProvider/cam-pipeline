@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {ref, watch, withDefaults} from "vue";
+import {computed, ref, watch, withDefaults} from "vue";
 
 export interface Props {
   automatCAMKPEndpoint?: string,
@@ -11,11 +11,36 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const downloadInProgress = ref(false);
-const modelResults = ref([]);
+const modelRows = ref([]);
+const spos = ref([]);
+const descriptions = ref({});
+
+const fromIds = computed(() => [...new Set(spos.value.map(spo => spo[0]).sort())]);
+const toIds = computed(() => [...new Set(spos.value.map(spo => spo[1]).sort())]);
+const predicates = computed(() => [...new Set(spos.value.map(spo => spo[2]).sort())]);
+
+function getPredicates(fromId: string, toId: string) {
+  // TODO: figure out how to do this in the right order.
+  return spos.value.filter(spo => spo[0] == fromId && spo[1] == toId).map(spo => {
+    if (spo[3]) return `${spo[2]} [${spo[3]}]`;
+    return spo[2];
+  });
+}
 
 watch(() => props.selectedModel, (_, modelURL) => {
-  modelResults.value = [];
-  getModelRows(modelURL).then(rows => { modelResults.value = rows });
+  modelRows.value = [];
+  spos.value = [];
+  descriptions.value = {};
+
+  getModelRows(modelURL).then(rows => {
+    modelRows.value = rows;
+    rows.map(row => {
+      spos.value.push([row[0]['id'], row[2]['id'], row[3], row[4]]);
+
+      descriptions.value[row[0]['id']] = row[0]['description'];
+      descriptions.value[row[2]['id']] = row[2]['description'];
+    });
+  });
 });
 
 async function getModelRows(modelURL: string) {
@@ -29,14 +54,18 @@ async function getModelRows(modelURL: string) {
       'Accept': 'application/json',
     },
     'body': JSON.stringify({
-      'query': `MATCH (s)-[p]-(o) WHERE '${modelURL}' IN p.xref RETURN DISTINCT s, p, o`,
+      'query': `MATCH (s)-[p]-(o) WHERE '${modelURL}' IN p.xref RETURN DISTINCT s, p, o, TYPE(p) AS pred_type, CASE
+    WHEN startNode(p) = s THEN ''
+    WHEN endNode(p) = s THEN 'reverse'
+    ELSE ''
+  END AS direction;`,
     }),
   });
   let j: any = await response.json();
 
   downloadInProgress.value = false;
 
-  const results = j['results'].flatMap(r => r['data']);
+  const results = j['results'].flatMap(r => r['data']).map(r => r['row']);
   console.log(results);
   return results;
 }
@@ -50,6 +79,35 @@ async function getModelRows(modelURL: string) {
     </div>
   </div>
 
+
+  <div class="card" v-if="!downloadInProgress">
+    <div class="card-header">
+      <strong>Relationships in selected CAM:</strong> <a target="cam" :href="selectedModel">{{selectedModel}}</a>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <th scope="col">From CURIE</th>
+              <th scope="col" v-for="toId in toIds">
+                <span :title="descriptions[toId]">{{toId}}</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="fromId in fromIds">
+              <td><strong>{{fromId}}</strong><br/>{{descriptions[fromId]}}</td>
+              <td v-for="toId in toIds">
+                <span v-for="pred in getPredicates(fromId, toId)">{{pred}}<br /></span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
   <div class="card" v-if="!downloadInProgress">
     <div class="card-header">
       <strong>Edges in selected CAM:</strong> <a target="cam" :href="selectedModel">{{selectedModel}}</a>
@@ -58,38 +116,33 @@ async function getModelRows(modelURL: string) {
       <table class="table table-bordered mb-2">
         <thead>
           <tr>
-            <td><strong>Subject</strong></td>
-            <td><strong>Edge</strong></td>
-            <td><strong>Meta</strong></td>
-            <td><strong>Object</strong></td>
+            <th>Subject</th>
+            <th>Edge</th>
+            <th>Object</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="result in modelResults">
+          <tr v-for="row in modelRows">
             <td>
-              <strong>{{result['row'][0]['id']}}</strong> {{result['row'][0]['name']}}<br/><br/>
-              <em>Description</em>: {{result['row'][0]['description']}}<br/>
-              <em>Information Content</em>: {{result['row'][0]['information_content']}}<br/>
-              <em>Equivalent identifiers</em>: {{result['row'][0]['equivalent_identifiers']}}
+              <strong>{{row[0]['id']}}</strong> {{row[0]['name']}}<br/><br/>
+              <em>Description</em>: {{row[0]['description']}}<br/>
+              <em>Information Content</em>: {{row[0]['information_content']}}<br/>
+              <em>Equivalent identifiers</em>: {{row[0]['equivalent_identifiers']}}
             </td>
             <td>
-              biolink:primary_knowledge_source: {{result['row'][1]['biolink:primary_knowledge_source']}}
+              <strong>{{row[3]}}<span v-if="row[4]"> [{{row[4]}}]</span></strong><br/>
+              biolink:primary_knowledge_source: {{row[1]['biolink:primary_knowledge_source']}}
               <ul>
-                <li v-for="xref in result['row'][1]['xref']" :key="xref">
+                <li v-for="xref in row[1]['xref']" :key="xref">
                   <a :href="xref" target="xref">{{xref}}</a>
                 </li>
               </ul>
             </td>
             <td>
-              <ul v-for="meta in result['meta']">
-                <li>{{meta}}</li>
-              </ul>
-            </td>
-            <td>
-              <strong>{{result['row'][2]['id']}}</strong> {{result['row'][2]['name']}}<br/><br/>
-              <em>Description</em>: {{result['row'][2]['description']}}<br/>
-              <em>Information Content</em>: {{result['row'][2]['information_content']}}<br/>
-              <em>Equivalent identifiers</em>: {{result['row'][2]['equivalent_identifiers']}}
+              <strong>{{row[2]['id']}}</strong> {{row[2]['name']}}<br/><br/>
+              <em>Description</em>: {{row[2]['description']}}<br/>
+              <em>Information Content</em>: {{row[2]['information_content']}}<br/>
+              <em>Equivalent identifiers</em>: {{row[2]['equivalent_identifiers']}}
             </td>
           </tr>
         </tbody>
@@ -99,5 +152,16 @@ async function getModelRows(modelURL: string) {
 </template>
 
 <style scoped>
+.table-responsive {
+  overflow-x: auto;
+}
 
+/* Ensure the first column is not affected by responsive behavior */
+.table-responsive table td:first-child,
+.table-responsive table th:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  background-color: #fff; /* Match table background color */
+}
 </style>
