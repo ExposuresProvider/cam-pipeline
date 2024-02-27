@@ -29,7 +29,7 @@ async function getModelRows(modelURL: string) {
       'Accept': 'application/json',
     },
     'body': JSON.stringify({
-      'query': `MATCH (s)-[p]-(o) WHERE '${modelURL}' IN p.xref RETURN s, p, o`,
+      'query': `MATCH (s)-[p]-(o) WHERE '${modelURL}' IN p.xref RETURN DISTINCT s, p, o`,
     }),
   });
   let j: any = await response.json();
@@ -40,9 +40,6 @@ async function getModelRows(modelURL: string) {
   console.log(rows);
   return rows;
 }
-
-
-
 </script>
 
 <template>
@@ -65,10 +62,27 @@ async function getModelRows(modelURL: string) {
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(row, index) in modelRows" :key="'row_' + index">
-            <td>{{row[0]}}</td>
-            <td>{{row[1]}}</td>
-            <td>{{row[2]}}</td>
+          <tr v-for="row in modelRows">
+            <td>
+              <strong>{{row[0]['id']}}</strong> {{row[0]['name']}}<br/><br/>
+              <em>Description</em>: {{row[0]['description']}}<br/>
+              <em>Information Content</em>: {{row[0]['information_content']}}<br/>
+              <em>Equivalent identifiers</em>: {{row[0]['equivalent_identifiers']}}
+            </td>
+            <td>
+              biolink:primary_knowledge_source: {{row[1]['biolink:primary_knowledge_source']}}
+              <ul>
+                <li v-for="xref in row[1]['xref']" :key="xref">
+                  <a :href="xref" target="xref">{{xref}}</a>
+                </li>
+              </ul>
+            </td>
+            <td>
+              <strong>{{row[2]['id']}}</strong> {{row[2]['name']}}<br/><br/>
+              <em>Description</em>: {{row[2]['description']}}<br/>
+              <em>Information Content</em>: {{row[2]['information_content']}}<br/>
+              <em>Equivalent identifiers</em>: {{row[2]['equivalent_identifiers']}}
+            </td>
           </tr>
         </tbody>
       </table>
