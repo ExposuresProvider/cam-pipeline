@@ -11,11 +11,11 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const downloadInProgress = ref(false);
-const modelRows = ref([]);
+const modelResults = ref([]);
 
 watch(() => props.selectedModel, (_, modelURL) => {
-  modelRows.value = [];
-  getModelRows(modelURL).then(rows => { modelRows.value = rows });
+  modelResults.value = [];
+  getModelRows(modelURL).then(rows => { modelResults.value = rows });
 });
 
 async function getModelRows(modelURL: string) {
@@ -36,52 +36,60 @@ async function getModelRows(modelURL: string) {
 
   downloadInProgress.value = false;
 
-  const rows = j['results'].flatMap(r => r['data']).map(r => r['row']);
-  console.log(rows);
-  return rows;
+  const results = j['results'].flatMap(r => r['data']);
+  console.log(results);
+  return results;
 }
 </script>
 
 <template>
-  <div class="card">
+
+  <div class="card my-2" v-if="downloadInProgress">
     <div class="card-header">
-      <strong>Display Selected CAM:</strong> <a target="cam" :href="selectedModel">{{selectedModel}}</a>
+      Download in progress ...
+    </div>
+  </div>
+
+  <div class="card" v-if="!downloadInProgress">
+    <div class="card-header">
+      <strong>Edges in selected CAM:</strong> <a target="cam" :href="selectedModel">{{selectedModel}}</a>
     </div>
     <div class="card-body">
-      <div class="card my-2" v-if="downloadInProgress">
-        <div class="card-header">
-          Download in progress ...
-        </div>
-      </div>
       <table class="table table-bordered mb-2">
         <thead>
           <tr>
-            <td>Subject</td>
-            <td>Edge</td>
-            <td>Object</td>
+            <td><strong>Subject</strong></td>
+            <td><strong>Edge</strong></td>
+            <td><strong>Meta</strong></td>
+            <td><strong>Object</strong></td>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="row in modelRows">
+          <tr v-for="result in modelResults">
             <td>
-              <strong>{{row[0]['id']}}</strong> {{row[0]['name']}}<br/><br/>
-              <em>Description</em>: {{row[0]['description']}}<br/>
-              <em>Information Content</em>: {{row[0]['information_content']}}<br/>
-              <em>Equivalent identifiers</em>: {{row[0]['equivalent_identifiers']}}
+              <strong>{{result['row'][0]['id']}}</strong> {{result['row'][0]['name']}}<br/><br/>
+              <em>Description</em>: {{result['row'][0]['description']}}<br/>
+              <em>Information Content</em>: {{result['row'][0]['information_content']}}<br/>
+              <em>Equivalent identifiers</em>: {{result['row'][0]['equivalent_identifiers']}}
             </td>
             <td>
-              biolink:primary_knowledge_source: {{row[1]['biolink:primary_knowledge_source']}}
+              biolink:primary_knowledge_source: {{result['row'][1]['biolink:primary_knowledge_source']}}
               <ul>
-                <li v-for="xref in row[1]['xref']" :key="xref">
+                <li v-for="xref in result['row'][1]['xref']" :key="xref">
                   <a :href="xref" target="xref">{{xref}}</a>
                 </li>
               </ul>
             </td>
             <td>
-              <strong>{{row[2]['id']}}</strong> {{row[2]['name']}}<br/><br/>
-              <em>Description</em>: {{row[2]['description']}}<br/>
-              <em>Information Content</em>: {{row[2]['information_content']}}<br/>
-              <em>Equivalent identifiers</em>: {{row[2]['equivalent_identifiers']}}
+              <ul v-for="meta in result['meta']">
+                <li>{{meta}}</li>
+              </ul>
+            </td>
+            <td>
+              <strong>{{result['row'][2]['id']}}</strong> {{result['row'][2]['name']}}<br/><br/>
+              <em>Description</em>: {{result['row'][2]['description']}}<br/>
+              <em>Information Content</em>: {{result['row'][2]['information_content']}}<br/>
+              <em>Equivalent identifiers</em>: {{result['row'][2]['equivalent_identifiers']}}
             </td>
           </tr>
         </tbody>
