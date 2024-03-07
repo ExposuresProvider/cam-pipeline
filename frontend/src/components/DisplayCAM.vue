@@ -24,7 +24,7 @@ function getPredicates(fromId: string, toId: string) {
   return spos.value.filter(spo => spo[0] == fromId && spo[1] == toId).map(spo => {
     if (spo[3]) return `${spo[2]} [${spo[3]}]`;
     return spo[2];
-  });
+  }).sort();
 }
 
 watch(() => props.selectedModel, (_, modelURL) => {

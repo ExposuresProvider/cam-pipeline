@@ -2,7 +2,7 @@
 /*
  * SearchCAMs: search for CAMs with a set of criteria.
  */
-import {computed, onMounted, ref, watch} from "vue";
+import {ref} from "vue";
 
 export interface Props {
   automatCAMKPEndpoint?: string,
@@ -20,13 +20,13 @@ const objectCURIEsCSV = ref('');
 const predicateCURIEsCSV = ref('');
 const limit = ref(10);
 
-const error = ref('');
+const errors = ref([]);
 const inProgress = ref(false);
 
 // Search functions
 async function updateModelList() {
   inProgress.value = true;
-  error.value = "";
+  errors.value = [];
 
   try {
     const camList = await searchModels(
@@ -40,8 +40,8 @@ async function updateModelList() {
     console.log(`Got ${camList.length} CAM models: `, camList);
 
     props.changeCAMList(camList);
-  } catch (e) {
-    error.value = e.message;
+  } catch (exception) {
+    errors.value = exception.message.split('\n');
   }
 
   inProgress.value = false;
@@ -117,6 +117,11 @@ async function searchModels(subjectOrObjectCURIEs: string[] = [], subjectCURIEs:
     }),
   });
   let j: any = await response.json();
+
+  if(j['errors'].length > 0) {
+    throw Error(j['errors'].map(e => e['message']).join('\n'));
+  }
+
   const rows = j['results'][0]['data'].flatMap(row => row['row'][0][0]);
   console.log("rows", rows);
   return rows;
@@ -130,8 +135,10 @@ async function searchModels(subjectOrObjectCURIEs: string[] = [], subjectCURIEs:
       <strong>Search CAM models</strong>
     </div>
     <div class="card-body">
-      <div v-if="error" class="mb-3 p-1 border-1 bg-danger-subtle">
-        {{error}}
+      <div v-if="errors.length > 0" class="mb-3 p-1 border-1 bg-danger-subtle">
+        <ul>
+          <li v-for="error in errors">{{error}}</li>
+        </ul>
       </div>
       <div class="mb-3">
         <label for="predicateCURIEs" class="form-label">Predicate CURIEs</label>
