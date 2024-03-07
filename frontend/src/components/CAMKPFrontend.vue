@@ -2,14 +2,21 @@
 import ListCAMs from "./ListCAMs.vue";
 import { ref } from 'vue'
 import DisplayCAM from "./DisplayCAM.vue";
+import SearchCAMs from "./SearchCAMs.vue";
 
 // Some editable
 const automatCAMKPEndpoint = ref("https://automat.renci.org/cam-kp")
+const camList = ref<string[]>([]);
 const selectedModel = ref("start")
 
 function changeSelectedModel(modelName: string) {
   // Allows other components to change the selected model.
   selectedModel.value = modelName;
+}
+
+function changeCAMList(newCamList: string[]) {
+  // Allows other components to change the CAM list.
+  camList.value = newCamList;
 }
 
 </script>
@@ -33,7 +40,9 @@ function changeSelectedModel(modelName: string) {
       </div>
     </div>
 
-    <ListCAMs :automatCAMKPEndpoint="automatCAMKPEndpoint" :changeSelectedModel="changeSelectedModel" />
+    <SearchCAMs :automatCAMKPEndpoint="automatCAMKPEndpoint" :changeCAMList="changeCAMList" />
+
+    <ListCAMs :automatCAMKPEndpoint="automatCAMKPEndpoint" :camList="camList" :changeSelectedModel="changeSelectedModel" />
 
     <DisplayCAM :selected-model="selectedModel"></DisplayCAM>
 
