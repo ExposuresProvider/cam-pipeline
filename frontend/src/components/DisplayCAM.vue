@@ -13,11 +13,11 @@ const props = withDefaults(defineProps<Props>(), {
 const downloadInProgress = ref(false);
 const modelRows = ref([]);
 const spos = ref([]);
+const labels = ref({});
 const descriptions = ref({});
 
 const fromIds = computed(() => [...new Set(spos.value.map(spo => spo[0]).sort())]);
 const toIds = computed(() => [...new Set(spos.value.map(spo => spo[1]).sort())]);
-const predicates = computed(() => [...new Set(spos.value.map(spo => spo[2]).sort())]);
 
 function getPredicates(fromId: string, toId: string) {
   // TODO: figure out how to do this in the right order.
@@ -30,12 +30,16 @@ function getPredicates(fromId: string, toId: string) {
 watch(() => props.selectedModel, (_, modelURL) => {
   modelRows.value = [];
   spos.value = [];
+  labels.value = {};
   descriptions.value = {};
 
   getModelRows(modelURL).then(rows => {
     modelRows.value = rows;
     rows.map(row => {
       spos.value.push([row[0]['id'], row[2]['id'], row[3], row[4]]);
+
+      labels.value[row[0]['id']] = row[0]['name'];
+      labels.value[row[2]['id']] = row[2]['name'];
 
       descriptions.value[row[0]['id']] = row[0]['description'];
       descriptions.value[row[2]['id']] = row[2]['description'];
@@ -91,13 +95,13 @@ async function getModelRows(modelURL: string) {
             <tr>
               <th scope="col">From CURIE</th>
               <th scope="col" v-for="toId in toIds">
-                <span :title="descriptions[toId]">{{toId}}</span>
+                <span :title="descriptions[toId]">{{toId}}</span><br />{{labels[toId]}}
               </th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="fromId in fromIds">
-              <td><strong>{{fromId}}</strong><br/>{{descriptions[fromId]}}</td>
+              <td><strong>{{fromId}}</strong> {{labels[fromId]}}<br/>{{descriptions[fromId]}}</td>
               <td v-for="toId in toIds">
                 <span v-for="pred in getPredicates(fromId, toId)">{{pred}}<br /></span>
               </td>

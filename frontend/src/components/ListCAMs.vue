@@ -29,7 +29,7 @@ watch(selectedModel, (newlySelectedModel: string) => props.changeSelectedModel(n
             :class="'list-group-item list- ' + (modelURL == selectedModel ? 'active' : '')"
             @click="selectedModel = modelURL"
         >
-          {{modelURL}} (<a :href="modelURL" target="cam">URL</a>)
+          {{modelURL}} <span v-if="selectedModel != modelURL">(<a :href="modelURL" target="cam">URL</a>)</span>
         </li>
       </ul>
     </div>
