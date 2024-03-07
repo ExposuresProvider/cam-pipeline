@@ -7,7 +7,7 @@ import SearchCAMs from "./SearchCAMs.vue";
 // Some editable
 const automatCAMKPEndpoint = ref("https://automat.renci.org/cam-kp")
 const camList = ref<string[]>([]);
-const selectedModel = ref("start")
+const selectedModel = ref("")
 
 function changeSelectedModel(modelName: string) {
   // Allows other components to change the selected model.

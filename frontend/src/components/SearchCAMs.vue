@@ -20,19 +20,31 @@ const objectCURIEsCSV = ref('');
 const predicateCURIEsCSV = ref('');
 const limit = ref(10);
 
+const error = ref('');
+const inProgress = ref(false);
+
 // Search functions
 async function updateModelList() {
-  const camList = await searchModels(
-      subjectOrObjectCURIEsCSV.value.split(/\s*,\s*/).filter(s => s),
-      subjectCURIEsCSV.value.split(/\s*,\s*/).filter(s => s),
-      predicateCURIEsCSV.value.split(/\s*,\s*/).filter(s => s),
-      objectCURIEsCSV.value.split(/\s*,\s*/).filter(s => s),
-      limit.value
-  );
+  inProgress.value = true;
+  error.value = "";
 
-  console.log(`Got ${camList.length} CAM models: `, camList);
+  try {
+    const camList = await searchModels(
+        subjectOrObjectCURIEsCSV.value.split(/\s*,\s*/).filter(s => s),
+        subjectCURIEsCSV.value.split(/\s*,\s*/).filter(s => s),
+        predicateCURIEsCSV.value.split(/\s*,\s*/).filter(s => s),
+        objectCURIEsCSV.value.split(/\s*,\s*/).filter(s => s),
+        limit.value
+    );
 
-  props.changeCAMList(camList);
+    console.log(`Got ${camList.length} CAM models: `, camList);
+
+    props.changeCAMList(camList);
+  } catch (e) {
+    error.value = e.message;
+  }
+
+  inProgress.value = false;
 }
 
 async function searchModels(subjectOrObjectCURIEs: string[] = [], subjectCURIEs: string[] = [], predicateCURIEs: string[] = [], objectCURIEs: string[] = [], limit=100): Promise<string[]> {
@@ -112,11 +124,15 @@ async function searchModels(subjectOrObjectCURIEs: string[] = [], subjectCURIEs:
 </script>
 
 <template>
+
   <div class="card my-2">
     <div class="card-header">
       <strong>Search CAM models</strong>
     </div>
     <div class="card-body">
+      <div v-if="error" class="mb-3 p-1 border-1 bg-danger-subtle">
+        {{error}}
+      </div>
       <div class="mb-3">
         <label for="predicateCURIEs" class="form-label">Predicate CURIEs</label>
         <input type="text" class="form-control" id="predicateCURIEs" placeholder="biolink:affects, biolink:affected_by" v-model="predicateCURIEsCSV">
@@ -138,7 +154,13 @@ async function searchModels(subjectOrObjectCURIEs: string[] = [], subjectCURIEs:
         <input type="text" class="form-control" id="limit" v-model="limit">
       </div>
 
-      <a @click="updateModelList()" class="btn btn-primary">Search</a>
+      <template v-if="inProgress">
+        <a @click="updateModelList()" class="btn btn-primary"><em>Search in progress</em></a>
+      </template>
+      <template v-else>
+        <a @click="updateModelList()" class="btn btn-primary">Search</a>
+      </template>
+
     </div>
   </div>
 </template>
