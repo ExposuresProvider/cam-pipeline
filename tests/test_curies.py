@@ -20,12 +20,12 @@ TRAPI_VERSION = os.getenv("TRAPI_VERSION", "1.4")
 CURIES_TO_TEST = [
     # Identifiers from https://github.com/ExposuresProvider/cam-pipeline/issues/101
     'PUBCHEM.COMPOUND:5865',            # Prednisone |
-    'PUBCHEM.COMPOUND:5462351',         # Dextromethorphan hydrobromide (CHEMBL.COMPOUND:CHEMBL1256818) |
+    'PUBCHEM.COMPOUND:5360696',         # Dextromethorphan hydrobromide (CHEMBL.COMPOUND:CHEMBL1256818) |
     'PUBCHEM.COMPOUND:165363555',       # Trifacta |
-    'PUBCHEM.COMPOUND:2462',            # Fluticasone (HMDB:HMDB0252416) |
+    'PUBCHEM.COMPOUND:5311101',         # Fluticasone (HMDB:HMDB0252416) |
     "PUBCHEM.COMPOUND:123600",          # Levalbuterol |
-    'PUBCHEM.COMPOUND:2462',            # Budesonide (HMDB:HMDB0242500) |
-    "PUBCHEM.COMPOUND:3410",            # Formoterol (CHEBI:5147) |
+    'PUBCHEM.COMPOUND:5281004',         # Budesonide (HMDB:HMDB0242500) |
+    "PUBCHEM.COMPOUND:45358055",        # Formoterol (CHEBI:5147) |
     'PUBCHEM.COMPOUND:5742832',         # Aztreonam (CHEMBL.COMPOUND:CHEMBL158) |
     "PUBCHEM.COMPOUND:145068",          # Nitric oxide |
     "PUBCHEM.COMPOUND:281",             # Carbon monoxide |
@@ -104,6 +104,7 @@ def test_identifier(curie):
         linked_nodes.append(linked_node)
 
     assert len(linked_nodes) > 0, f"No linked nodes found for CURIE {curie} in {CAM_KP_API_ENDPOINT}"
+    # assert len(linked_nodes) == 0, f"{len(linked_nodes)} linked nodes found for CURIE {curie} in {CAM_KP_API_ENDPOINT}"
 
     linked_curies = set([n['id'] for n in linked_nodes])
     print(f"Found {len(linked_nodes)} linked nodes (with {len(linked_curies)} unique CURIEs) for CURIE {curie}:")
