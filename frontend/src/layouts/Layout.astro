@@ -1,0 +1,37 @@
+---
+interface Props {
+	title: string;
+	description?: string;
+}
+
+const { title, description } = Astro.props;
+
+// Import Bootstrap (as per https://stackoverflow.com/a/74504073/27310)
+import 'bootstrap/dist/css/bootstrap.css';
+import bootstrap from "bootstrap/dist/js/bootstrap.bundle.min.js?url";
+
+// Import Popper.
+import '@popperjs/core/dist/umd/popper';
+
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content={description} />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/cam-pipeline/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+		<script src={bootstrap} />
+	</head>
+	<body>
+		<div class="container-fluid">
+			<slot />
+		</div>
+	</body>
+</html>
+
+<style is:global>
+</style>

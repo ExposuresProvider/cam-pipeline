@@ -1,0 +1,11 @@
+---
+import Layout from '../layouts/Layout.astro';
+import CAMKPFrontend from '../components/CAMKPFrontend.vue';
+---
+
+<Layout title="CAM-KP Frontend" description="A frontend to the CAM-KP Knowledge Graph.">
+	<CAMKPFrontend client:only="vue" />
+</Layout>
+
+<style>
+</style>
