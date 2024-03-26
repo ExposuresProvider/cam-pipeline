@@ -112,13 +112,17 @@ def test_metadata():
     assert "UBERON" in node_curie_prefixes
     assert "UniProtKB" in node_curie_prefixes
 
-    assert set(metadata["qc_results"]["edge_properties"]) == {
+    expected_edge_properties = {
         "predicate",
-        "biolink:primary_knowledge_source",
+        "primary_knowledge_source",
+        "aggregator_knowledge_source",
         "object",
         "subject",
         "xref",
     }
+    actual_edge_properties = set(metadata["qc_results"]["edge_properties"])
+    assert actual_edge_properties == expected_edge_properties,\
+        f"Unexpected edge properties: added {actual_edge_properties - expected_edge_properties}, deleted {expected_edge_properties - actual_edge_properties}"
 
     # Make sure we don't have any warnings.
     assert metadata["qc_results"]["warnings"] == {}
