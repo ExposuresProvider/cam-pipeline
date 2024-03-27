@@ -1,0 +1,202 @@
+mapping_type	predicate	biolink_predicate	qualifier_set
+exact	SEMMEDDB:AUGMENTS	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"activity or abundance"}||{"biolink:object_direction_qualifier":"increased"}
+exact	CTD:affects_abundance_of	biolink:affects	{"biolink:object_aspect_qualifier":"abundance"}
+exact	CTD:increases_abundance_of	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"abundance"}||{"biolink:object_direction_qualifier":"increased"}
+exact	CTD:decreases_abundance_of	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"abundance"}||{"biolink:object_direction_qualifier":"decreased"}
+exact	CTD:affects_activity_of	biolink:affects	{"biolink:object_aspect_qualifier":"activity"}
+exact	DGIdb:modulator	biolink:affects	{"biolink:object_aspect_qualifier":"activity"}
+exact	CTD:increases_activity_of	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"activity"}||{"biolink:object_direction_qualifier":"increased"}
+exact	CHEMBL.MECHANISM:releasing_agent	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"activity"}||{"biolink:object_direction_qualifier":"increased"}
+exact	CHEMBL.MECHANISM:opener	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"activity"}||{"biolink:object_direction_qualifier":"increased"}
+exact	DGIdb:agonist	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"activity"}||{"biolink:object_direction_qualifier":"increased"}
+exact	DGIdb:activator	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"activity"}||{"biolink:object_direction_qualifier":"increased"}
+exact	CHEMBL.MECHANISM:positive_modulator	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"activity"}||{"biolink:object_direction_qualifier":"increased"}
+narrow	DGIdb:partial_agonist	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"activity"}||{"biolink:object_direction_qualifier":"increased"}
+narrow	SEMMEDDB:STIMULATES	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"activity"}||{"biolink:object_direction_qualifier":"increased"}
+exact	SEMMEDDB:INHIBITS	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"activity"}||{"biolink:object_direction_qualifier":"decreased"}
+exact	DGIdb:channel_blocker	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"activity"}||{"biolink:object_direction_qualifier":"decreased"}
+exact	GAMMA:ki	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"activity"}||{"biolink:object_direction_qualifier":"decreased"}
+exact	DGIdb:negative_modulator	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"activity"}||{"biolink:object_direction_qualifier":"decreased"}
+exact	CHEMBL.MECHANISM:negative_modulator	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"activity"}||{"biolink:object_direction_qualifier":"decreased"}
+exact	CHEMBL.MECHANISM:negative_allosteric_modulator	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"activity"}||{"biolink:object_direction_qualifier":"decreased"}
+exact	DGIdb:antagonist	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"activity"}||{"biolink:object_direction_qualifier":"decreased"}
+exact	DGIdb:vaccine	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"activity"}||{"biolink:object_direction_qualifier":"decreased"}
+exact	CTD:decreases_activity_of	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"activity"}||{"biolink:object_direction_qualifier":"decreased"}
+exact	CHEMBL.MECHANISM:blocker	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"activity"}||{"biolink:object_direction_qualifier":"decreased"}
+exact	GAMMA:ic50	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"activity"}||{"biolink:object_direction_qualifier":"decreased"}
+exact	DGIdb:gating_inhibitor	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"activity"}||{"biolink:object_direction_qualifier":"decreased"}
+exact	DGIdb:blocker	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"activity"}||{"biolink:object_direction_qualifier":"decreased"}
+exact	DGIdb:inverse_agonist	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"activity"}||{"biolink:object_direction_qualifier":"decreased"}
+exact	CHEMBL.MECHANISM:antisense_inhibitor	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"activity"}||{"biolink:object_direction_qualifier":"decreased"}
+exact	CHEMBL.MECHANISM:inhibitor	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"activity"}||{"biolink:object_direction_qualifier":"decreased"}
+exact	DGIdb:inhibitor	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"activity"}||{"biolink:object_direction_qualifier":"decreased"}
+exact	CTD:affects_expression_of	biolink:affects	{"biolink:object_aspect_qualifier":"expression"}
+exact	GTEx:affects_expression_in	biolink:affects	{"biolink:object_aspect_qualifier":"expression"}
+exact	<http://purl.obolibrary.org/obo/RO_0003003>	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"expression"}||{"biolink:object_direction_qualifier":"increased"}
+exact	CTD:increases_expression_of	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"expression"}||{"biolink:object_direction_qualifier":"increased"}
+exact	<http://purl.obolibrary.org/obo/RO_0003002>	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"expression"}||{"biolink:object_direction_qualifier":"decreased"}
+exact	CTD:decreases_expression_of	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"expression"}||{"biolink:object_direction_qualifier":"decreased"}
+exact	CTD:affects_folding_of	biolink:affects	{"biolink:object_aspect_qualifier":"folding"}
+exact	CTD:increases_folding_of	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"folding"}||{"biolink:object_direction_qualifier":"increased"}
+exact	CTD:decreases_folding_of	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"folding"}||{"biolink:object_direction_qualifier":"decreased"}
+exact	CTD:affects_localization_of	biolink:affects	{"biolink:object_aspect_qualifier":"localization"}
+exact	<http://purl.obolibrary.org/obo/GOREL_0002003>	biolink:affects	{"biolink:object_aspect_qualifier":"localization"}
+exact	CTD:increases_localization_of	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"localization"}||{"biolink:object_direction_qualifier":"increased"}
+exact	CTD:decreases_localization_of	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"localization"}||{"biolink:object_direction_qualifier":"decreased"}
+exact	CTD:affects_molecular_modification_of	biolink:affects	{"biolink:object_aspect_qualifier":"molecular modification"}
+narrow	CTD:affects_carboxylation	biolink:affects	{"biolink:object_aspect_qualifier":"molecular modification"}
+narrow	CTD:affects_reduction	biolink:affects	{"biolink:object_aspect_qualifier":"molecular modification"}
+narrow	CTD:affects_O-linked_glycosylation	biolink:affects	{"biolink:object_aspect_qualifier":"molecular modification"}
+narrow	CTD:affects_nitrosation	biolink:affects	{"biolink:object_aspect_qualifier":"molecular modification"}
+narrow	CTD:affects_lipidation	biolink:affects	{"biolink:object_aspect_qualifier":"molecular modification"}
+narrow	CTD:affects_myristoylation	biolink:affects	{"biolink:object_aspect_qualifier":"molecular modification"}
+narrow	CTD:affects_prenylation	biolink:affects	{"biolink:object_aspect_qualifier":"molecular modification"}
+narrow	CTD:affects_alkylation	biolink:affects	{"biolink:object_aspect_qualifier":"molecular modification"}
+narrow	CTD:affects_acylation	biolink:affects	{"biolink:object_aspect_qualifier":"molecular modification"}
+narrow	CTD:affects_hydroxylation	biolink:affects	{"biolink:object_aspect_qualifier":"molecular modification"}
+narrow	CTD:affects_N-linked_glycosylation	biolink:affects	{"biolink:object_aspect_qualifier":"molecular modification"}
+narrow	CTD:affects_glucuronidation	biolink:affects	{"biolink:object_aspect_qualifier":"molecular modification"}
+narrow	CTD:affects_oxidation	biolink:affects	{"biolink:object_aspect_qualifier":"molecular modification"}
+narrow	CTD:affects_carbamoylation	biolink:affects	{"biolink:object_aspect_qualifier":"molecular modification"}
+narrow	CTD:affects_sulfation	biolink:affects	{"biolink:object_aspect_qualifier":"molecular modification"}
+narrow	CTD:affects_glycosylation	biolink:affects	{"biolink:object_aspect_qualifier":"molecular modification"}
+narrow	CTD:affects_farnesylation	biolink:affects	{"biolink:object_aspect_qualifier":"molecular modification"}
+narrow	CTD:affects_acetylation	biolink:affects	{"biolink:object_aspect_qualifier":"molecular modification"}
+narrow	CTD:affects_ribosylation	biolink:affects	{"biolink:object_aspect_qualifier":"molecular modification"}
+narrow	CTD:affects_palmitoylation	biolink:affects	{"biolink:object_aspect_qualifier":"molecular modification"}
+narrow	CTD:affects_amination	biolink:affects	{"biolink:object_aspect_qualifier":"molecular modification"}
+narrow	CTD:affects_geranoylation	biolink:affects	{"biolink:object_aspect_qualifier":"molecular modification"}
+narrow	CTD:affects_ubiquitination	biolink:affects	{"biolink:object_aspect_qualifier":"molecular modification"}
+narrow	CTD:affects_ethylation	biolink:affects	{"biolink:object_aspect_qualifier":"molecular modification"}
+narrow	CTD:affects_ADP-ribosylation	biolink:affects	{"biolink:object_aspect_qualifier":"molecular modification"}
+narrow	CTD:affects_phosphorylation	biolink:affects	{"biolink:object_aspect_qualifier":"molecular modification"}
+narrow	CTD:affects_sumoylation	biolink:affects	{"biolink:object_aspect_qualifier":"molecular modification"}
+narrow	CTD:affects_methylation	biolink:affects	{"biolink:object_aspect_qualifier":"molecular modification"}
+narrow	CTD:affects_glutathionylation	biolink:affects	{"biolink:object_aspect_qualifier":"molecular modification"}
+narrow	CTD:affects_nucleotidylation	biolink:affects	{"biolink:object_aspect_qualifier":"molecular modification"}
+narrow	CTD:affects_glycation	biolink:affects	{"biolink:object_aspect_qualifier":"molecular modification"}
+exact	CTD:increases_molecular_modification_of	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"increased"}
+narrow	CTD:increases_methylation	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"increased"}
+narrow	CTD:increases_amination	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"increased"}
+narrow	CTD:increases_nucleotidylation	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"increased"}
+narrow	CTD:increases_ethylation	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"increased"}
+narrow	CTD:increases_ubiquitination	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"increased"}
+narrow	CTD:increases_ribosylation	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"increased"}
+narrow	GAMMA:acetylation	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"increased"}
+narrow	CTD:increases_reduction	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"increased"}
+narrow	CTD:increases_carbamoylation	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"increased"}
+narrow	CTD:increases_geranoylation	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"increased"}
+narrow	CTD:increases_acylation	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"increased"}
+narrow	CTD:increases_N-linked_glycosylation	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"increased"}
+narrow	CTD:increases_carboxylation	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"increased"}
+narrow	CTD:increases_hydroxylation	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"increased"}
+narrow	CTD:increases_phosphorylation	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"increased"}
+narrow	CTD:increases_acetylation	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"increased"}
+narrow	CTD:increases_sulfation	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"increased"}
+narrow	CTD:increases_myristoylation	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"increased"}
+narrow	CTD:increases_nitrosation	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"increased"}
+narrow	CTD:increases_sumoylation	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"increased"}
+narrow	CTD:increases_farnesylation	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"increased"}
+narrow	CTD:increases_ADP-ribosylation	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"increased"}
+narrow	CTD:increases_alkylation	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"increased"}
+narrow	CTD:increases_palmitoylation	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"increased"}
+narrow	CTD:increases_glucuronidation	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"increased"}
+narrow	CTD:increases_glycation	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"increased"}
+narrow	GAMMA:oxidizer	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"increased"}
+narrow	CTD:increases_prenylation	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"increased"}
+narrow	CTD:increases_glutathionylation	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"increased"}
+narrow	CTD:increases_glycosylation	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"increased"}
+narrow	CTD:increases_lipidation	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"increased"}
+narrow	CTD:increases_O-linked_glycosylation	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"increased"}
+narrow	CTD:increases_oxidation	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"increased"}
+exact	CTD:decreases_molecular_modification_of	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"decreased"}
+narrow	GAMMA:deoxidizer	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"decreased"}
+narrow	CTD:decreases_carbamoylation	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"decreased"}
+narrow	CTD:decreases_sulfation	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"decreased"}
+narrow	CTD:decreases_ubiquitination	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"decreased"}
+narrow	CTD:decreases_glycation	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"decreased"}
+narrow	CTD:decreases_myristoylation	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"decreased"}
+narrow	CTD:decreases_reduction	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"decreased"}
+narrow	CTD:decreases_lipidation	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"decreased"}
+narrow	CTD:decreases_amination	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"decreased"}
+narrow	CTD:decreases_ribosylation	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"decreased"}
+narrow	CTD:decreases_acetylation	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"decreased"}
+narrow	CTD:decreases_N-linked_glycosylation	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"decreased"}
+narrow	CTD:decreases_ethylation	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"decreased"}
+narrow	CTD:decreases_geranoylation	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"decreased"}
+narrow	CTD:decreases_palmitoylation	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"decreased"}
+narrow	CTD:decreases_glutathionylation	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"decreased"}
+narrow	CTD:decreases_oxidation	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"decreased"}
+narrow	CTD:decreases_acylation	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"decreased"}
+narrow	CTD:decreases_nucleotidylation	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"decreased"}
+narrow	CTD:decreases_methylation	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"decreased"}
+narrow	CTD:decreases_nitrosation	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"decreased"}
+narrow	CTD:decreases_sumoylation	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"decreased"}
+narrow	CTD:decreases_O-linked_glycosylation	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"decreased"}
+narrow	CTD:decreases_phosphorylation	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"decreased"}
+narrow	CTD:decreases_hydroxylation	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"decreased"}
+narrow	CTD:decreases_ADP-ribosylation	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"decreased"}
+narrow	CTD:decreases_prenylation	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"decreased"}
+narrow	CTD:decreases_carboxylation	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"decreased"}
+narrow	CTD:decreases_glucuronidation	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"decreased"}
+narrow	CTD:decreases_glycosylation	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"decreased"}
+narrow	CTD:decreases_farnesylation	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"decreased"}
+narrow	CTD:decreases_alkylation	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular modification"}||{"biolink:object_direction_qualifier":"decreased"}
+exact	CTD:affects_metabolic_processing_of	biolink:affects	{"biolink:object_aspect_qualifier":"metabolic processing"}
+exact	CTD:increases_metabolic_processing_of	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"metabolic processing"}||{"biolink:object_direction_qualifier":"increased"}
+exact	CTD:decreases_metabolic_processing_of	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"metabolic processing"}||{"biolink:object_direction_qualifier":"decreased"}
+exact	CTD:affects_synthesis_of	biolink:affects	{"biolink:object_aspect_qualifier":"synthesis"}
+exact	CTD:increases_synthesis_of	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"synthesis"}||{"biolink:object_direction_qualifier":"increased"}
+exact	CTD:decreases_synthesis_of	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"synthesis"}||{"biolink:object_direction_qualifier":"decreased"}
+exact	CTD:affects_transport_of	biolink:affects	{"biolink:object_aspect_qualifier":"transport"}
+exact	CTD:increases_transport_of	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"transport"}||{"biolink:object_direction_qualifier":"increased"}
+narrow	<http://purl.obolibrary.org/obo/RO_0002313>	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"transport"}||{"biolink:object_direction_qualifier":"increased"}
+narrow	GAMMA:transporter	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"transport"}||{"biolink:object_direction_qualifier":"increased"}
+narrow	<http://purl.obolibrary.org/obo/RO_0002340>	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"transport"}||{"biolink:object_direction_qualifier":"increased"}
+narrow	GAMMA:carrier	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"transport"}||{"biolink:object_direction_qualifier":"increased"}
+narrow	<http://purl.obolibrary.org/obo/RO_0002345>	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"transport"}||{"biolink:object_direction_qualifier":"increased"}
+exact	CTD:decreases_transport_of	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"transport"}||{"biolink:object_direction_qualifier":"decreased"}
+exact	CTD:affects_degradation_of	biolink:affects	{"biolink:object_aspect_qualifier":"degradation"}
+exact	CTD:increases_degradation_of	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"degradation"}||{"biolink:object_direction_qualifier":"increased"}
+exact	CTD:increases_cleavage	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"degradation"}||{"biolink:object_direction_qualifier":"increased"}
+exact	CTD:increases_hydrolysis	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"degradation"}||{"biolink:object_direction_qualifier":"increased"}
+exact	<http://purl.obolibrary.org/obo/GOREL_0002004>	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"degradation"}||{"biolink:object_direction_qualifier":"increased"}
+exact	CTD:decreases_degradation_of	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"degradation"}||{"biolink:object_direction_qualifier":"decreased"}
+exact	CTD:decreases_cleavage	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"degradation"}||{"biolink:object_direction_qualifier":"decreased"}
+exact	CTD:decreases_hydrolysis	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"degradation"}||{"biolink:object_direction_qualifier":"decreased"}
+exact	CTD:affects_secretion_of	biolink:affects	{"biolink:object_aspect_qualifier":"secretion"}
+broad	CTD:affects_export	biolink:affects	{"biolink:object_aspect_qualifier":"secretion"}
+exact	CTD:increases_secretion_of	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"secretion"}||{"biolink:object_direction_qualifier":"increased"}
+exact	CTD:decreases_secretion_of	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"secretion"}||{"biolink:object_direction_qualifier":"decreased"}
+exact	CTD:affects_mutation_rate_of	biolink:affects	{"biolink:object_aspect_qualifier":"mutation rate"}
+exact	CTD:increases_mutation_rate_of	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"mutation rate"}||{"biolink:object_direction_qualifier":"increased"}
+exact	CTD:increases_mutagenesis	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"mutation rate"}||{"biolink:object_direction_qualifier":"increased"}
+exact	CTD:decreases_mutation_rate_of	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"mutation rate"}||{"biolink:object_direction_qualifier":"decreased"}
+exact	CTD:decreases_mutagenesis	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"mutation rate"}||{"biolink:object_direction_qualifier":"decreased"}
+exact	CTD:affects_splicing_of	biolink:affects	{"biolink:object_aspect_qualifier":"splicing"}
+exact	CTD:increases_splicing_of	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"splicing"}||{"biolink:object_direction_qualifier":"increased"}
+exact	CTD:increases_RNA_splicing	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"splicing"}||{"biolink:object_direction_qualifier":"increased"}
+exact	CTD:decreases_splicing_of	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"splicing"}||{"biolink:object_direction_qualifier":"decreased"}
+exact	CTD:decreases_RNA_splicing	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"splicing"}||{"biolink:object_direction_qualifier":"decreased"}
+exact	CTD:affects_splicing_of	biolink:affects	{"biolink:object_aspect_qualifier":"splicing"}
+exact	CTD:increases_splicing_of	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"splicing"}||{"biolink:object_direction_qualifier":"increased"}
+exact	CTD:decreases_splicing_of	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"splicing"}||{"biolink:object_direction_qualifier":"decreased"}
+exact	CTD:affects_secretion_of	biolink:affects	{"biolink:object_aspect_qualifier":"secretion"}
+exact	CTD:increases_secretion_of	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"secretion"}||{"biolink:object_direction_qualifier":"increased"}
+exact	CTD:decreases_secretion_of	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"secretion"}||{"biolink:object_direction_qualifier":"decreased"}
+exact	CTD:affects_uptake_of	biolink:affects	{"biolink:object_aspect_qualifier":"uptake"}
+broad	CTD:affects_import	biolink:affects	{"biolink:object_aspect_qualifier":"uptake"}
+exact	CTD:increases_uptake_of	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"uptake"}||{"biolink:object_direction_qualifier":"increased"}
+broad	CTD:increases_import	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"uptake"}||{"biolink:object_direction_qualifier":"increased"}
+exact	CTD:decreases_uptake_of	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"uptake"}||{"biolink:object_direction_qualifier":"decreased"}
+broad	CTD:decreases_import	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"uptake"}||{"biolink:object_direction_qualifier":"decreased"}
+exact	CTD:affects_molecular_interaction	biolink:affects	{"biolink:object_aspect_qualifier":"molecular interaction"}
+exact	CTD:increases_molecular_interaction	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular interaction"}||{"biolink:object_direction_qualifier":"increased"}
+exact	CTD:decreases_molecular_interaction	biolink:affects	{"biolink:qualified_predicate":"biolink:causes"}||{"biolink:object_aspect_qualifier":"molecular interaction"}||{"biolink:object_direction_qualifier":"decreased"}
+exact	<http://purl.obolibrary.org/obo/RO_0002212>	biolink:regulates	{"biolink:object_direction_qualifier":"downregulated"}
+exact	<http://purl.obolibrary.org/obo/RO_0002449>	biolink:regulates	{"biolink:object_direction_qualifier":"downregulated"}
+exact	<http://purl.obolibrary.org/obo/RO_0002450>	biolink:regulates	{"biolink:object_direction_qualifier":"upregulated"}
+exact	<http://purl.obolibrary.org/obo/RO_0002213>	biolink:regulates	{"biolink:object_direction_qualifier":"upregulated"}
+exact	<http://purl.obolibrary.org/obo/RO_0002212>	biolink:regulates	{"biolink:object_direction_qualifier":"downregulated"}
+exact	<http://purl.obolibrary.org/obo/RO_0002305>	biolink:regulates	{"biolink:object_direction_qualifier":"downregulated"}
+exact	<http://purl.obolibrary.org/obo/RO_0002304>	biolink:regulates	{"biolink:object_direction_qualifier":"upregulated"}
