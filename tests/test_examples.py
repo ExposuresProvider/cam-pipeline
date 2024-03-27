@@ -122,7 +122,7 @@ def test_example(example_filename):
     trapi_query = example["query"]
     query_post_url = f"{CAM_KP_API_ENDPOINT}{TRAPI_VERSION}/query"
     response = requests.post(query_post_url, json=trapi_query)
-    assert response.ok, f"Got response {response} when attempting to post example TRAPI message to {query_post_url}: {trapi_query_what_is_hsp8_mus_musculus_active_in}"
+    assert response.ok, f"Got response {response} when attempting to post example TRAPI message to {query_post_url}: {trapi_query}"
 
     response_json = response.json()
     assert "message" in response_json
