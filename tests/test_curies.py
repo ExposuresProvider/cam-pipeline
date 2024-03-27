@@ -96,7 +96,7 @@ def test_identifier(curie):
 
         linked_node = {
             'xref_list': edge['xref'],
-            'primary_knowledge_source': edge['biolink:primary_knowledge_source'],
+            'primary_knowledge_source': edge['primary_knowledge_source'],
             'id': obj['id'],
             'label': obj.get('name', ''),
         }

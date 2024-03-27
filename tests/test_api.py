@@ -2372,8 +2372,8 @@ def test_source_target_curie_one_hop_and_simple_spec():
             edge = result[1]
             if "xref" in edge:
                 xrefs.update(edge["xref"])
-            if "biolink:primary_knowledge_source" in edge:
-                knowledge_sources.add(edge["biolink:primary_knowledge_source"])
+            if "primary_knowledge_source" in edge:
+                knowledge_sources.add(edge["primary_knowledge_source"])
 
             if "id" in result[0]:
                 node_ids.add(result[0]["id"])
@@ -2516,5 +2516,5 @@ def test_cypher():
 
         assert s["id"] == "NCBIGene:15481"
         assert p["xref"] == ["http://model.geneontology.org/SYNGO_2911"]
-        assert p["biolink:primary_knowledge_source"] == "infores:go-cam"
+        assert p["primary_knowledge_source"] == "infores:go-cam"
         assert o["id"] == "UBERON:0002240"
