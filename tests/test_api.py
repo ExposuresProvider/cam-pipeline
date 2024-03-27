@@ -2480,7 +2480,7 @@ def test_query():
             "attribute_type_id": "biolink:xref",
             "original_attribute_name": "xref",
             "value": ["http://model.geneontology.org/SYNGO_2911"],
-            "value_type_id": "EDAM:data_0006",
+            "value_type_id": "xsd:anyURI",
         }
     ]
 
