@@ -121,8 +121,9 @@ def test_metadata():
         "xref",
     }
     actual_edge_properties = set(metadata["qc_results"]["edge_properties"])
-    assert actual_edge_properties == expected_edge_properties,\
-        f"Unexpected edge properties: added {actual_edge_properties - expected_edge_properties}, deleted {expected_edge_properties - actual_edge_properties}"
+    assert (
+        actual_edge_properties == expected_edge_properties
+    ), f"Unexpected edge properties: added {actual_edge_properties - expected_edge_properties}, deleted {expected_edge_properties - actual_edge_properties}"
 
     # Make sure we don't have any warnings.
     assert metadata["qc_results"]["warnings"] == {}
@@ -2461,15 +2462,16 @@ def test_query():
     assert spinal_cord_edge["predicate"] == "biolink:active_in"
     assert spinal_cord_edge["object"] == "UBERON:0002240"
     assert spinal_cord_edge["sources"] == [
+        {"resource_id": "infores:go-cam", "resource_role": "primary_knowledge_source"},
         {
-            "resource_id": "infores:go-cam",
-            "resource_role": "primary_knowledge_source",
-            "upstream_resource_ids": None,
+            "resource_id": "infores:cam-kp",
+            "resource_role": "aggregator_knowledge_source",
+            "upstream_resource_ids": ["infores:go-cam"],
         },
         {
             "resource_id": "infores:automat-cam-kp",
             "resource_role": "aggregator_knowledge_source",
-            "upstream_resource_ids": ["infores:go-cam"],
+            "upstream_resource_ids": ["infores:cam-kp"],
         },
     ]
     assert "qualifiers" not in spinal_cord_edge
