@@ -13,6 +13,9 @@ const props = withDefaults(defineProps<Props>(), {
   automatCAMKPEndpoint: 'https://automat.renci.org/cam-kp',
 });
 
+// Store results.
+const results = ref([]);
+
 // Search criteria
 const subjectOrObjectCURIEsCSV = ref('');
 const subjectCURIEsCSV = ref('');
@@ -38,6 +41,7 @@ async function updateModelList() {
     );
 
     console.log(`Got ${camList.length} CAM models: `, camList);
+    results.value = camList;
 
     props.changeCAMList(camList);
   } catch (exception) {
@@ -129,45 +133,66 @@ async function searchModels(subjectOrObjectCURIEs: string[] = [], subjectCURIEs:
 </script>
 
 <template>
+  <div>
+    <div class="card my-2">
+      <div class="card-header">
+        <strong>Search CAM models</strong>
+      </div>
+      <div class="card-body">
+        <div v-if="errors.length > 0" class="mb-3 p-1 border-1 bg-danger-subtle">
+          <ul>
+            <li v-for="error in errors">{{error}}</li>
+          </ul>
+        </div>
+        <div class="mb-3">
+          <label for="predicateCURIEs" class="form-label">Predicate CURIEs</label>
+          <input type="text" class="form-control" id="predicateCURIEs" placeholder="biolink:affects, biolink:affected_by" v-model="predicateCURIEsCSV">
+        </div>
+        <div class="mb-3">
+          <label for="subjectOrObjectCURIEs" class="form-label">Subject or Object CURIEs</label>
+          <input type="text" class="form-control" id="subjectOrObjectCURIEs" placeholder="PUBCHEM.COMPOUND:5865, CHEBI:8382" v-model="subjectOrObjectCURIEsCSV">
+        </div>
+        <div class="mb-3">
+          <label for="subjectCURIEs" class="form-label">Subject CURIEs</label>
+          <input type="text" class="form-control" id="subjectCURIEs" placeholder="CHEMBL.COMPOUND:CHEMBL158, PUBCHEM.COMPOUND:5742832" v-model="subjectCURIEsCSV">
+        </div>
+        <div class="mb-3">
+          <label for="objectCURIEs" class="form-label">Object CURIEs</label>
+          <input type="text" class="form-control" id="objectCURIEs" placeholder="CHEMBL.COMPOUND:CHEMBL158, PUBCHEM.COMPOUND:5742832" v-model="objectCURIEsCSV">
+        </div>
+        <div class="mb-3">
+          <label for="limit" class="form-label">Limit</label>
+          <input type="text" class="form-control" id="limit" v-model="limit">
+        </div>
 
-  <div class="card my-2">
-    <div class="card-header">
-      <strong>Search CAM models</strong>
+        <template v-if="inProgress">
+          <a @click="updateModelList()" class="btn btn-primary"><em>Search in progress</em></a>
+        </template>
+        <template v-else>
+          <a @click="updateModelList()" class="btn btn-primary">Search</a>
+        </template>
+
+      </div>
     </div>
-    <div class="card-body">
-      <div v-if="errors.length > 0" class="mb-3 p-1 border-1 bg-danger-subtle">
-        <ul>
-          <li v-for="error in errors">{{error}}</li>
-        </ul>
-      </div>
-      <div class="mb-3">
-        <label for="predicateCURIEs" class="form-label">Predicate CURIEs</label>
-        <input type="text" class="form-control" id="predicateCURIEs" placeholder="biolink:affects, biolink:affected_by" v-model="predicateCURIEsCSV">
-      </div>
-      <div class="mb-3">
-        <label for="subjectOrObjectCURIEs" class="form-label">Subject or Object CURIEs</label>
-        <input type="text" class="form-control" id="subjectOrObjectCURIEs" placeholder="PUBCHEM.COMPOUND:5865, CHEBI:8382" v-model="subjectOrObjectCURIEsCSV">
-      </div>
-      <div class="mb-3">
-        <label for="subjectCURIEs" class="form-label">Subject CURIEs</label>
-        <input type="text" class="form-control" id="subjectCURIEs" placeholder="CHEMBL.COMPOUND:CHEMBL158, PUBCHEM.COMPOUND:5742832" v-model="subjectCURIEsCSV">
-      </div>
-      <div class="mb-3">
-        <label for="objectCURIEs" class="form-label">Object CURIEs</label>
-        <input type="text" class="form-control" id="objectCURIEs" placeholder="CHEMBL.COMPOUND:CHEMBL158, PUBCHEM.COMPOUND:5742832" v-model="objectCURIEsCSV">
-      </div>
-      <div class="mb-3">
-        <label for="limit" class="form-label">Limit</label>
-        <input type="text" class="form-control" id="limit" v-model="limit">
-      </div>
 
-      <template v-if="inProgress">
-        <a @click="updateModelList()" class="btn btn-primary"><em>Search in progress</em></a>
-      </template>
-      <template v-else>
-        <a @click="updateModelList()" class="btn btn-primary">Search</a>
-      </template>
-
+    <div class="card my-2">
+      <div class="card-header">
+        <strong>List CAM models ({{results.length}})</strong>
+      </div>
+      <div class="card-body">
+        <table class="table table-bordered mb-2">
+          <thead>
+          <tr>
+            <th>Model URL</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr v-for="result in results">
+            <td>{{result}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </template>
