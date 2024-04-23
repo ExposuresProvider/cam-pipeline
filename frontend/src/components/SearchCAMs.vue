@@ -139,7 +139,7 @@ async function searchModels(subjectOrObjectCURIEs: string[] = [], subjectCURIEs:
 </script>
 
 <template>
-  <div class="col-4">
+  <div class="col-6">
     <div class="card my-2">
       <div class="card-header">
         <strong>Search CAM models</strong>
