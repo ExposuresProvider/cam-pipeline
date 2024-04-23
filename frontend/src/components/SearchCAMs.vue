@@ -6,15 +6,18 @@ import {ref} from "vue";
 
 export interface Props {
   automatCAMKPEndpoint?: string,
-  changeCAMList: Function,
+  changeSelectedModel: Function,
 }
 
 const props = withDefaults(defineProps<Props>(), {
   automatCAMKPEndpoint: 'https://automat.renci.org/cam-kp',
 });
 
+// We need to track the selected model (as well as letting the caller know via changeSelectedModel()
+const selectedModel = ref("");
+
 // Store results.
-const results = ref([]);
+const results = ref<string[]>([]);
 
 // Search criteria
 const subjectOrObjectCURIEsCSV = ref('');
@@ -42,8 +45,6 @@ async function updateModelList() {
 
     console.log(`Got ${camList.length} CAM models: `, camList);
     results.value = camList;
-
-    props.changeCAMList(camList);
   } catch (exception) {
     errors.value = exception.message.split('\n');
   }
@@ -188,7 +189,9 @@ async function searchModels(subjectOrObjectCURIEs: string[] = [], subjectCURIEs:
           </thead>
           <tbody>
           <tr v-for="result in results">
-            <td>{{result}}</td>
+            <td @click="changeSelectedModel(result); selectedModel = result;">
+              {{result}} <span @if="selectedModel !== result">(<a :href="result" target="model-url">URL</a>)</span>
+            </td>
           </tr>
           </tbody>
         </table>
