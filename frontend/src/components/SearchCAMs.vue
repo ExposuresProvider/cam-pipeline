@@ -67,6 +67,7 @@ async function searchModels(subjectOrObjectCURIEs: string[] = [], subjectCURIEs:
   // Set up node selects.
   const subject_selects = <string[]>[];
   const object_selects = <string[]>[];
+  const subject_or_object_selects = <string[]>[];
   if (subjectOrObjectCURIEs.length > 0 && (subjectCURIEs.length > 0 || objectCURIEs.length > 0)) {
     throw new Error(
         `searchModels() cannot be called with both subjectOrObjectCURIEs (${subjectOrObjectCURIEs.length}) and either ` +
@@ -82,7 +83,7 @@ async function searchModels(subjectOrObjectCURIEs: string[] = [], subjectCURIEs:
   }
 
   if(subjectOrObjectCURIEs) {
-    subject_selects.push(...subjectOrObjectCURIEs.map(curie => `'${curie}' IN s.equivalent_identifiers OR '${curie}' IN o.equivalent_identifiers`));
+    subject_or_object_selects.push(...subjectOrObjectCURIEs.map(curie => `'${curie}' IN s.equivalent_identifiers OR '${curie}' IN o.equivalent_identifiers`));
   }
 
   // Set up predicate selects.
@@ -102,12 +103,17 @@ async function searchModels(subjectOrObjectCURIEs: string[] = [], subjectCURIEs:
   if(predicate_selects.length > 0) {
     selects.push(predicate_selects.map(select => `(${select})`).join(' OR '));
   }
+
+  // Note that we have to AND these, not OR these.
+  if(subject_or_object_selects.length > 0) {
+    selects.push(subject_or_object_selects.map(select => `(${select})`).join(' AND '));
+  }
   const select_query = selects.join(' AND ');
 
   // Generate query.
   let query = `MATCH (s)-[p]-(o) RETURN DISTINCT p.xref LIMIT ${limit}`;
   if (select_query.length > 0) {
-    query = `MATCH (s)-[p]-(o) WHERE ${select_query} RETURN DISTINCT p.xref LIMIT ${limit}`
+    query = `MATCH (s)-[p]-(o) WHERE ${select_query} RETURN DISTINCT p.xref, s, o, TYPE(p) AS pred_type LIMIT ${limit}`
   }
   console.log(`Querying Cypher:`, query);
 
@@ -132,6 +138,9 @@ async function searchModels(subjectOrObjectCURIEs: string[] = [], subjectCURIEs:
   const rows = j['results'][0]['data'].flatMap(row => ({
     id: urlToID(row['row'][0][0]),
     url: row['row'][0][0],
+    subj: row['row'][1],
+    obj: row['row'][2],
+    predicate: row['row'][3],
   }));
   console.log("rows", rows);
   return rows;
@@ -155,8 +164,8 @@ async function searchModels(subjectOrObjectCURIEs: string[] = [], subjectCURIEs:
           <input type="text" class="form-control" id="predicateCURIEs" placeholder="biolink:affects, biolink:affected_by" v-model="predicateCURIEsCSV">
         </div>
         <div class="mb-3">
-          <label for="subjectOrObjectCURIEs" class="form-label">Subject or Object CURIEs</label>
-          <input type="text" class="form-control" id="subjectOrObjectCURIEs" placeholder="PUBCHEM.COMPOUND:5865, CHEBI:8382" v-model="subjectOrObjectCURIEsCSV">
+          <label for="subjectOrObjectCURIEs" class="form-label">Subject or Object CURIEs (items will be ANDed)</label>
+          <input type="text" class="form-control" id="subjectOrObjectCURIEs" placeholder="PUBCHEM.COMPOUND:5865, NCBIGene:2944" v-model="subjectOrObjectCURIEsCSV">
         </div>
         <div class="mb-3">
           <label for="subjectCURIEs" class="form-label">Subject CURIEs</label>
@@ -189,17 +198,17 @@ async function searchModels(subjectOrObjectCURIEs: string[] = [], subjectCURIEs:
         <table class="table table-bordered mb-2">
           <thead>
           <tr>
-            <th>Model ID</th>
-            <th>Links</th>
+            <th>Models</th>
           </tr>
           </thead>
           <tbody>
           <tr v-for="result in results" @click="selectedModel = result; changeSelectedModel(result)" :class="(selectedModel.url == result.url) ? 'table-active' : ''">
-            <td>
-              {{result.id}}
-            </td>
-            <td>
-              <a :href="result.url" target="model-url">URL</a>, <a href="#relationships">Relationships</a>
+            <td>{{result.id}} (<a :href="result.url" target="model-url">URL</a>, <a href="#edges">Relationships</a>, <a href="#relationships">Relationships</a>)
+              <ul v-if="result.subj || result.predicate || result.obj">
+                <li v-if="result.subj">{{result.subj.id}} ("{{result.subj.name}}")</li>
+                <li>{{result.predicate}}</li>
+                <li v-if="result.obj">{{result.obj.id}} ("{{result.obj.name}}")</li>
+              </ul>
             </td>
           </tr>
           </tbody>
