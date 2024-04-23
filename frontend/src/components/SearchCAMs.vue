@@ -178,7 +178,7 @@ async function searchModels(subjectOrObjectCURIEs: string[] = [], subjectCURIEs:
 
     <div class="card my-2">
       <div class="card-header">
-        <strong>List CAM models ({{results.length}})</strong>
+        <strong>Search results ({{results.length}})</strong>
       </div>
       <div class="card-body">
         <table class="table table-bordered mb-2">

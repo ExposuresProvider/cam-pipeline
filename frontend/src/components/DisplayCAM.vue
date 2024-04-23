@@ -82,10 +82,9 @@ async function getModelRows(modelURL: string) {
   <div class="col-8">
     <div class="card my-2" v-if="downloadInProgress">
       <div class="card-header">
-        Download in progress ...
+        Download of CAM <a target="cam" :href="selectedModel.url">{{selectedModel.url}}</a> in progress ...
       </div>
     </div>
-
 
     <div class="card my-2" v-if="!downloadInProgress">
       <div class="card-header">
