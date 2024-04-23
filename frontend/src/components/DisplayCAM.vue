@@ -84,7 +84,7 @@ async function getModelRows(modelURL: string) {
 
 <template>
 
-  <div class="col-6">
+  <div class="col-8">
     <div class="card my-2" v-if="modelNotSelected">
       <div class="card-header">
         No model selected. Please search for one using the controls on the left.
