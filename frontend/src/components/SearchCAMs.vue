@@ -194,7 +194,7 @@ async function searchModels(subjectOrObjectCURIEs: string[] = [], subjectCURIEs:
           </tr>
           </thead>
           <tbody>
-          <tr v-for="result in results" @click="selectedModel = result; changeSelectedModel(result)" :class="(selectedModel == result) ? 'table-active' : ''">
+          <tr v-for="result in results" @click="selectedModel = result; changeSelectedModel(result)" :class="(selectedModel.url == result.url) ? 'table-active' : ''">
             <td>
               {{result.id}}
             </td>
