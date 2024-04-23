@@ -3,6 +3,7 @@
  * SearchCAMs: search for CAMs with a set of criteria.
  */
 import {ref} from "vue";
+import {urlToID} from "./shared.ts";
 
 export interface Props {
   automatCAMKPEndpoint?: string,
@@ -51,6 +52,7 @@ async function updateModelList() {
 
   inProgress.value = false;
 }
+
 
 async function searchModels(subjectOrObjectCURIEs: string[] = [], subjectCURIEs: string[] = [], predicateCURIEs: string[] = [], objectCURIEs: string[] = [], limit=100): Promise<string[]> {
   /*
@@ -127,7 +129,10 @@ async function searchModels(subjectOrObjectCURIEs: string[] = [], subjectCURIEs:
     throw Error(j['errors'].map(e => e['message']).join('\n'));
   }
 
-  const rows = j['results'][0]['data'].flatMap(row => ({url: row['row'][0][0]}));
+  const rows = j['results'][0]['data'].flatMap(row => ({
+    id: urlToID(row['row'][0][0]),
+    url: row['row'][0][0],
+  }));
   console.log("rows", rows);
   return rows;
 }
@@ -184,13 +189,17 @@ async function searchModels(subjectOrObjectCURIEs: string[] = [], subjectCURIEs:
         <table class="table table-bordered mb-2">
           <thead>
           <tr>
-            <th>Model URL</th>
+            <th>Model ID</th>
+            <th>Links</th>
           </tr>
           </thead>
           <tbody>
           <tr v-for="result in results" @click="selectedModel = result; changeSelectedModel(result)" :class="(selectedModel == result) ? 'table-active' : ''">
             <td>
-              {{result.url}} <span @if="selectedModel !== result">(<a :href="result.url" target="model-url">URL</a>)</span>
+              {{result.id}}
+            </td>
+            <td>
+              <a :href="result.url" target="model-url">URL</a>, <a href="#relationships">Relationships</a>
             </td>
           </tr>
           </tbody>

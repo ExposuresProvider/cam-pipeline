@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {computed, ref, watch, withDefaults} from "vue";
+import {urlToID} from "./shared.ts";
 
 export interface Props {
   automatCAMKPEndpoint?: string,
@@ -9,6 +10,8 @@ export interface Props {
 const props = withDefaults(defineProps<Props>(), {
   automatCAMKPEndpoint: 'https://automat.renci.org/cam-kp',
 });
+
+const modelNotSelected = computed(() => !('url' in props.selectedModel));
 
 const downloadInProgress = ref(false);
 const modelRows = ref([]);
@@ -80,43 +83,21 @@ async function getModelRows(modelURL: string) {
 <template>
 
   <div class="col-8">
+    <div class="card my-2" v-if="modelNotSelected">
+      <div class="card-header">
+        No model selected. Please search for one using the controls on the left.
+      </div>
+    </div>
+
     <div class="card my-2" v-if="downloadInProgress">
       <div class="card-header">
         Download of CAM <a target="cam" :href="selectedModel.url">{{selectedModel.url}}</a> in progress ...
       </div>
     </div>
 
-    <div class="card my-2" v-if="!downloadInProgress">
+    <div id="edges" class="card my-2" v-if="!downloadInProgress && !modelNotSelected">
       <div class="card-header">
-        <strong>Relationships in selected CAM:</strong> <a target="cam" :href="selectedModel.url">{{selectedModel.url}}</a>
-      </div>
-      <div class="card-body">
-        <div class="table-responsive">
-          <table class="table table-bordered table-hover">
-            <thead>
-              <tr>
-                <th scope="col">From CURIE</th>
-                <th scope="col" v-for="toId in toIds">
-                  <span :title="descriptions[toId]">{{toId}}</span><br />{{labels[toId]}}
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="fromId in fromIds">
-                <td><strong>{{fromId}}</strong> {{labels[fromId]}}<br/>{{descriptions[fromId]}}</td>
-                <td v-for="toId in toIds">
-                  <span v-for="pred in getPredicates(fromId, toId)">{{pred}}<br /></span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <div class="card my-2" v-if="!downloadInProgress">
-      <div class="card-header">
-        <strong>Edges in selected CAM:</strong> <a target="cam" :href="selectedModel.url">{{selectedModel.url}}</a>
+        <strong>Edges in selected CAM:</strong> <a target="cam" :href="selectedModel.url">{{selectedModel.url}}</a> (<a href="#relationships">Relationships</a>)
       </div>
       <div class="card-body">
         <table class="table table-bordered mb-2">
@@ -138,9 +119,9 @@ async function getModelRows(modelURL: string) {
               <td>
                 <strong>{{row[3]}}<span v-if="row[4]"> [{{row[4]}}]</span></strong><br/>
                 biolink:primary_knowledge_source: {{row[1]['biolink:primary_knowledge_source']}}
-                <ul>
+                <ul class="overflow-auto" style="height: 20em">
                   <li v-for="xref in row[1]['xref']" :key="xref">
-                    <a :href="xref" target="xref">{{xref}}</a>
+                    <a :href="xref" target="xref">{{urlToID(xref)}}</a>
                   </li>
                 </ul>
               </td>
@@ -153,6 +134,37 @@ async function getModelRows(modelURL: string) {
             </tr>
           </tbody>
         </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- This view is hard to compress, so let's give it the whole screen -->
+  <div class="col-12">
+    <div id="relationships" class="card my-2" v-if="!downloadInProgress && !modelNotSelected">
+      <div class="card-header">
+        <strong>Relationships in selected CAM:</strong> <a target="cam" :href="selectedModel.url">{{selectedModel.url}}</a> (<a href="#edges">Edges</a>)
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+              <th scope="col">From CURIE</th>
+              <th scope="col" v-for="toId in toIds">
+                <span :title="descriptions[toId]">{{toId}}</span><br />{{labels[toId]}}
+              </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="fromId in fromIds">
+              <td><strong>{{fromId}}</strong> {{labels[fromId]}}<br/>{{descriptions[fromId]}}</td>
+              <td v-for="toId in toIds">
+                <span v-for="pred in getPredicates(fromId, toId)">{{pred}}<br /></span>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
