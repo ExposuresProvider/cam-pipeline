@@ -8,6 +8,7 @@ import {urlToID} from "./shared.ts";
 export interface Props {
   automatCAMKPEndpoint?: string,
   changeSelectedModel: Function,
+  changeSearchIds: Function,
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -35,12 +36,21 @@ async function updateModelList() {
   inProgress.value = true;
   errors.value = [];
 
+  const subjectOrObjectCURIEs = subjectOrObjectCURIEsCSV.value.split(/\s*,\s*/).filter(s => s);
+  const subjectCURIEs = subjectCURIEsCSV.value.split(/\s*,\s*/).filter(s => s);
+  const predicateCURIEs = predicateCURIEsCSV.value.split(/\s*,\s*/).filter(s => s);
+  const objectCURIEs = objectCURIEsCSV.value.split(/\s*,\s*/).filter(s => s);
+
+  // Make a distinct list of all the CURIEs.
+  const searchIds = new Set([...subjectOrObjectCURIEs, ...subjectCURIEs, ...predicateCURIEs, ...objectCURIEs]);
+  props.changeSearchIds(searchIds);
+
   try {
     const camList = await searchModels(
-        subjectOrObjectCURIEsCSV.value.split(/\s*,\s*/).filter(s => s),
-        subjectCURIEsCSV.value.split(/\s*,\s*/).filter(s => s),
-        predicateCURIEsCSV.value.split(/\s*,\s*/).filter(s => s),
-        objectCURIEsCSV.value.split(/\s*,\s*/).filter(s => s),
+        subjectOrObjectCURIEs,
+        subjectCURIEs,
+        predicateCURIEs,
+        objectCURIEs,
         limit.value
     );
 

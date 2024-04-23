@@ -5,10 +5,12 @@ import {urlToID} from "./shared.ts";
 export interface Props {
   automatCAMKPEndpoint?: string,
   selectedModel: object,
+  searchIds: Set<string>,
 }
 
 const props = withDefaults(defineProps<Props>(), {
   automatCAMKPEndpoint: 'https://automat.renci.org/cam-kp',
+  searchIDs: new Set(),
 });
 
 const modelNotSelected = computed(() => !('url' in props.selectedModel));
@@ -110,7 +112,7 @@ async function getModelRows(modelURL: string) {
           </thead>
           <tbody>
             <tr v-for="row in modelRows">
-              <td>
+              <td :class="(row[0]['equivalent_identifiers'].some(v => searchIds.has(v))) ? 'bg-success-subtle' : ''">
                 <strong>{{row[0]['id']}}</strong> {{row[0]['name']}}<br/><br/>
                 <em>Description</em>: {{row[0]['description']}}<br/>
                 <em>Information Content</em>: {{row[0]['information_content']}}<br/>
@@ -125,7 +127,7 @@ async function getModelRows(modelURL: string) {
                   </li>
                 </ul>
               </td>
-              <td>
+              <td :class="(row[2]['equivalent_identifiers'].some(v => searchIds.has(v))) ? 'bg-success-subtle' : ''">
                 <strong>{{row[2]['id']}}</strong> {{row[2]['name']}}<br/><br/>
                 <em>Description</em>: {{row[2]['description']}}<br/>
                 <em>Information Content</em>: {{row[2]['information_content']}}<br/>
@@ -150,15 +152,15 @@ async function getModelRows(modelURL: string) {
             <thead>
             <tr>
               <th scope="col">From CURIE</th>
-              <th scope="col" v-for="toId in toIds">
+              <th scope="col" v-for="toId in toIds" :class="(searchIds.has(toId)) ? 'bg-success-subtle' : ''">
                 <span :title="descriptions[toId]">{{toId}}</span><br />{{labels[toId]}}
               </th>
             </tr>
             </thead>
             <tbody>
             <tr v-for="fromId in fromIds">
-              <td><strong>{{fromId}}</strong> {{labels[fromId]}}<br/>{{descriptions[fromId]}}</td>
-              <td v-for="toId in toIds">
+              <td :class="(searchIds.has(fromId)) ? 'bg-success-subtle' : ''"><strong>{{fromId}}</strong> {{labels[fromId]}}<br/>{{descriptions[fromId]}}</td>
+              <td v-for="toId in toIds" :class="(searchIds.has(toId) || searchIds.has(fromId)) ? 'bg-success-subtle' : ''">
                 <span v-for="pred in getPredicates(fromId, toId)">{{pred}}<br /></span>
               </td>
             </tr>
