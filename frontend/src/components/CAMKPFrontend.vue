@@ -32,9 +32,10 @@ function changeSelectedModel(modelName: string) {
       </div>
     </div>
 
-    <SearchCAMs :automatCAMKPEndpoint="automatCAMKPEndpoint" :changeSelectedModel="changeSelectedModel" />
-
-    <DisplayCAM :selected-model="selectedModel"></DisplayCAM>
+    <div class="row">
+      <SearchCAMs :automatCAMKPEndpoint="automatCAMKPEndpoint" :changeSelectedModel="changeSelectedModel" />
+      <DisplayCAM :selected-model="selectedModel"></DisplayCAM>
+    </div>
 
     <div class="accordion" id="advancedOptionsAccordion">
       <div class="accordion-item">

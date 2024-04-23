@@ -79,80 +79,82 @@ async function getModelRows(modelURL: string) {
 
 <template>
 
-  <div class="card my-2" v-if="downloadInProgress">
-    <div class="card-header">
-      Download in progress ...
+  <div class="col-8">
+    <div class="card my-2" v-if="downloadInProgress">
+      <div class="card-header">
+        Download in progress ...
+      </div>
     </div>
-  </div>
 
 
-  <div class="card" v-if="!downloadInProgress">
-    <div class="card-header">
-      <strong>Relationships in selected CAM:</strong> <a target="cam" :href="selectedModel.url">{{selectedModel.url}}</a>
+    <div class="card my-2" v-if="!downloadInProgress">
+      <div class="card-header">
+        <strong>Relationships in selected CAM:</strong> <a target="cam" :href="selectedModel.url">{{selectedModel.url}}</a>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th scope="col">From CURIE</th>
+                <th scope="col" v-for="toId in toIds">
+                  <span :title="descriptions[toId]">{{toId}}</span><br />{{labels[toId]}}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="fromId in fromIds">
+                <td><strong>{{fromId}}</strong> {{labels[fromId]}}<br/>{{descriptions[fromId]}}</td>
+                <td v-for="toId in toIds">
+                  <span v-for="pred in getPredicates(fromId, toId)">{{pred}}<br /></span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
-    <div class="card-body">
-      <div class="table-responsive">
-        <table class="table table-bordered table-hover">
+
+    <div class="card my-2" v-if="!downloadInProgress">
+      <div class="card-header">
+        <strong>Edges in selected CAM:</strong> <a target="cam" :href="selectedModel.url">{{selectedModel.url}}</a>
+      </div>
+      <div class="card-body">
+        <table class="table table-bordered mb-2">
           <thead>
             <tr>
-              <th scope="col">From CURIE</th>
-              <th scope="col" v-for="toId in toIds">
-                <span :title="descriptions[toId]">{{toId}}</span><br />{{labels[toId]}}
-              </th>
+              <th>Subject</th>
+              <th>Edge</th>
+              <th>Object</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="fromId in fromIds">
-              <td><strong>{{fromId}}</strong> {{labels[fromId]}}<br/>{{descriptions[fromId]}}</td>
-              <td v-for="toId in toIds">
-                <span v-for="pred in getPredicates(fromId, toId)">{{pred}}<br /></span>
+            <tr v-for="row in modelRows">
+              <td>
+                <strong>{{row[0]['id']}}</strong> {{row[0]['name']}}<br/><br/>
+                <em>Description</em>: {{row[0]['description']}}<br/>
+                <em>Information Content</em>: {{row[0]['information_content']}}<br/>
+                <em>Equivalent identifiers</em>: {{row[0]['equivalent_identifiers']}}
+              </td>
+              <td>
+                <strong>{{row[3]}}<span v-if="row[4]"> [{{row[4]}}]</span></strong><br/>
+                biolink:primary_knowledge_source: {{row[1]['biolink:primary_knowledge_source']}}
+                <ul>
+                  <li v-for="xref in row[1]['xref']" :key="xref">
+                    <a :href="xref" target="xref">{{xref}}</a>
+                  </li>
+                </ul>
+              </td>
+              <td>
+                <strong>{{row[2]['id']}}</strong> {{row[2]['name']}}<br/><br/>
+                <em>Description</em>: {{row[2]['description']}}<br/>
+                <em>Information Content</em>: {{row[2]['information_content']}}<br/>
+                <em>Equivalent identifiers</em>: {{row[2]['equivalent_identifiers']}}
               </td>
             </tr>
           </tbody>
         </table>
       </div>
-    </div>
-  </div>
-
-  <div class="card" v-if="!downloadInProgress">
-    <div class="card-header">
-      <strong>Edges in selected CAM:</strong> <a target="cam" :href="selectedModel.url">{{selectedModel.url}}</a>
-    </div>
-    <div class="card-body">
-      <table class="table table-bordered mb-2">
-        <thead>
-          <tr>
-            <th>Subject</th>
-            <th>Edge</th>
-            <th>Object</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="row in modelRows">
-            <td>
-              <strong>{{row[0]['id']}}</strong> {{row[0]['name']}}<br/><br/>
-              <em>Description</em>: {{row[0]['description']}}<br/>
-              <em>Information Content</em>: {{row[0]['information_content']}}<br/>
-              <em>Equivalent identifiers</em>: {{row[0]['equivalent_identifiers']}}
-            </td>
-            <td>
-              <strong>{{row[3]}}<span v-if="row[4]"> [{{row[4]}}]</span></strong><br/>
-              biolink:primary_knowledge_source: {{row[1]['biolink:primary_knowledge_source']}}
-              <ul>
-                <li v-for="xref in row[1]['xref']" :key="xref">
-                  <a :href="xref" target="xref">{{xref}}</a>
-                </li>
-              </ul>
-            </td>
-            <td>
-              <strong>{{row[2]['id']}}</strong> {{row[2]['name']}}<br/><br/>
-              <em>Description</em>: {{row[2]['description']}}<br/>
-              <em>Information Content</em>: {{row[2]['information_content']}}<br/>
-              <em>Equivalent identifiers</em>: {{row[2]['equivalent_identifiers']}}
-            </td>
-          </tr>
-        </tbody>
-      </table>
     </div>
   </div>
 </template>
