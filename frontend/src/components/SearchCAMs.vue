@@ -14,17 +14,17 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 // We need to track the selected model (as well as letting the caller know via changeSelectedModel()
-const selectedModel = ref("");
+const selectedModel = ref({});
 
 // Store results.
-const results = ref<string[]>([]);
+const results = ref([]);
 
 // Search criteria
 const subjectOrObjectCURIEsCSV = ref('');
 const subjectCURIEsCSV = ref('');
 const objectCURIEsCSV = ref('');
 const predicateCURIEsCSV = ref('');
-const limit = ref(10);
+const limit = ref(100);
 
 const errors = ref([]);
 const inProgress = ref(false);
@@ -127,7 +127,7 @@ async function searchModels(subjectOrObjectCURIEs: string[] = [], subjectCURIEs:
     throw Error(j['errors'].map(e => e['message']).join('\n'));
   }
 
-  const rows = j['results'][0]['data'].flatMap(row => row['row'][0][0]);
+  const rows = j['results'][0]['data'].flatMap(row => ({url: row['row'][0][0]}));
   console.log("rows", rows);
   return rows;
 }
@@ -188,9 +188,9 @@ async function searchModels(subjectOrObjectCURIEs: string[] = [], subjectCURIEs:
           </tr>
           </thead>
           <tbody>
-          <tr v-for="result in results">
-            <td @click="changeSelectedModel(result); selectedModel = result;">
-              {{result}} <span @if="selectedModel !== result">(<a :href="result" target="model-url">URL</a>)</span>
+          <tr v-for="result in results" @click="selectedModel = result; changeSelectedModel(result)" :class="(selectedModel == result) ? 'table-active' : ''">
+            <td>
+              {{result.url}} <span @if="selectedModel !== result">(<a :href="result.url" target="model-url">URL</a>)</span>
             </td>
           </tr>
           </tbody>

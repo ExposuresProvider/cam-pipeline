@@ -3,7 +3,7 @@ import {computed, ref, watch, withDefaults} from "vue";
 
 export interface Props {
   automatCAMKPEndpoint?: string,
-  selectedModel: string,
+  selectedModel: object,
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -27,7 +27,9 @@ function getPredicates(fromId: string, toId: string) {
   }).sort();
 }
 
-watch(() => props.selectedModel, (_, modelURL) => {
+watch(() => props.selectedModel, (_, model) => {
+  const modelURL = model.url;
+
   modelRows.value = [];
   spos.value = [];
   labels.value = {};
@@ -86,7 +88,7 @@ async function getModelRows(modelURL: string) {
 
   <div class="card" v-if="!downloadInProgress">
     <div class="card-header">
-      <strong>Relationships in selected CAM:</strong> <a target="cam" :href="selectedModel">{{selectedModel}}</a>
+      <strong>Relationships in selected CAM:</strong> <a target="cam" :href="selectedModel.url">{{selectedModel.url}}</a>
     </div>
     <div class="card-body">
       <div class="table-responsive">
@@ -114,7 +116,7 @@ async function getModelRows(modelURL: string) {
 
   <div class="card" v-if="!downloadInProgress">
     <div class="card-header">
-      <strong>Edges in selected CAM:</strong> <a target="cam" :href="selectedModel">{{selectedModel}}</a>
+      <strong>Edges in selected CAM:</strong> <a target="cam" :href="selectedModel.url">{{selectedModel.url}}</a>
     </div>
     <div class="card-body">
       <table class="table table-bordered mb-2">
