@@ -5,12 +5,12 @@ import SearchCAMs from "./SearchCAMs.vue";
 
 // Some editable
 const automatCAMKPEndpoint = ref("https://automat.renci.org/cam-kp")
-const selectedModel = ref({})
-const searchIds = ref<string[]>([]);
+const selectedModelURL = ref('')
+const searchIds = ref<Set<string>>(new Set<string>());
 
-function changeSelectedModel(modelName: string) {
+function changeSelectedModel(modelURL: string) {
   // Allows other components to change the selected model.
-  selectedModel.value = modelName;
+  selectedModelURL.value = modelURL;
 }
 
 function changeSearchIds(searchIdList: string[]) {
@@ -41,7 +41,7 @@ function changeSearchIds(searchIdList: string[]) {
 
     <div class="row">
       <SearchCAMs :automatCAMKPEndpoint="automatCAMKPEndpoint" :changeSelectedModel="changeSelectedModel" :changeSearchIds="changeSearchIds" />
-      <DisplayCAM :selected-model="selectedModel" :search-ids="searchIds"></DisplayCAM>
+      <DisplayCAM :selected-model-u-r-l="selectedModelURL" :search-ids="searchIds"></DisplayCAM>
     </div>
 
     <div class="accordion" id="advancedOptionsAccordion">

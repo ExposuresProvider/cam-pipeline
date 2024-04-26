@@ -4,7 +4,7 @@ import {urlToID} from "./shared.ts";
 
 export interface Props {
   automatCAMKPEndpoint?: string,
-  selectedModel: object,
+  selectedModelURL: string,
   searchIds: Set<string>,
 }
 
@@ -12,8 +12,6 @@ const props = withDefaults(defineProps<Props>(), {
   automatCAMKPEndpoint: 'https://automat.renci.org/cam-kp',
   searchIDs: new Set(),
 });
-
-const modelNotSelected = computed(() => !('url' in props.selectedModel));
 
 const downloadInProgress = ref(false);
 const modelRows = ref([]);
@@ -32,9 +30,7 @@ function getPredicates(fromId: string, toId: string) {
   }).sort();
 }
 
-watch(() => props.selectedModel, (_, model) => {
-  const modelURL = model.url;
-
+watch(() => props.selectedModelURL, (_, modelURL) => {
   modelRows.value = [];
   spos.value = [];
   labels.value = {};
@@ -85,7 +81,7 @@ async function getModelRows(modelURL: string) {
 <template>
 
   <div class="col-8">
-    <div class="card my-2" v-if="modelNotSelected">
+    <div class="card my-2" v-if="!selectedModelURL">
       <div class="card-header">
         No model selected. Please search for one using the controls on the left.
       </div>
@@ -93,13 +89,13 @@ async function getModelRows(modelURL: string) {
 
     <div class="card my-2" v-if="downloadInProgress">
       <div class="card-header">
-        Download of CAM <a target="cam" :href="selectedModel.url">{{selectedModel.url}}</a> in progress ...
+        Download of CAM <a target="cam" :href="selectedModelURL">{{ selectedModelURL }}</a> in progress ...
       </div>
     </div>
 
-    <div id="edges" class="card my-2" v-if="!downloadInProgress && !modelNotSelected">
+    <div id="edges" class="card my-2" v-if="!downloadInProgress && selectedModelURL">
       <div class="card-header">
-        <strong>Edges in selected CAM:</strong> <a target="cam" :href="selectedModel.url">{{selectedModel.url}}</a> (<a href="#relationships">Relationships</a>)
+        <strong>Edges in selected CAM:</strong> <a target="cam" :href="selectedModelURL">{{ selectedModelURL }}</a> (<a href="#relationships">Relationships</a>)
       </div>
       <div class="card-body">
         <table class="table table-bordered mb-2">
@@ -142,9 +138,9 @@ async function getModelRows(modelURL: string) {
 
   <!-- This view is hard to compress, so let's give it the whole screen -->
   <div class="col-12">
-    <div id="relationships" class="card my-2" v-if="!downloadInProgress && !modelNotSelected">
+    <div id="relationships" class="card my-2" v-if="!downloadInProgress && selectedModelURL">
       <div class="card-header">
-        <strong>Relationships in selected CAM:</strong> <a target="cam" :href="selectedModel.url">{{selectedModel.url}}</a> (<a href="#edges">Edges</a>)
+        <strong>Relationships in selected CAM:</strong> <a target="cam" :href="selectedModelURL">{{ selectedModelURL }}</a> (<a href="#edges">Edges</a>)
       </div>
       <div class="card-body">
         <div class="table-responsive">

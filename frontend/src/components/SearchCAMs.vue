@@ -16,7 +16,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 // We need to track the selected model (as well as letting the caller know via changeSelectedModel()
-const selectedModel = ref({});
+const selectedModelURL = ref('');
 
 // Store results.
 const results = ref([]);
@@ -26,6 +26,7 @@ const subjectOrObjectCURIEsCSV = ref('');
 const subjectCURIEsCSV = ref('');
 const objectCURIEsCSV = ref('');
 const predicateCURIEsCSV = ref('');
+const modelStartsWith = ref('');
 const limit = ref(100);
 
 const errors = ref([]);
@@ -51,6 +52,7 @@ async function updateModelList() {
         subjectCURIEs,
         predicateCURIEs,
         objectCURIEs,
+        modelStartsWith.value,
         limit.value
     );
 
@@ -64,7 +66,7 @@ async function updateModelList() {
 }
 
 
-async function searchModels(subjectOrObjectCURIEs: string[] = [], subjectCURIEs: string[] = [], predicateCURIEs: string[] = [], objectCURIEs: string[] = [], limit=100): Promise<string[]> {
+async function searchModels(subjectOrObjectCURIEs: string[] = [], subjectCURIEs: string[] = [], predicateCURIEs: string[] = [], objectCURIEs: string[] = [], modelURLStartsWith: string = '', limit=100): Promise<string[]> {
   /*
    * Search for models using the search criteria provided. Any search criteria that is empty is ignored. Search criteria with multiple values are ORed,
    * but the overall query is ANDed (i.e. a particular predicate type and a object node).
@@ -72,6 +74,8 @@ async function searchModels(subjectOrObjectCURIEs: string[] = [], subjectCURIEs:
    * - subjectCURIEs: CURIEs in the subject slot.
    * - predicateCURIEs: CURIEs in the predicate slot.
    * - objectCURIEs: CURIEs in the object slot.
+   * - modelURLStartsWith: The string that the model URL should start with, case-sensitive.
+   * - limit: The maximum number of models to return.
    */
 
   // Set up node selects.
@@ -118,10 +122,15 @@ async function searchModels(subjectOrObjectCURIEs: string[] = [], subjectCURIEs:
   if(subject_or_object_selects.length > 0) {
     selects.push(subject_or_object_selects.map(select => `(${select})`).join(' AND '));
   }
-  const select_query = selects.join(' AND ');
+
+  // Deal with modelURLStartsWith.
+  if(modelURLStartsWith) {
+    selects.push(`(ANY(url IN p.xref WHERE url STARTS WITH '${modelURLStartsWith.replaceAll("'", '')}'))`);
+  }
 
   // Generate query.
-  let query = `MATCH (s)-[p]-(o) RETURN DISTINCT p.xref LIMIT ${limit}`;
+  let query = `MATCH (s)-[p]-(o) RETURN DISTINCT p.xref, s, o, TYPE(p) AS pred_type LIMIT ${limit}`;
+  const select_query = selects.join(' AND ');
   if (select_query.length > 0) {
     query = `MATCH (s)-[p]-(o) WHERE ${select_query} RETURN DISTINCT p.xref, s, o, TYPE(p) AS pred_type LIMIT ${limit}`
   }
@@ -147,7 +156,7 @@ async function searchModels(subjectOrObjectCURIEs: string[] = [], subjectCURIEs:
 
   const rows = j['results'][0]['data'].flatMap(row => ({
     id: urlToID(row['row'][0][0]),
-    url: row['row'][0][0],
+    urls: row['row'][0],
     subj: row['row'][1],
     obj: row['row'][2],
     predicate: row['row'][3],
@@ -186,6 +195,17 @@ async function searchModels(subjectOrObjectCURIEs: string[] = [], subjectCURIEs:
           <input type="text" class="form-control" id="objectCURIEs" placeholder="CHEMBL.COMPOUND:CHEMBL158, PUBCHEM.COMPOUND:5742832" v-model="objectCURIEsCSV">
         </div>
         <div class="mb-3">
+          <label for="modelStartsWith" class="form-label">Model starts with</label>
+          <ul>
+            <li>Examples</li>
+            <ul class="small">
+              <li>GO: <code>http://model.geneontology.org/</code></li>
+              <li>CTD: <code>http://ctdbase.org/detail.go?type=relationship&ixnId=</code></li>
+            </ul>
+          </ul>
+          <input type="text" class="form-control" id="modelStartsWith" v-model="modelStartsWith">
+        </div>
+        <div class="mb-3">
           <label for="limit" class="form-label">Limit</label>
           <input type="text" class="form-control" id="limit" v-model="limit">
         </div>
@@ -204,23 +224,26 @@ async function searchModels(subjectOrObjectCURIEs: string[] = [], subjectCURIEs:
       <div class="card-header">
         <strong>Search results ({{results.length}})</strong>
       </div>
-      <div class="card-body">
-        <table class="table table-bordered mb-2">
+      <div class="card-body p-0">
+        <table class="table table-bordered ">
           <thead>
           <tr>
-            <th>Models</th>
+            <th>Edges</th>
           </tr>
           </thead>
           <tbody>
-          <tr v-for="result in results" @click="selectedModel = result; changeSelectedModel(result)" :class="(selectedModel.url == result.url) ? 'table-active' : ''">
-            <td>{{result.id}} (<a :href="result.url" target="model-url">URL</a>, <a href="#edges">Relationships</a>, <a href="#relationships">Relationships</a>)
-              <ul v-if="result.subj || result.predicate || result.obj">
-                <li v-if="result.subj">{{result.subj.id}} ("{{result.subj.name}}")</li>
-                <li>{{result.predicate}}</li>
-                <li v-if="result.obj">{{result.obj.id}} ("{{result.obj.name}}")</li>
-              </ul>
-            </td>
-          </tr>
+            <template v-for="result in results">
+              <tr v-for="url in result.urls" @click="selectedModelURL = url; changeSelectedModel(url)" :class="(selectedModelURL === url) ? 'table-active' : ''">
+                <td>
+                  {{urlToID(url)}} (<a :href="url" target="model-url">URL</a>)
+                  <ul v-if="result.subj || result.predicate || result.obj">
+                    <li v-if="result.subj">{{result.subj.id}} ("{{result.subj.name}}")</li>
+                    <li>{{result.predicate}}</li>
+                    <li v-if="result.obj">{{result.obj.id}} ("{{result.obj.name}}")</li>
+                  </ul>
+                </td>
+              </tr>
+            </template>
           </tbody>
         </table>
       </div>
