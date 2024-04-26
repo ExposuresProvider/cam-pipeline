@@ -93,11 +93,11 @@ async function getModelRows(modelURL: string) {
       </div>
     </div>
 
-    <div id="edges" class="card my-2" v-if="!downloadInProgress && selectedModelURL">
+    <div id="edges" class="card my-2">
       <div class="card-header">
         <strong>Edges in selected CAM:</strong> <a target="cam" :href="selectedModelURL">{{ selectedModelURL }}</a> (<a href="#relationships">Relationships</a>)
       </div>
-      <div class="card-body">
+      <div class="card-body" v-if="!downloadInProgress">
         <table class="table table-bordered mb-2">
           <thead>
             <tr>
@@ -138,11 +138,11 @@ async function getModelRows(modelURL: string) {
 
   <!-- This view is hard to compress, so let's give it the whole screen -->
   <div class="col-12">
-    <div id="relationships" class="card my-2" v-if="!downloadInProgress && selectedModelURL">
+    <div id="relationships" class="card my-2">
       <div class="card-header">
         <strong>Relationships in selected CAM:</strong> <a target="cam" :href="selectedModelURL">{{ selectedModelURL }}</a> (<a href="#edges">Edges</a>)
       </div>
-      <div class="card-body">
+      <div class="card-body" v-if="!downloadInProgress">
         <div class="table-responsive">
           <table class="table table-bordered table-hover">
             <thead>

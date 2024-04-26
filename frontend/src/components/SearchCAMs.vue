@@ -235,7 +235,7 @@ async function searchModels(subjectOrObjectCURIEs: string[] = [], subjectCURIEs:
             <template v-for="result in results">
               <tr v-for="url in result.urls" @click="selectedModelURL = url; changeSelectedModel(url)" :class="(selectedModelURL === url) ? 'table-active' : ''">
                 <td>
-                  {{urlToID(url)}} (<a :href="url" target="model-url">URL</a>)
+                  {{urlToID(url)}} (<a :href="url" target="model-url">URL</a>, <a href="#edges">Edges</a>, <a href="#relationships">Relationships</a>)
                   <ul v-if="result.subj || result.predicate || result.obj">
                     <li v-if="result.subj">{{result.subj.id}} ("{{result.subj.name}}")</li>
                     <li>{{result.predicate}}</li>
