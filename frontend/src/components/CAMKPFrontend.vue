@@ -13,7 +13,7 @@ function changeSelectedModel(modelURL: string) {
   selectedModelURL.value = modelURL;
 }
 
-function changeSearchIds(searchIdList: string[]) {
+function changeSearchIds(searchIdList: Set<string>) {
   // Allows other components to change the list of IDs we're searching for.
   searchIds.value = searchIdList;
 }
