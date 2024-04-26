@@ -30,7 +30,9 @@ function getPredicates(fromId: string, toId: string) {
   }).sort();
 }
 
-watch(() => props.selectedModelURL, (_, modelURL) => {
+watch(() => props.selectedModelURL, (modelURL, _) => {
+  if (!modelURL) return;
+
   modelRows.value = [];
   spos.value = [];
   labels.value = {};
@@ -51,6 +53,8 @@ watch(() => props.selectedModelURL, (_, modelURL) => {
 });
 
 async function getModelRows(modelURL: string) {
+  if (!modelURL) return [];
+
   downloadInProgress.value = true;
 
   const cypher_endpoint = props.automatCAMKPEndpoint + '/cypher';
