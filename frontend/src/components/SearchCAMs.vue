@@ -201,6 +201,7 @@ async function searchModels(subjectOrObjectCURIEs: string[] = [], subjectCURIEs:
             <ul class="small">
               <li>GO: <code>http://model.geneontology.org/</code></li>
               <li>CTD: <code>http://ctdbase.org/detail.go?type=relationship&ixnId=</code></li>
+              <li>AOP: <code>https://noctua.apps.renci.org/model/AOP_</code></li>
             </ul>
           </ul>
           <input type="text" class="form-control" id="modelStartsWith" v-model="modelStartsWith">
