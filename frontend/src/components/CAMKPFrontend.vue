@@ -10,6 +10,7 @@ const searchIds = ref<Set<string>>(new Set<string>());
 
 function changeSelectedModel(modelURL: string) {
   // Allows other components to change the selected model.
+  selectedModelURL.value = ''; // Reset the current view.
   selectedModelURL.value = modelURL;
 }
 

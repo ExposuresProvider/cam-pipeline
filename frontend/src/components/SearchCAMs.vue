@@ -2,7 +2,7 @@
 /*
  * SearchCAMs: search for CAMs with a set of criteria.
  */
-import {ref} from "vue";
+import {ref, watch} from "vue";
 import {urlToID} from "./shared.ts";
 
 export interface Props {
@@ -20,6 +20,30 @@ const selectedModelURL = ref('');
 
 // Store results.
 const results = ref([]);
+const resultsByURL = ref({});
+const modelURLs = ref([]);
+
+watch(results, (updatedResults, _) => {
+  // Group updatedResults by model, then sort by group count.
+  resultsByURL.value = {};
+  modelURLs.value = [];
+  updatedResults.forEach(result => {
+    (result['urls'] || []).forEach(url => {
+      if (!resultsByURL.hasOwnProperty(url)) {
+        resultsByURL.value[url] = [];
+      }
+      resultsByURL.value[url].push(result);
+    });
+  });
+  console.log("resultsByURL = ", resultsByURL);
+
+  modelURLs.value = Object
+      .entries(resultsByURL.value) // Look through all the entries
+      .sort((a, b) => b[1].length - a[1].length) // Sort them by the number of results
+      .map(kv => kv[0]); // Simplify to a list of model URLs.
+
+  console.log("modelURLs = ", modelURLs);
+});
 
 // Search criteria
 const subjectOrObjectCURIEsCSV = ref('');
@@ -223,7 +247,7 @@ async function searchModels(subjectOrObjectCURIEs: string[] = [], subjectCURIEs:
 
     <div class="card my-2">
       <div class="card-header">
-        <strong>Search results ({{results.length}})</strong>
+        <strong>Found {{results.length}} results from {{modelURLs.length}} models</strong>
       </div>
       <div class="card-body p-0">
         <table class="table table-bordered ">
@@ -233,14 +257,19 @@ async function searchModels(subjectOrObjectCURIEs: string[] = [], subjectCURIEs:
           </tr>
           </thead>
           <tbody>
-            <template v-for="result in results">
-              <tr v-for="url in result.urls" @click="selectedModelURL = url; changeSelectedModel(url)" :class="(selectedModelURL === url) ? 'table-active' : ''">
-                <td>
-                  {{urlToID(url)}} (<a :href="url" target="model-url">URL</a>, <a href="#edges">Edges</a>, <a href="#relationships">Relationships</a>)
-                  <ul v-if="result.subj || result.predicate || result.obj">
-                    <li v-if="result.subj">{{result.subj.id}} ("{{result.subj.name}}")</li>
-                    <li>{{result.predicate}}</li>
-                    <li v-if="result.obj">{{result.obj.id}} ("{{result.obj.name}}")</li>
+            <template v-for="url in modelURLs">
+              <tr
+                  @click="selectedModelURL = url; changeSelectedModel(url)"
+              >
+                <td :class="(selectedModelURL === url) ? 'table-active' : ''">
+                  {{urlToID(url)}} ({{resultsByURL[url].length}} results, <a :href="url" target="model-url">URL</a>, <a href="#edges">Edges</a>, <a href="#relationships">Relationships</a>)
+
+                  <ul v-for="result in resultsByURL[url]">
+                    <li v-if="result.subj">{{result.subj.id}} ("{{result.subj.name}}")
+                      <ul>
+                        <li>{{result.predicate}}</li>
+                        <li v-if="result.obj">{{result.obj.id}} ("{{result.obj.name}}")</li>
+                      </ul></li>
                   </ul>
                 </td>
               </tr>
