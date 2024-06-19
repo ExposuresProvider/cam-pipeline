@@ -4,24 +4,30 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: cam-pipeline-debug
+  name: cam-pipeline-build
   labels:
+    project: CAM-KP
     app: cam-pipeline
 spec:
   containers:
-  - name: pipeline-tools
+  - name: cam-pipeline-build
     image: "renciorg/cam-pipeline-tools:latest"
     resources:
+      requests:
+        cpu: '3'
+        memory: 120Gi
       limits:
-        cpu: '8'
-        memory: 150G
+        # A run on June 17, 2024 peaked at around 4.26 CPUs and 108 Gi of memory, so these limits should be good
+        # enough for now.
+        cpu: '5'
+        memory: 140Gi
         ephemeral-storage: 10G
     command: ["sh", "-c", "while true; echo 'alive'; do sleep 10; done"]
     volumeMounts:
-    - mountPath: "/workspace"
+    - mountPath: "/root"
       name: storage
   restartPolicy: Never
   volumes:
   - name: storage
     persistentVolumeClaim:
-      claimName: build-cam-database-storage
+      claimName: cam-pipeline-storage
