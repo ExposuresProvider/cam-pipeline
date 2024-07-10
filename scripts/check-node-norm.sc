@@ -47,7 +47,7 @@ object CheckNodeNorm extends ZIOAppDefault {
           .groupByKey(_.modelURL) {
               (modelURL, entries) => ZStream.fromZIO(for {
                   nodes <- (entries.map(_.subj) ++ entries.map(_.obj)).runCollect
-                  line = s"${modelURL}\t${nodes.toSet.toSeq.sorted.mkString("|")}"
+                  line = s"${modelURL}\t${nodes.toSet.toSeq.sorted.mkString("||")}"
               } yield line)
           }
           .via(ZPipeline.intersperse("\n") >>> ZPipeline.utf8Encode)
