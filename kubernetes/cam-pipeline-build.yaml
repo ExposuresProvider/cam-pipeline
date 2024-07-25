@@ -26,7 +26,7 @@ spec:
         ephemeral-storage: 10G
     command: ["sh", "-c", "while true; echo 'alive'; do sleep 10; done"]
     volumeMounts:
-    - mountPath: "/root"
+    - mountPath: "/data"
       name: storage
   restartPolicy: Never
   volumes:
