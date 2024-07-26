@@ -11,6 +11,12 @@ SCALA_RUN=$(JAVA_ENV) COURSIER_CACHE=/workspace/coursier-cache scala-cli run --s
 
 BIOLINK=v3.4.3
 
+# Phony targets
+.PHONY: all
+
+all: kg.tsv
+	echo All done.
+
 owlrl-datalog:
 	git clone https://github.com/balhoff/owlrl-datalog.git
 
