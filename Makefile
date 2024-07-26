@@ -9,7 +9,7 @@ ARQ=$(JVM_ARGS) arq
 
 SCALA_RUN=$(JAVA_ENV) COURSIER_CACHE=/workspace/coursier-cache scala-cli run --server=false
 
-BIOLINK=v4.0.0
+BIOLINK=v4.2.1
 
 # Phony targets
 .PHONY: all
