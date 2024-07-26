@@ -7,7 +7,7 @@ ROBOT=$(ROBOT_ENV) robot
 JVM_ARGS=JVM_ARGS="-Xmx96G -XX:+UseParallelGC"
 ARQ=$(JVM_ARGS) arq
 
-SCALA_RUN=$(JAVA_ENV) COURSIER_CACHE=/workspace/coursier-cache scala-cli run --server=false
+SCALA_RUN=$(JAVA_ENV) COURSIER_CACHE=/data/coursier-cache scala-cli run --server=false
 
 BIOLINK=v4.2.1
 
