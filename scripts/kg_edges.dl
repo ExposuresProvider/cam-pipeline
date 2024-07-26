@@ -74,13 +74,80 @@ direct_type(i, t) :-
 
 direct_type(i, uniprot) :- quad(i, SESAME_DIRECT_TYPE, reacto, _), canonical_record(reacto, uniprot).
 
+
+// Trying to add anatomical_context_qualifier to model http://model.geneontology.org/586fc17a00000528
+//
+// GO:0016409	biolink:part_of	GO:0018345	http://model.geneontology.org/586fc17a00000528	infores:go-cam
+//GO:0016409	biolink:part_of	GO:1903546	http://model.geneontology.org/586fc17a00000528	infores:go-cam
+//GO:0016409	biolink:occurs_in	GO:0005794	http://model.geneontology.org/586fc17a00000528	infores:go-cam
+//  - "Golgi apparatus"
+//GO:0016409	biolink:occurs_in	CL:0000210	http://model.geneontology.org/586fc17a00000528	infores:go-cam
+//  - "photoreceptor cell"
+//GO:0016409	biolink:occurs_in	UBERON:0000966	http://model.geneontology.org/586fc17a00000528	infores:go-cam
+//  - "retina"
+//GO:0016409	biolink:has_input	UniProtKB:Q00LT1	http://model.geneontology.org/586fc17a00000528	infores:go-cam
+//GO:0016409	biolink:has_output	UniProtKB:Q00LT1	http://model.geneontology.org/586fc17a00000528	infores:go-cam
+//GO:0016409	biolink:enabled_by	UniProtKB:Q9NYG2	http://model.geneontology.org/586fc17a00000528	infores:go-cam
+//GO:0016409	biolink:caused_by	UniProtKB:Q9NYG2	http://model.geneontology.org/586fc17a00000528	infores:go-cam
+// - GO:0016409 "palmitoyltransferase activity" MolecularFunction
+
+// And in TTL (quad.facts)
+// _:Bf4c5ae510e6357b3207d6d9987afcc5d	<http://www.w3.org/2002/07/owl#annotatedSource>	<http://model.geneontology.org/586fc17a00000528/586fc17a00000530>	<http://model.geneontology.org/586fc17a00000528>
+//_:B79ffae059dc81c55d71020255f257250	<http://www.w3.org/2002/07/owl#annotatedSource>	<http://model.geneontology.org/586fc17a00000528/586fc17a00000530>	<http://model.geneontology.org/586fc17a00000528>
+//_:B6483e5ae2aeeddf23feaa4aa836efaae	<http://www.w3.org/2002/07/owl#annotatedSource>	<http://model.geneontology.org/586fc17a00000528/586fc17a00000530>	<http://model.geneontology.org/586fc17a00000528>
+//_:Bc5c71c5cc96e91ffd525a352d9aeb2df	<http://www.w3.org/2002/07/owl#annotatedSource>	<http://model.geneontology.org/586fc17a00000528/586fc17a00000530>	<http://model.geneontology.org/586fc17a00000528>
+//_:B2bebbaa6a9da082faaf8e2d181d8d40e	<http://www.w3.org/2002/07/owl#annotatedSource>	<http://model.geneontology.org/586fc17a00000528/586fc17a00000530>	<http://model.geneontology.org/586fc17a00000528>
+//<http://model.geneontology.org/586fc17a00000528/586fc17a00000530>	<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>	<http://www.w3.org/2002/07/owl#NamedIndividual>	<http://model.geneontology.org/586fc17a00000528>
+//<http://model.geneontology.org/586fc17a00000528/586fc17a00000530>	<http://geneontology.org/lego/hint/layout/y>	"192.25"	<http://model.geneontology.org/586fc17a00000528>
+//<http://model.geneontology.org/586fc17a00000528/586fc17a00000530>	<http://purl.obolibrary.org/obo/BFO_0000050>	<http://model.geneontology.org/586fc17a00000528/586fc17a00000531>	<http://model.geneontology.org/586fc17a00000528>
+//<http://model.geneontology.org/586fc17a00000528/586fc17a00000530>	<http://purl.org/dc/elements/1.1/contributor>	"https://orcid.org/0000-0001-7476-6306"	<http://model.geneontology.org/586fc17a00000528>
+//<http://model.geneontology.org/586fc17a00000528/586fc17a00000530>	<http://purl.obolibrary.org/obo/RO_0002234>	<http://model.geneontology.org/586fc17a00000528/586fc17a00000541>	<http://model.geneontology.org/586fc17a00000528>
+//  - RO:0002234 "has output"
+//<http://model.geneontology.org/586fc17a00000528/586fc17a00000530>	<http://purl.obolibrary.org/obo/BFO_0000066>	<http://model.geneontology.org/586fc17a00000528/586fc17a00000532>	<http://model.geneontology.org/586fc17a00000528>
+//<http://model.geneontology.org/586fc17a00000528/586fc17a00000530>	<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>	<http://purl.obolibrary.org/obo/GO_0016409>	<http://model.geneontology.org/586fc17a00000528>
+//<http://model.geneontology.org/586fc17a00000528/586fc17a00000530>	<http://purl.org/dc/elements/1.1/date>	"2017-01-30"	<http://model.geneontology.org/586fc17a00000528>
+//<http://model.geneontology.org/586fc17a00000528/586fc17a00000530>	<http://purl.obolibrary.org/obo/RO_0002333>	<http://model.geneontology.org/586fc17a00000528/586fc17a00000529>	<http://model.geneontology.org/586fc17a00000528>
+//<http://model.geneontology.org/586fc17a00000528/586fc17a00000530>	<http://purl.obolibrary.org/obo/RO_0002233>	<http://model.geneontology.org/586fc17a00000528/586fc17a00000551>	<http://model.geneontology.org/586fc17a00000528>
+
+// Rule we want to add is something like:
+//  -
+
+//
+//
+// UniProtKB:Q9NYG2	biolink:affects	UniProtKB:Q00LT1	http://model.geneontology.org/586fc17a00000528	infores:go-cam
+// GO:1903546	biolink:occurs_in	GO:0005794	http://model.geneontology.org/586fc17a00000528	infores:go-cam
+// UniProtKB:Q9NYG2	biolink:active_in	UBERON:0000966	http://model.geneontology.org/586fc17a00000528	infores:go-cam
+// UniProtKB:Q00LT1	biolink:active_in	UBERON:0003926	http://model.geneontology.org/586fc17a00000528	infores:go-cam
+//  - UBERON:0003926
+// GO:0016409	biolink:occurs_in	UBERON:0000966	http://model.geneontology.org/586fc17a00000528	infores:go-cam
+//  - GO:0016409 "palmitoyltransferase activity" MolecularFunction
+//
+// Weird:
+// UniProtKB:Q9NYG2	biolink:overlaps	GO:0005794	http://model.geneontology.org/586fc17a00000528	infores:go-cam
+//UniProtKB:Q9NYG2	biolink:overlaps	CL:0000210	http://model.geneontology.org/586fc17a00000528	infores:go-cam
+//UniProtKB:Q9NYG2	biolink:overlaps	UBERON:0000966	http://model.geneontology.org/586fc17a00000528	infores:go-cam
+
+// Either:
+qualified_node(node, "location", location, g) :- biolink_quad(node, "biolink:occurs_in", location, g).
+
+// or:
+qualified_quad(s, "biolink:affects", o, g, "location", location) :- biolink_quad(s, "biolink:affects", o, g),
+                                                                    biolink_quad(s, "biolink:active_in", l, g),
+                                                                    biolink_quad(l, "biolink:part_of", location, g).
+qualified_quad(s, "biolink:affects", o, g, "location", location) :- biolink_quad(s, "biolink:affects", o, g),
+                                                                    biolink_quad(o, "biolink:active_in", location, g).
+
+// BUT not all quads will make it into biolink_quad if there's a mapping problem. So we should stay with instances as
+// long as possible. So let's try to create qualified quads in the same way we create quads.
+
 biolink_quad(s, pred, o, g) :- quad(s, p, o, g), mapped_to(pred, p), p != RDF_TYPE.
 redundant_quad(s, pred, o, g) :- biolink_quad(s, pred, o, g), subprop(other, pred), biolink_quad(s, other, o, g).
 nonredundant_quad(s, pred, o, g) :- biolink_quad(s, pred, o, g), !redundant_quad(s, pred, o, g).
 
-kg_edge(subj, pred, obj, prov, ps) :- 
+kg_edge(subj, pred, obj, prov, ps, qualifiers) :-
     nonredundant_quad(s, pred, o, g), 
     direct_type(s, subj), 
     direct_type(o, obj), 
     primary_source(g, ps),
+    qualifier=cat("location_qualifier=" + qualified_node(s, "location", pred, o, g))),
     prov=substr(g, 1, strlen(g) - 2).
