@@ -1,22 +1,22 @@
 <script setup lang="ts">
-import ListCAMs from "./ListCAMs.vue";
 import { ref } from 'vue'
 import DisplayCAM from "./DisplayCAM.vue";
 import SearchCAMs from "./SearchCAMs.vue";
 
 // Some editable
 const automatCAMKPEndpoint = ref("https://automat.renci.org/cam-kp")
-const camList = ref<string[]>([]);
-const selectedModel = ref("")
+const selectedModelURL = ref('')
+const searchIds = ref<Set<string>>(new Set<string>());
 
-function changeSelectedModel(modelName: string) {
+function changeSelectedModel(modelURL: string) {
   // Allows other components to change the selected model.
-  selectedModel.value = modelName;
+  selectedModelURL.value = ''; // Reset the current view.
+  selectedModelURL.value = modelURL;
 }
 
-function changeCAMList(newCamList: string[]) {
-  // Allows other components to change the CAM list.
-  camList.value = newCamList;
+function changeSearchIds(searchIdList: Set<string>) {
+  // Allows other components to change the list of IDs we're searching for.
+  searchIds.value = searchIdList;
 }
 
 </script>
@@ -40,11 +40,10 @@ function changeCAMList(newCamList: string[]) {
       </div>
     </div>
 
-    <SearchCAMs :automatCAMKPEndpoint="automatCAMKPEndpoint" :changeCAMList="changeCAMList" />
-
-    <ListCAMs :automatCAMKPEndpoint="automatCAMKPEndpoint" :camList="camList" :changeSelectedModel="changeSelectedModel" />
-
-    <DisplayCAM :selected-model="selectedModel"></DisplayCAM>
+    <div class="row">
+      <SearchCAMs :automatCAMKPEndpoint="automatCAMKPEndpoint" :changeSelectedModel="changeSelectedModel" :changeSearchIds="changeSearchIds" />
+      <DisplayCAM :selected-model-u-r-l="selectedModelURL" :search-ids="searchIds"></DisplayCAM>
+    </div>
 
     <div class="accordion" id="advancedOptionsAccordion">
       <div class="accordion-item">
