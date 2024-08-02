@@ -126,14 +126,17 @@ biolink.facts: biolink-model.owl.ttl
 biolink-model-prefix-map.json:
 	curl -L -O 'https://raw.githubusercontent.com/biolink/biolink-model/$(BIOLINK)/project/prefixmap/biolink_model_prefix_map.json'
 
-# Step 15. Load all the data and ontologies.
+# Step 15. Download the Biolink Model predicate mappings.
+ro-to-biolink-predicate-mappings.tsv:
+	$(SCALA_RUN) scripts/generate_ro_biolink_mapping.sc -- $@
+
+# Step 16. Load all the data and ontologies.
 # - ./scripts/kg_edges: compiled from ./scripts/kg_edges.dl with Souffle (see above).
 # - inferred.csv: All inferred quads.
 # - quad.facts: All asserted quads.
 # - biolink.facts: Biolink model.
 # - ontology.facts: only used to convert REACTOME identifiers into UniProtKB identifiers.
 # - Also uses: ro-to-biolink-local-mappings.tsv to map from RO to Biolink.
-#	- TODO: add as a prereq
 # Creates a TSV file named kg_edge.csv with five columns:
 # - subj: direct type of subject
 # - pred: Biolink predicate
@@ -141,9 +144,9 @@ biolink-model-prefix-map.json:
 # - ps: primary_source
 # - prov: graph that this is coming from (without brackets -- if it had brackets, it would
 #   be ignored by scripts/compact_iris.sc)
-kg_edge.csv: scripts/kg_edges inferred.csv quad.facts biolink.facts ontology.facts
+kg_edge.csv: scripts/kg_edges inferred.csv quad.facts biolink.facts ontology.facts ro-to-biolink-local-mappings.tsv ro-to-biolink-predicate-mappings.tsv
 	./scripts/kg_edges
 
-# Step 16. Compact IRIs in the kg_edge.csv file using the specified prefixes.
+# Step 17. Compact IRIs in the kg_edge.csv file using the specified prefixes.
 kg.tsv: kg_edge.csv scripts/compact_iris.sc biolink-model-prefix-map.json supplemental-namespaces.json
 	$(SCALA_RUN) scripts/compact_iris.sc --  biolink-model-prefix-map.json supplemental-namespaces.json kg_edge.csv $@
