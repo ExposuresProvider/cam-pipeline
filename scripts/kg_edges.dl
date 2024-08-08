@@ -37,7 +37,7 @@
 .decl subprop(sub: symbol, super: symbol)
 .decl primary_source(graph: symbol, source: symbol)
 .decl direct_type(ind: symbol, type: symbol)
-.decl kg_edge(s: symbol, p: symbol, o: symbol, prov: symbol, primary_source: symbol)
+.decl kg_edge(s: symbol, p: symbol, o: symbol, prov: symbol, primary_source: symbol, qualifiers: symbol)
 
 canonical_record(reacto, uniprot) :- ontology(reacto, CANONICAL_RECORD, uniprot).
 
