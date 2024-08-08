@@ -1,3 +1,5 @@
+CORES=5
+
 JAVA_ENV=JAVA_OPTS="-Xmx96G -XX:+UseParallelGC"
 BLAZEGRAPH-RUNNER=$(JAVA_ENV) blazegraph-runner
 
@@ -148,7 +150,7 @@ biolink-model-prefix-map.json:
 # - prov: graph that this is coming from (without brackets -- if it had brackets, it would
 #   be ignored by scripts/compact_iris.sc)
 kg_edge.csv: scripts/kg_edges inferred.csv quad.facts biolink.facts ontology.facts
-	./scripts/kg_edges
+	./scripts/kg_edges -j ${CORES}
 
 # Step 16. Compact IRIs in the kg_edge.csv file using the specified prefixes.
 kg.tsv: kg_edge.csv scripts/compact_iris.sc biolink-model-prefix-map.json supplemental-namespaces.json
