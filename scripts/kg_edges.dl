@@ -134,6 +134,8 @@ direct_type(i, uniprot) :- quad(i, SESAME_DIRECT_TYPE, reacto, _), canonical_rec
 // Add qualified_quads with qualifiers. We then concatenate all the qualifiers together using MaGiC.
 .decl qualified_quad(s: symbol, p: symbol, o: symbol, g: symbol, qualifier: symbol)
 
+// TODO: we will need to separate keys and values for qualifiers, because we might need to find the "best" value for a particular key (e.g. most specific organ).
+
 // biolink:anatomical_context_qualifier
 #define BIOLINK "https://w3id.org/biolink/vocab/"
 #define ANATOMICAL_CONTEXT_QUALIFIER "qualifier_type_id=biolink:anatomical_context_qualifier&qualifier_value="
