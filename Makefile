@@ -36,7 +36,7 @@ owlrl-datalog/bin/owl_from_rdf: owlrl-datalog
 	souffle -c src/datalog/owl_from_rdf.dl -o bin/owl_from_rdf
 
 scripts/kg_edges: scripts/kg_edges.dl
-	souffle -c $< -o $@
+	souffle -j ${CORES}  -c $< -o $@
 
 # Step 3. Convert ontologies-merged.ttl into a format that can be read by Souffle.
 # RIOT is a Jena tool that converts Turtle into n-Triples using streaming, and
