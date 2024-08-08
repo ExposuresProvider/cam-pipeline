@@ -137,22 +137,24 @@ direct_type(i, uniprot) :- quad(i, SESAME_DIRECT_TYPE, reacto, _), canonical_rec
 // TODO: we will need to separate keys and values for qualifiers, because we might need to find the "best" value for a particular key (e.g. most specific organ).
 
 // biolink:anatomical_context_qualifier
-#define BIOLINK "https://w3id.org/biolink/vocab/"
+#define BIOLINK_AFFECTS "<https://w3id.org/biolink/vocab/affects>"
+#define BIOLINK_ACTIVE_IN "<https://w3id.org/biolink/vocab/active_in>"
+#define BIOLINK_PART_OF "<https://w3id.org/biolink/vocab/part_of>"
 #define ANATOMICAL_CONTEXT_QUALIFIER "qualifier_type_id=biolink:anatomical_context_qualifier&qualifier_value="
-qualified_quad(s, cat(BIOLINK, "affects"), o, g, cat(ANATOMICAL_CONTEXT_QUALIFIER, location)) :-
-    biolink_quad(s, cat(BIOLINK, "affects"), o, g),
-    biolink_quad(s, cat(BIOLINK, "active_in"), location, g).
-qualified_quad(s, cat(BIOLINK, "affects"), o, g, cat(ANATOMICAL_CONTEXT_QUALIFIER, location)) :-
-    biolink_quad(s, cat(BIOLINK, "affects"), o, g),
-    biolink_quad(s, cat(BIOLINK, "active_in"), l, g),
-    biolink_quad(l, cat(BIOLINK, "part_of"), location, g).
-qualified_quad(s, cat(BIOLINK, "affects"), o, g, cat(ANATOMICAL_CONTEXT_QUALIFIER, location)) :-
-    biolink_quad(s, cat(BIOLINK, "affects"), o, g),
-    biolink_quad(o, cat(BIOLINK, "active_in"), location, g).
-qualified_quad(s, cat(BIOLINK, "affects"), o, g, cat(ANATOMICAL_CONTEXT_QUALIFIER, location)) :-
-    biolink_quad(s, cat(BIOLINK, "affects"), o, g),
-    biolink_quad(o, cat(BIOLINK, "active_in"), l, g),
-    biolink_quad(l, cat(BIOLINK, "part_of"), location, g).
+qualified_quad(s, BIOLINK_AFFECTS, o, g, cat(ANATOMICAL_CONTEXT_QUALIFIER, location)) :-
+    biolink_quad(s, BIOLINK_AFFECTS, o, g),
+    biolink_quad(s, BIOLINK_ACTIVE_IN, location, g).
+qualified_quad(s, BIOLINK_AFFECTS, o, g, cat(ANATOMICAL_CONTEXT_QUALIFIER, location)) :-
+    biolink_quad(s, BIOLINK_AFFECTS, o, g),
+    biolink_quad(s, BIOLINK_ACTIVE_IN, l, g),
+    biolink_quad(l, BIOLINK_PART_OF, location, g).
+qualified_quad(s, BIOLINK_AFFECTS, o, g, cat(ANATOMICAL_CONTEXT_QUALIFIER, location)) :-
+    biolink_quad(s, BIOLINK_AFFECTS, o, g),
+    biolink_quad(o, BIOLINK_ACTIVE_IN, location, g).
+qualified_quad(s, BIOLINK_AFFECTS, o, g, cat(ANATOMICAL_CONTEXT_QUALIFIER, location)) :-
+    biolink_quad(s, BIOLINK_AFFECTS, o, g),
+    biolink_quad(o, BIOLINK_ACTIVE_IN, l, g),
+    biolink_quad(l, BIOLINK_PART_OF, location, g).
 
 // TODO: biolink:location_of
 
