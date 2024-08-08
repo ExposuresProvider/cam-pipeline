@@ -135,21 +135,24 @@ direct_type(i, uniprot) :- quad(i, SESAME_DIRECT_TYPE, reacto, _), canonical_rec
 .decl qualified_quad(s: symbol, p: symbol, o: symbol, g: symbol, qualifier: symbol)
 
 // biolink:anatomical_context_qualifier
+#define BIOLINK "https://w3id.org/biolink/vocab/"
 #define ANATOMICAL_CONTEXT_QUALIFIER "qualifier_type_id=biolink:anatomical_context_qualifier&qualifier_value="
-qualified_quad(s, "biolink:affects", o, g, cat(ANATOMICAL_CONTEXT_QUALIFIER, location)) :-
-    biolink_quad(s, "biolink:affects", o, g),
-    biolink_quad(s, "biolink:active_in", location, g).
-qualified_quad(s, "biolink:affects", o, g, cat(ANATOMICAL_CONTEXT_QUALIFIER, location)) :-
-    biolink_quad(s, "biolink:affects", o, g),
-    biolink_quad(s, "biolink:active_in", l, g),
-    biolink_quad(l, "biolink:part_of", location, g).
-qualified_quad(s, "biolink:affects", o, g, cat(ANATOMICAL_CONTEXT_QUALIFIER, location)) :-
-    biolink_quad(s, "biolink:affects", o, g),
-    biolink_quad(o, "biolink:active_in", location, g).
-qualified_quad(s, "biolink:affects", o, g, cat(ANATOMICAL_CONTEXT_QUALIFIER, location)) :-
-    biolink_quad(s, "biolink:affects", o, g),
-    biolink_quad(o, "biolink:active_in", l, g),
-    biolink_quad(l, "biolink:part_of", location, g).
+qualified_quad(s, cat(BIOLINK, "affects"), o, g, cat(ANATOMICAL_CONTEXT_QUALIFIER, location)) :-
+    biolink_quad(s, cat(BIOLINK, "affects"), o, g),
+    biolink_quad(s, cat(BIOLINK, "active_in"), location, g).
+qualified_quad(s, cat(BIOLINK, "affects"), o, g, cat(ANATOMICAL_CONTEXT_QUALIFIER, location)) :-
+    biolink_quad(s, cat(BIOLINK, "affects"), o, g),
+    biolink_quad(s, cat(BIOLINK, "active_in"), l, g),
+    biolink_quad(l, cat(BIOLINK, "part_of"), location, g).
+qualified_quad(s, cat(BIOLINK, "affects"), o, g, cat(ANATOMICAL_CONTEXT_QUALIFIER, location)) :-
+    biolink_quad(s, cat(BIOLINK, "affects"), o, g),
+    biolink_quad(o, cat(BIOLINK, "active_in"), location, g).
+qualified_quad(s, cat(BIOLINK, "affects"), o, g, cat(ANATOMICAL_CONTEXT_QUALIFIER, location)) :-
+    biolink_quad(s, cat(BIOLINK, "affects"), o, g),
+    biolink_quad(o, cat(BIOLINK, "active_in"), l, g),
+    biolink_quad(l, cat(BIOLINK, "part_of"), location, g).
+
+// TODO: biolink:location_of
 
 // TODO: BUT not all quads will make it into biolink_quad if there's a mapping problem. So we should stay with instances as
 // long as possible. So let's try to create qualified quads in the same way we create quads.
