@@ -166,12 +166,14 @@ redundant_quad(s, pred, o, g) :- biolink_quad(s, pred, o, g), subprop(other, pre
 nonredundant_quad(s, pred, o, g) :- biolink_quad(s, pred, o, g), !redundant_quad(s, pred, o, g).
 
 // Unqualified kg_edge
+/*
 kg_edge(subj, pred, obj, prov, ps, "") :-
     nonredundant_quad(s, pred, o, g),
     direct_type(s, subj),
     direct_type(o, obj),
     primary_source(g, ps),
     prov=substr(g, 1, strlen(g) - 2).
+*/
 
 // Qualified kg_edge
 kg_edge(subj, pred, obj, prov, ps, qualifier) :-
