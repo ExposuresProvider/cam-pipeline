@@ -131,6 +131,9 @@ direct_type(i, uniprot) :- quad(i, SESAME_DIRECT_TYPE, reacto, _), canonical_rec
 //UniProtKB:Q9NYG2	biolink:overlaps	CL:0000210	http://model.geneontology.org/586fc17a00000528	infores:go-cam
 //UniProtKB:Q9NYG2	biolink:overlaps	UBERON:0000966	http://model.geneontology.org/586fc17a00000528	infores:go-cam
 
+// Add qualified_quads with qualifiers. We then concatenate all the qualifiers together using MaGiC.
+.decl qualified_quad(s: symbol, p: symbol, o: symbol, g: symbol, qualifier: symbol)
+
 // biolink:anatomical_context_qualifier
 #define ANATOMICAL_CONTEXT_QUALIFIER "qualifier_type_id=biolink:anatomical_context_qualifier&qualifier_value="
 qualified_quad(s, "biolink:affects", o, g, cat(ANATOMICAL_CONTEXT_QUALIFIER, location)) :-
