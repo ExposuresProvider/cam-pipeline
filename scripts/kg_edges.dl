@@ -177,5 +177,5 @@ kg_edge(subj, pred, obj, prov, ps, qualifier) :-
     direct_type(s, subj),
     direct_type(o, obj),
     primary_source(g, ps),
-    qualified_quad(subj, pred, obj, prov, qualifier),
+    qualified_quad(s, pred, o, g, qualifier),
     prov=substr(g, 1, strlen(g) - 2).
