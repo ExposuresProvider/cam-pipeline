@@ -75,6 +75,8 @@ direct_type(i, t) :-
 direct_type(i, uniprot) :- quad(i, SESAME_DIRECT_TYPE, reacto, _), canonical_record(reacto, uniprot).
 
 
+
+
 // Trying to add anatomical_context_qualifier to model http://model.geneontology.org/586fc17a00000528
 //
 // GO:0016409	biolink:part_of	GO:0018345	http://model.geneontology.org/586fc17a00000528	infores:go-cam
@@ -109,6 +111,8 @@ direct_type(i, uniprot) :- quad(i, SESAME_DIRECT_TYPE, reacto, _), canonical_rec
 //<http://model.geneontology.org/586fc17a00000528/586fc17a00000530>	<http://purl.obolibrary.org/obo/RO_0002333>	<http://model.geneontology.org/586fc17a00000528/586fc17a00000529>	<http://model.geneontology.org/586fc17a00000528>
 //<http://model.geneontology.org/586fc17a00000528/586fc17a00000530>	<http://purl.obolibrary.org/obo/RO_0002233>	<http://model.geneontology.org/586fc17a00000528/586fc17a00000551>	<http://model.geneontology.org/586fc17a00000528>
 
+
+
 // Rule we want to add is something like:
 //  -
 
@@ -127,27 +131,27 @@ direct_type(i, uniprot) :- quad(i, SESAME_DIRECT_TYPE, reacto, _), canonical_rec
 //UniProtKB:Q9NYG2	biolink:overlaps	CL:0000210	http://model.geneontology.org/586fc17a00000528	infores:go-cam
 //UniProtKB:Q9NYG2	biolink:overlaps	UBERON:0000966	http://model.geneontology.org/586fc17a00000528	infores:go-cam
 
-// Either:
-qualified_node(node, "location", location, g) :- biolink_quad(node, "biolink:occurs_in", location, g).
+// biolink:anatomical_context_qualifier
+#define ANATOMICAL_CONTEXT_QUALIFIER "qualifier_type_id=biolink:anatomical_context_qualifier&qualifier_value="
+qualified_quad(s, "biolink:affects", o, g, cat(ANATOMICAL_CONTEXT_QUALIFIER, location)) :-
+    biolink_quad(s, "biolink:affects", o, g),
+    biolink_quad(s, "biolink:active_in", l, g),
+    biolink_quad(l, "biolink:part_of", location, g).
+qualified_quad(s, "biolink:affects", o, g, cat(ANATOMICAL_CONTEXT_QUALIFIER, location)) :-
+    biolink_quad(s, "biolink:affects", o, g),
+    biolink_quad(o, "biolink:active_in", location, g).
 
-// or:
-qualified_quad(s, "biolink:affects", o, g, "location", location) :- biolink_quad(s, "biolink:affects", o, g),
-                                                                    biolink_quad(s, "biolink:active_in", l, g),
-                                                                    biolink_quad(l, "biolink:part_of", location, g).
-qualified_quad(s, "biolink:affects", o, g, "location", location) :- biolink_quad(s, "biolink:affects", o, g),
-                                                                    biolink_quad(o, "biolink:active_in", location, g).
-
-// BUT not all quads will make it into biolink_quad if there's a mapping problem. So we should stay with instances as
+// TODO: BUT not all quads will make it into biolink_quad if there's a mapping problem. So we should stay with instances as
 // long as possible. So let's try to create qualified quads in the same way we create quads.
 
 biolink_quad(s, pred, o, g) :- quad(s, p, o, g), mapped_to(pred, p), p != RDF_TYPE.
 redundant_quad(s, pred, o, g) :- biolink_quad(s, pred, o, g), subprop(other, pred), biolink_quad(s, other, o, g).
 nonredundant_quad(s, pred, o, g) :- biolink_quad(s, pred, o, g), !redundant_quad(s, pred, o, g).
 
-kg_edge(subj, pred, obj, prov, ps, qualifiers) :-
-    nonredundant_quad(s, pred, o, g), 
-    direct_type(s, subj), 
-    direct_type(o, obj), 
+kg_edge(subj, pred, obj, prov, ps, qualifier) :-
+    nonredundant_quad(s, pred, o, g),
+    direct_type(s, subj),
+    direct_type(o, obj),
     primary_source(g, ps),
-    qualifier=cat("location_qualifier=" + qualified_node(s, "location", pred, o, g))),
+    qualified_quad(subj, pred, obj, prov, qualifier),
     prov=substr(g, 1, strlen(g) - 2).
