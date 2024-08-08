@@ -138,11 +138,18 @@ direct_type(i, uniprot) :- quad(i, SESAME_DIRECT_TYPE, reacto, _), canonical_rec
 #define ANATOMICAL_CONTEXT_QUALIFIER "qualifier_type_id=biolink:anatomical_context_qualifier&qualifier_value="
 qualified_quad(s, "biolink:affects", o, g, cat(ANATOMICAL_CONTEXT_QUALIFIER, location)) :-
     biolink_quad(s, "biolink:affects", o, g),
+    biolink_quad(s, "biolink:active_in", location, g).
+qualified_quad(s, "biolink:affects", o, g, cat(ANATOMICAL_CONTEXT_QUALIFIER, location)) :-
+    biolink_quad(s, "biolink:affects", o, g),
     biolink_quad(s, "biolink:active_in", l, g),
     biolink_quad(l, "biolink:part_of", location, g).
 qualified_quad(s, "biolink:affects", o, g, cat(ANATOMICAL_CONTEXT_QUALIFIER, location)) :-
     biolink_quad(s, "biolink:affects", o, g),
     biolink_quad(o, "biolink:active_in", location, g).
+qualified_quad(s, "biolink:affects", o, g, cat(ANATOMICAL_CONTEXT_QUALIFIER, location)) :-
+    biolink_quad(s, "biolink:affects", o, g),
+    biolink_quad(o, "biolink:active_in", l, g),
+    biolink_quad(l, "biolink:part_of", location, g).
 
 // TODO: BUT not all quads will make it into biolink_quad if there's a mapping problem. So we should stay with instances as
 // long as possible. So let's try to create qualified quads in the same way we create quads.
@@ -151,6 +158,15 @@ biolink_quad(s, pred, o, g) :- quad(s, p, o, g), mapped_to(pred, p), p != RDF_TY
 redundant_quad(s, pred, o, g) :- biolink_quad(s, pred, o, g), subprop(other, pred), biolink_quad(s, other, o, g).
 nonredundant_quad(s, pred, o, g) :- biolink_quad(s, pred, o, g), !redundant_quad(s, pred, o, g).
 
+// Unqualified kg_edge
+kg_edge(subj, pred, obj, prov, ps, "") :-
+    nonredundant_quad(s, pred, o, g),
+    direct_type(s, subj),
+    direct_type(o, obj),
+    primary_source(g, ps),
+    prov=substr(g, 1, strlen(g) - 2).
+
+// Qualified kg_edge
 kg_edge(subj, pred, obj, prov, ps, qualifier) :-
     nonredundant_quad(s, pred, o, g),
     direct_type(s, subj),
