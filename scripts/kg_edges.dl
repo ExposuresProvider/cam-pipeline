@@ -140,7 +140,7 @@ direct_type(i, uniprot) :- quad(i, SESAME_DIRECT_TYPE, reacto, _), canonical_rec
 #define BIOLINK_AFFECTS "<https://w3id.org/biolink/vocab/affects>"
 #define BIOLINK_ACTIVE_IN "<https://w3id.org/biolink/vocab/active_in>"
 #define BIOLINK_PART_OF "<https://w3id.org/biolink/vocab/part_of>"
-#define ANATOMICAL_CONTEXT_QUALIFIER "qualifier_type_id=biolink:anatomical_context_qualifier&qualifier_value="
+#define ANATOMICAL_CONTEXT_QUALIFIER "<https://w3id.org/biolink/vocab/biolink:anatomical_context_qualifier>"
 qualified_quad(s, BIOLINK_AFFECTS, o, g, ANATOMICAL_CONTEXT_QUALIFIER, location) :-
     biolink_quad(s, BIOLINK_AFFECTS, o, g),
     biolink_quad(s, BIOLINK_ACTIVE_IN, l, g),
