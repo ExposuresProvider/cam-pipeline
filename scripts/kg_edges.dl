@@ -100,8 +100,29 @@ qualified_quad(s, BIOLINK_AFFECTS, o, g, ANATOMICAL_CONTEXT_QUALIFIER, location)
 // UniProtKB:Q9NYG2	biolink:overlaps	UBERON:0000966	http://model.geneontology.org/586fc17a00000528	infores:go-cam
 // This is probably redundant.
 
-// TODO: BUT not all quads will make it into biolink_quad if there's a mapping problem. So we should stay with instances as
-// long as possible. So let's try to create qualified quads in the same way we create quads.
+/*
+TODO: BUT not all quads will make it into biolink_quad if there's a mapping problem. So we should stay with instances as
+long as possible. So let's try to create qualified quads in the same way we create quads.
+
+This is what that looks like in quad.facts:
+
+<http://model.geneontology.org/586fc17a00000528/586fc17a00000530>	<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>	<http://purl.obolibrary.org/obo/GO_0016409>	<http://model.geneontology.org/586fc17a00000528>
+- http://purl.obolibrary.org/obo/GO_0016409: palmitoyltransferase activity
+<http://model.geneontology.org/586fc17a00000528/586fc17a00000530>	<http://purl.obolibrary.org/obo/RO_0002333>	<http://model.geneontology.org/586fc17a00000528/586fc17a00000529>	<http://model.geneontology.org/586fc17a00000528>
+- http://purl.obolibrary.org/obo/RO_0002233: has input
+- http://model.geneontology.org/586fc17a00000528/586fc17a00000529 has direct type http://identifiers.org/uniprot/Q9NYG2
+<http://model.geneontology.org/586fc17a00000528/586fc17a00000530>	<http://purl.obolibrary.org/obo/RO_0002233>	<http://model.geneontology.org/586fc17a00000528/586fc17a00000551>	<http://model.geneontology.org/586fc17a00000528>
+- http://purl.obolibrary.org/obo/RO_0002233: has input
+- http://model.geneontology.org/586fc17a00000528/586fc17a00000551 has direct type http://identifiers.org/uniprot/Q00LT1
+<http://model.geneontology.org/586fc17a00000528/586fc17a00000530>	<http://purl.obolibrary.org/obo/RO_0002234>	<http://model.geneontology.org/586fc17a00000528/586fc17a00000541>	<http://model.geneontology.org/586fc17a00000528>
+- http://purl.obolibrary.org/obo/RO_0002234: has output
+- http://model.geneontology.org/586fc17a00000528/586fc17a00000541 has direct type UniProtKB:Q00LT1
+<http://model.geneontology.org/586fc17a00000528/586fc17a00000530>	<http://purl.obolibrary.org/obo/BFO_0000066>	<http://model.geneontology.org/586fc17a00000528/586fc17a00000532>	<http://model.geneontology.org/586fc17a00000528>
+- http://purl.obolibrary.org/obo/BFO_0000066: occurs in
+<http://model.geneontology.org/586fc17a00000528/586fc17a00000532>	<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>	<http://purl.obolibrary.org/obo/GO_0005794>	<http://model.geneontology.org/586fc17a00000528>
+- http://purl.obolibrary.org/obo/GO_0005794: Golgi apparatus
+
+*/
 
 biolink_quad(s, pred, o, g) :- quad(s, p, o, g), mapped_to(pred, p), p != RDF_TYPE.
 redundant_quad(s, pred, o, g) :- biolink_quad(s, pred, o, g), subprop(other, pred), biolink_quad(s, other, o, g).
