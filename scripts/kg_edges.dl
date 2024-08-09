@@ -143,18 +143,12 @@ direct_type(i, uniprot) :- quad(i, SESAME_DIRECT_TYPE, reacto, _), canonical_rec
 #define ANATOMICAL_CONTEXT_QUALIFIER "qualifier_type_id=biolink:anatomical_context_qualifier&qualifier_value="
 qualified_quad(s, BIOLINK_AFFECTS, o, g, cat(ANATOMICAL_CONTEXT_QUALIFIER, location)) :-
     biolink_quad(s, BIOLINK_AFFECTS, o, g),
-    biolink_quad(s, BIOLINK_ACTIVE_IN, location, g).
-qualified_quad(s, BIOLINK_AFFECTS, o, g, cat(ANATOMICAL_CONTEXT_QUALIFIER, location)) :-
-    biolink_quad(s, BIOLINK_AFFECTS, o, g),
     biolink_quad(s, BIOLINK_ACTIVE_IN, l, g),
-    biolink_quad(l, BIOLINK_PART_OF, location, g).
-qualified_quad(s, BIOLINK_AFFECTS, o, g, cat(ANATOMICAL_CONTEXT_QUALIFIER, location)) :-
-    biolink_quad(s, BIOLINK_AFFECTS, o, g),
-    biolink_quad(o, BIOLINK_ACTIVE_IN, location, g).
+    direct_type(l, location).
 qualified_quad(s, BIOLINK_AFFECTS, o, g, cat(ANATOMICAL_CONTEXT_QUALIFIER, location)) :-
     biolink_quad(s, BIOLINK_AFFECTS, o, g),
     biolink_quad(o, BIOLINK_ACTIVE_IN, l, g),
-    biolink_quad(l, BIOLINK_PART_OF, location, g).
+    direct_type(l, location).
 
 // TODO: biolink:location_of
 
