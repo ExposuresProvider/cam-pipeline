@@ -77,6 +77,18 @@ async function getModelRows(modelURL: string) {
   downloadInProgress.value = false;
 
   const results = j['results'].flatMap(r => r['data']).map(r => r['row']);
+
+  // Reverse any 'reverse' rows.
+  const reversedResults = results.map(row => {
+    if (row[4] === 'reverse') {
+      // If this row is "reversed", reverse the subject and the object.
+      const subj = {...row[0]};
+      row[0] = row[2];
+      row[2] = subj;
+      row[4] = '';
+    } else return row;
+  })
+
   console.log(results);
   return results;
 }
