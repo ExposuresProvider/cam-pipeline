@@ -109,6 +109,42 @@ async function getModelRows(modelURL: string) {
 <template>
 
   <div class="col-8">
+    <div id="edges" class="card my-2">
+      <div class="card-header">Display</div>
+      <div class="card-body">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" v-model="display_descriptions" id="displayDescription">
+          <label class="form-check-label" for="displayDescription">
+            Display node descriptions
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" v-model="display_eq_identifiers" id="displayEquivalentIdentifiers">
+          <label class="form-check-label" for="displayEquivalentIdentifiers">
+            Display equivalent identifiers
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" v-model="display_information_content" id="displayInformationContent">
+          <label class="form-check-label" for="displayInformationContent">
+            Display information content
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" v-model="display_primary_knowledge_source" id="displayPrimaryKnowledgeSource">
+          <label class="form-check-label" for="displayPrimaryKnowledgeSource">
+            Display primary knowledge source
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" v-model="display_xrefs" id="displayXrefs">
+          <label class="form-check-label" for="displayXrefs">
+            Display other models with this edge (Xrefs)
+          </label>
+        </div>
+      </div>
+    </div>
+
     <div class="card my-2" v-if="!selectedModelURL">
       <div class="card-header">
         No model selected. Please search for one using the controls on the left.
