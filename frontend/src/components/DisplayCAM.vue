@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {computed, ref, watch, withDefaults} from "vue";
 import {urlToID} from "./shared.ts";
+import lodash from "lodash";
 
 export interface Props {
   automatCAMKPEndpoint?: string,
@@ -40,7 +41,7 @@ watch(() => props.selectedModelURL, (modelURL, _) => {
 
   getModelRows(modelURL).then(rows => {
     modelRows.value = rows;
-    rows.map(row => {
+    rows.forEach(row => {
       spos.value.push([row[0]['id'], row[2]['id'], row[3], row[4]]);
 
       labels.value[row[0]['id']] = row[0]['name'];
@@ -76,21 +77,25 @@ async function getModelRows(modelURL: string) {
 
   downloadInProgress.value = false;
 
+  console.log("response = ", j);
+
   const results = j['results'].flatMap(r => r['data']).map(r => r['row']);
 
   // Reverse any 'reverse' rows.
-  const reversedResults = results.map(row => {
+  const reversedResults = lodash.uniqWith(results.map(row => {
     if (row[4] === 'reverse') {
       // If this row is "reversed", reverse the subject and the object.
       const subj = {...row[0]};
       row[0] = row[2];
       row[2] = subj;
       row[4] = '';
-    } else return row;
-  })
+    }
 
-  console.log(results);
-  return results;
+    return row;
+  }), lodash.isEqual);
+
+  console.log("reversedResults = ", reversedResults);
+  return reversedResults;
 }
 </script>
 
@@ -125,25 +130,25 @@ async function getModelRows(modelURL: string) {
           <tbody>
             <tr v-for="row in modelRows">
               <td :class="(row[0]['equivalent_identifiers'].some(v => searchIds.has(v))) ? 'bg-success-subtle' : ''">
-                <strong>{{row[0]['id']}}</strong> {{row[0]['name']}}<br/><br/>
-                <em>Description</em>: {{row[0]['description']}}<br/>
-                <em>Information Content</em>: {{row[0]['information_content']}}<br/>
-                <em>Equivalent identifiers</em>: {{row[0]['equivalent_identifiers']}}
+                <strong>{{row[0]['id']}}</strong> {{row[0]['name']}}
+                <p v-if="display_descriptions"><em>Description</em>: {{row[0]['description']}}</p>
+                <p v-if="display_information_content"><em>Information Content</em>: {{row[0]['information_content']}}</p>
+                <p v-if="display_eq_identifiers"><em>Equivalent identifiers</em>: {{row[0]['equivalent_identifiers']}}</p>
               </td>
               <td>
                 <strong>{{row[3]}}<span v-if="row[4]"> [{{row[4]}}]</span></strong><br/>
-                biolink:primary_knowledge_source: {{row[1]['biolink:primary_knowledge_source']}}
-                <ul class="overflow-auto" style="height: 20em">
+                biolink:primary_knowledge_source: {{row[1]['primary_knowledge_source']}}
+                <ul class="overflow-auto" style="max-height: 20em">
                   <li v-for="xref in row[1]['xref']" :key="xref">
                     <a :href="xref" target="xref">{{urlToID(xref)}}</a>
                   </li>
                 </ul>
               </td>
               <td :class="(row[2]['equivalent_identifiers'].some(v => searchIds.has(v))) ? 'bg-success-subtle' : ''">
-                <strong>{{row[2]['id']}}</strong> {{row[2]['name']}}<br/><br/>
-                <em>Description</em>: {{row[2]['description']}}<br/>
-                <em>Information Content</em>: {{row[2]['information_content']}}<br/>
-                <em>Equivalent identifiers</em>: {{row[2]['equivalent_identifiers']}}
+                <strong>{{row[2]['id']}}</strong> {{row[2]['name']}}
+                <p v-if="display_descriptions"><em>Description</em>: {{row[2]['description']}}</p>
+                <p v-if="display_information_content"><em>Information Content</em>: {{row[2]['information_content']}}</p>
+                <p v-if="display_eq_identifiers"><em>Equivalent identifiers</em>: {{row[2]['equivalent_identifiers']}}</p>
               </td>
             </tr>
           </tbody>
