@@ -11,7 +11,7 @@ metadata:
 spec:
   containers:
   - name: cam-pipeline-build
-    image: "ghcr.io/exposuresprovider/cam-pipeline-tools:generate-package-with-github-action"
+    image: ghcr.io/exposuresprovider/cam-pipeline-tools:latest
     # - Note that this image contains 1.4G of tools in /tools and 2.5G in /usr; however, we still use
     #   111G in / -- not sure if that includes the 120G in cam-pipeline-storage or if something else is going on.
     resources:
