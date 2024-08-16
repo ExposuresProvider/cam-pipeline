@@ -20,6 +20,13 @@ const spos = ref([]);
 const labels = ref({});
 const descriptions = ref({});
 
+// Display flags
+const display_descriptions = ref(false);
+const display_information_content = ref(false);
+const display_eq_identifiers = ref(false);
+const display_xrefs = ref(false);
+const display_primary_knowledge_source = ref(false);
+
 const fromIds = computed(() => [...new Set(spos.value.map(spo => spo[0]).sort())]);
 const toIds = computed(() => [...new Set(spos.value.map(spo => spo[1]).sort())]);
 
@@ -137,8 +144,8 @@ async function getModelRows(modelURL: string) {
               </td>
               <td>
                 <strong>{{row[3]}}<span v-if="row[4]"> [{{row[4]}}]</span></strong><br/>
-                biolink:primary_knowledge_source: {{row[1]['primary_knowledge_source']}}
-                <ul class="overflow-auto" style="max-height: 20em">
+                <p v-if="display_primary_knowledge_source">biolink:primary_knowledge_source: {{row[1]['primary_knowledge_source']}}</p>
+                <ul v-if="display_xrefs" class="overflow-auto" style="max-height: 20em">
                   <li v-for="xref in row[1]['xref']" :key="xref">
                     <a :href="xref" target="xref">{{urlToID(xref)}}</a>
                   </li>
