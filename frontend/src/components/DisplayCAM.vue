@@ -65,7 +65,7 @@ async function getModelRows(modelURL: string) {
       'Accept': 'application/json',
     },
     'body': JSON.stringify({
-      'query': `MATCH (s)-[p]-(o) WHERE '${modelURL}' IN p.xref RETURN DISTINCT s, p, o, TYPE(p) AS pred_type, CASE
+      'query': `MATCH (s)-[p]-(o) WHERE '${modelURL}' IN p.xref RETURN DISTINCT s, properties(p) AS p, o, TYPE(p) AS pred_type, CASE
     WHEN startNode(p) = s THEN ''
     WHEN endNode(p) = s THEN 'reverse'
     ELSE ''
