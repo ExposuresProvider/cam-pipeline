@@ -1,0 +1,35 @@
+# A Pod for debugging cam-pipeline outputs.
+# Assumes that there's a build-cam-database-storage PVC.
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: cam-pipeline-build
+  labels:
+    project: CAM-KP
+    app: cam-pipeline
+spec:
+  containers:
+  - name: cam-pipeline-build
+    image: ghcr.io/exposuresprovider/cam-pipeline-tools:latest
+    # - Note that this image contains 1.4G of tools in /tools and 2.5G in /usr; however, we still use
+    #   111G in / -- not sure if that includes the 120G in cam-pipeline-storage or if something else is going on.
+    resources:
+      requests:
+        cpu: '3'
+        memory: 120Gi
+      limits:
+        # A run on June 17, 2024 peaked at around 4.26 CPUs and 108 Gi of memory, so these limits should be good
+        # enough for now.
+        cpu: '5'
+        memory: 140Gi
+        ephemeral-storage: 10G
+    command: ["sh", "-c", "while true; echo 'alive'; do sleep 10; done"]
+    volumeMounts:
+    - mountPath: "/data"
+      name: storage
+  restartPolicy: Never
+  volumes:
+  - name: storage
+    persistentVolumeClaim:
+      claimName: cam-pipeline-storage

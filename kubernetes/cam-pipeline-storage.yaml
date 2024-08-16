@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: cam-pipeline-storage
+  labels:
+    project: CAM-KP
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      # We need:
+      # - 113M for the Coursier cache
+      # - 120G for the cam-pipeline workspace, including:
+      #   - 131M for the cam-pipeline code.
+      #   - 3M for aop-models
+      #   - 16G for CTD models
+      #   - 1.9G in noctua-models
+      #   - 1.3G in ontology
+      #   - 4.4G in ontologies-merged.ttl
+      #   - 19G in quad.facts
+      #   - 60G in inferred.csv
+      #   - 3.4G in noctua-models.nq
+      #   - 2.2G in kg_edge.csv
+      #   - 1.3G in kg.tsv
+      #   - 3.9G in mirror
+      # - So around 200Gi should be plenty for now.
+      storage: 200Gi
+  storageClassName: basic
