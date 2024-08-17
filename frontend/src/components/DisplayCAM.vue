@@ -2,6 +2,7 @@
 import {computed, ref, watch, withDefaults} from "vue";
 import {urlToID} from "./shared.ts";
 import lodash from "lodash";
+import { mkConfig, generateCsv, download } from "export-to-csv";
 
 export interface Props {
   automatCAMKPEndpoint?: string,
@@ -104,6 +105,42 @@ async function getModelRows(modelURL: string) {
   console.log("reversedResults = ", reversedResults);
   return reversedResults;
 }
+
+// Download model rows as CSV.
+function downloadModelRowsAsCSV() {
+  if (!modelRows.value) return;
+
+  const modelFilename = new URL(props.selectedModelURL).pathname.split('/').at(-1);
+
+  const csvConfig = mkConfig({
+    filename: modelFilename,
+    useKeysAsHeaders: true,
+    columnHeaders: [
+      'subject_id',
+      'subject_label',
+      'predicate',
+      'primary_knowledge_source',
+      'object_id',
+      'object_label'
+    ]
+  });
+
+  console.log("modelRows.value = ", modelRows.value);
+
+  const csvData = modelRows.value.map(row => {
+    return {
+      'subject_id': row[0]['id'],
+      'subject_label': row[0]['name'],
+      'predicate': row[3],
+      'primary_knowledge_source': row[1]['primary_knowledge_source'],
+      'object_id': row[2]['id'],
+      'object_label': row[2]['name'],
+    };
+  });
+
+  const csv = generateCsv(csvConfig)(csvData);
+  download(csvConfig)(csv);
+}
 </script>
 
 <template>
@@ -159,6 +196,7 @@ async function getModelRows(modelURL: string) {
 
     <div id="edges" class="card my-2">
       <div class="card-header">
+        <button class="float-end" @click="downloadModelRowsAsCSV()">Download as CSV</button>
         <strong>Edges in selected CAM:</strong> <a target="cam" :href="selectedModelURL">{{ selectedModelURL }}</a> (<a href="#relationships">Relationships</a>)
       </div>
       <div class="card-body" v-if="!downloadInProgress">
@@ -179,8 +217,8 @@ async function getModelRows(modelURL: string) {
                 <p v-if="display_eq_identifiers"><em>Equivalent identifiers</em>: {{row[0]['equivalent_identifiers']}}</p>
               </td>
               <td>
-                {{row[3]}}<span v-if="row[4]"> [{{row[4]}}]</span>
-                <p v-if="display_primary_knowledge_source">biolink:primary_knowledge_source: {{row[1]['primary_knowledge_source']}}</p>
+                <div>{{row[3]}}<span v-if="row[4]"> [{{row[4]}}]</span></div>
+                <p v-if="display_primary_knowledge_source"><em>Primary knowledge source</em>: {{row[1]['primary_knowledge_source']}}</p>
                 <ul v-if="display_xrefs" class="overflow-auto" style="max-height: 20em">
                   <li v-for="xref in row[1]['xref']" :key="xref">
                     <a :href="xref" target="xref">{{urlToID(xref)}}</a>
