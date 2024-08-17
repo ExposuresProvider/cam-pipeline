@@ -179,7 +179,7 @@ async function getModelRows(modelURL: string) {
                 <p v-if="display_eq_identifiers"><em>Equivalent identifiers</em>: {{row[0]['equivalent_identifiers']}}</p>
               </td>
               <td>
-                <strong>{{row[3]}}<span v-if="row[4]"> [{{row[4]}}]</span></strong><br/>
+                {{row[3]}}<span v-if="row[4]"> [{{row[4]}}]</span>
                 <p v-if="display_primary_knowledge_source">biolink:primary_knowledge_source: {{row[1]['primary_knowledge_source']}}</p>
                 <ul v-if="display_xrefs" class="overflow-auto" style="max-height: 20em">
                   <li v-for="xref in row[1]['xref']" :key="xref">
