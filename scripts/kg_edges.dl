@@ -37,7 +37,7 @@
 .decl subprop(sub: symbol, super: symbol)
 .decl primary_source(graph: symbol, source: symbol)
 .decl direct_type(ind: symbol, type: symbol)
-.decl kg_edge(s: symbol, p: symbol, o: symbol, prov: symbol, primary_source: symbol, qualifier_id: symbol, qualifier_value: symbol)
+.decl kg_edge(s: symbol, p: symbol, o: symbol, prov: symbol, primary_source: symbol, qualifier: symbol)
 
 canonical_record(reacto, uniprot) :- ontology(reacto, CANONICAL_RECORD, uniprot).
 
@@ -75,7 +75,7 @@ direct_type(i, t) :-
 direct_type(i, uniprot) :- quad(i, SESAME_DIRECT_TYPE, reacto, _), canonical_record(reacto, uniprot).
 
 // Add qualified_quads with qualifiers. We then concatenate all the qualifiers together using MaGiC.
-.decl qualified_quad(s: symbol, p: symbol, o: symbol, g: symbol, qualifier_id: symbol, qualifier_value: symbol)
+.decl qualified_quad(s: symbol, p: symbol, o: symbol, g: symbol, qualifier: symbol)
 
 // TODO: we will need to separate keys and values for qualifiers, because we might need to find the "best" value for a particular key (e.g. most specific organ).
 
@@ -84,11 +84,11 @@ direct_type(i, uniprot) :- quad(i, SESAME_DIRECT_TYPE, reacto, _), canonical_rec
 #define BIOLINK_ACTIVE_IN "<https://w3id.org/biolink/vocab/active_in>"
 #define BIOLINK_PART_OF "<https://w3id.org/biolink/vocab/part_of>"
 #define ANATOMICAL_CONTEXT_QUALIFIER "<https://w3id.org/biolink/vocab/anatomical_context_qualifier>"
-qualified_quad(s, BIOLINK_AFFECTS, o, g, ANATOMICAL_CONTEXT_QUALIFIER, location) :-
+qualified_quad(s, BIOLINK_AFFECTS, o, g, cat(cat(ANATOMICAL_CONTEXT_QUALIFIER, "="), location) :-
     biolink_quad(s, BIOLINK_AFFECTS, o, g),
     biolink_quad(s, BIOLINK_ACTIVE_IN, l, g),
     direct_type(l, location).
-qualified_quad(s, BIOLINK_AFFECTS, o, g, ANATOMICAL_CONTEXT_QUALIFIER, location) :-
+qualified_quad(s, BIOLINK_AFFECTS, o, g, cat(cat(ANATOMICAL_CONTEXT_QUALIFIER, "="), location) :-
     biolink_quad(s, BIOLINK_AFFECTS, o, g),
     biolink_quad(o, BIOLINK_ACTIVE_IN, l, g),
     direct_type(l, location).
@@ -128,8 +128,17 @@ biolink_quad(s, pred, o, g) :- quad(s, p, o, g), mapped_to(pred, p), p != RDF_TY
 redundant_quad(s, pred, o, g) :- biolink_quad(s, pred, o, g), subprop(other, pred), biolink_quad(s, other, o, g).
 nonredundant_quad(s, pred, o, g) :- biolink_quad(s, pred, o, g), !redundant_quad(s, pred, o, g).
 
+// @balhoff's method for concatenating qualifiers together, based on https://github.com/souffle-lang/souffle/issues/1322
+.decl ordered_qualified_quad(s: symbol, p: symbol, o: symbol, g: symbol, qualifier: symbol, index: number)
+.decl build_concat(s: symbol, p: symbol, o: symbol, g: symbol, index: number, qualifier: symbol)
+.decl qualified_quad_list(s: symbol, p: symbol, o: symbol, g: symbol, qualifiers: symbol)
+
+// ordered_qualified_quad(s, p, o, g, qualifier, autoinc()) :- qualified_quad(s, p, o, g, qualifier).
+// build_concat(s, p, o, g, first, qualifier) :- first = min index : { ordered_qualified_quad(_, _, _, _, _, _, index) },
+//                                                   ordered_qualified_quad(s, p, o, q, )
+
 // Unqualified kg_edge
-kg_edge(subj, pred, obj, prov, ps, "", "") :-
+kg_edge(subj, pred, obj, prov, ps, "") :-
     nonredundant_quad(s, pred, o, g),
     direct_type(s, subj),
     direct_type(o, obj),
@@ -137,10 +146,11 @@ kg_edge(subj, pred, obj, prov, ps, "", "") :-
     prov=substr(g, 1, strlen(g) - 2).
 
 // Qualified kg_edge
-kg_edge(subj, pred, obj, prov, ps, qualifier_id, qualifier_value) :-
+kg_edge(subj, pred, obj, prov, ps, qualifier) :-
     nonredundant_quad(s, pred, o, g),
     direct_type(s, subj),
     direct_type(o, obj),
     primary_source(g, ps),
-    qualified_quad(s, pred, o, g, qualifier_id, qualifier_value),
+    qualified_quad(s, pred, o, g, qualifier),
+    // qualified_quad_list(s, pred, o, g, qualifier_list),
     prov=substr(g, 1, strlen(g) - 2).
