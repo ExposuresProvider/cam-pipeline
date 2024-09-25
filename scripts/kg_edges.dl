@@ -95,11 +95,11 @@ direct_type(i, uniprot) :- quad(i, SESAME_DIRECT_TYPE, reacto, _), canonical_rec
 // TODO: once we update compact_iris.sc to handle qualifier lists, we can get rid of those brackets, unless they're
 // useful for making sure that the qualifier list is well constructed.
 
-qualified_quad(s, BIOLINK_AFFECTS, o, g, cat(cat("(", cat(ANATOMICAL_CONTEXT_QUALIFIER, "=")), cat(location, ")"))) :-
+qualified_quad(s, BIOLINK_AFFECTS, o, g, cat("(", ANATOMICAL_CONTEXT_QUALIFIER, "=", location, ")")) :-
     biolink_quad(s, BIOLINK_AFFECTS, o, g),
     biolink_quad(s, BIOLINK_ACTIVE_IN, l, g),
     direct_type(l, location).
-qualified_quad(s, BIOLINK_AFFECTS, o, g, cat(cat("(", cat(ANATOMICAL_CONTEXT_QUALIFIER, "=")), cat(location, ")"))) :-
+qualified_quad(s, BIOLINK_AFFECTS, o, g, cat("(", ANATOMICAL_CONTEXT_QUALIFIER, "=", location, ")")) :-
     biolink_quad(s, BIOLINK_AFFECTS, o, g),
     biolink_quad(o, BIOLINK_ACTIVE_IN, l, g),
     direct_type(l, location).
@@ -144,24 +144,31 @@ nonredundant_quad(s, pred, o, g) :- biolink_quad(s, pred, o, g), !redundant_quad
 .decl build_concat(s: symbol, p: symbol, o: symbol, g: symbol, index: number, qualifier: symbol)
 .decl qualified_quad_list(s: symbol, p: symbol, o: symbol, g: symbol, qualifiers: symbol)
 
-// ordered_qualified_quad(s, p, o, g, qualifier, autoinc()) :- qualified_quad(s, p, o, g, qualifier).
-// build_concat(s, p, o, g, first, qualifier) :- first = min index : { ordered_qualified_quad(_, _, _, _, _, _, index) },
-//                                                   ordered_qualified_quad(s, p, o, q, )
+ordered_qualified_quad(s, p, o, g, qualifier, autoinc()) :- qualified_quad(s, p, o, g, qualifier).
+build_concat(s, p, o, g, first, qualifier) :- first = min index : { ordered_qualified_quad(_, _, _, _, _, _, index) },
+                                              ordered_qualified_quad(s, p, o, g, qualifier, first).
+build_concat(s, p, o, g, index + 1, cat(built, ",", qualifier)) :- build_concat(s, p, o, g, index, built),
+                                                                   ordered_qualified_quad(s, p, o, g, qualifier, index + 1).
+
+qualified_quad_list(s, p, o, g, qualifiers) :- last = max index : { ordered_qualified_quad(_, _, _, _, _, _, index) },
+                                               build_concat(s, p, o, g, last, qualifiers).
 
 // Unqualified kg_edge
+/*
 kg_edge(subj, pred, obj, prov, ps, "") :-
     nonredundant_quad(s, pred, o, g),
     direct_type(s, subj),
     direct_type(o, obj),
     primary_source(g, ps),
     prov=substr(g, 1, strlen(g) - 2).
+*/
 
 // Qualified kg_edge
-kg_edge(subj, pred, obj, prov, ps, qualifier) :-
+kg_edge(subj, pred, obj, prov, ps, qualifier_list) :-
     nonredundant_quad(s, pred, o, g),
     direct_type(s, subj),
     direct_type(o, obj),
     primary_source(g, ps),
-    qualified_quad(s, pred, o, g, qualifier),
-    // qualified_quad_list(s, pred, o, g, qualifier_list),
+    // qualified_quad(s, pred, o, g, qualifier),
+    qualified_quad_list(s, pred, o, g, qualifier_list),
     prov=substr(g, 1, strlen(g) - 2).
