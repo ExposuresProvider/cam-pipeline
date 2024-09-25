@@ -77,13 +77,24 @@ direct_type(i, uniprot) :- quad(i, SESAME_DIRECT_TYPE, reacto, _), canonical_rec
 // Add qualified_quads with qualifiers. We then concatenate all the qualifiers together using MaGiC.
 .decl qualified_quad(s: symbol, p: symbol, o: symbol, g: symbol, qualifier: symbol)
 
-// TODO: we will need to separate keys and values for qualifiers, because we might need to find the "best" value for a particular key (e.g. most specific organ).
-
 // biolink:anatomical_context_qualifier
 #define BIOLINK_AFFECTS "<https://w3id.org/biolink/vocab/affects>"
 #define BIOLINK_ACTIVE_IN "<https://w3id.org/biolink/vocab/active_in>"
 #define BIOLINK_PART_OF "<https://w3id.org/biolink/vocab/part_of>"
 #define ANATOMICAL_CONTEXT_QUALIFIER "<https://w3id.org/biolink/vocab/anatomical_context_qualifier>"
+
+// We currently represent individual qualifiers as:
+//  (<predicate>=<value>,<predicate2>=<value2>,...)
+// Example:
+//  (<https://w3id.org/biolink/vocab/anatomical_context_qualifier>=<http://purl.obolibrary.org/obo/GO_0005759>)
+//
+// The only reason we need the rounded brackets is because otherwise `compact_iris.sc` will treat it as an IRI and
+// normalize it in a strange way: <https://w3id.org/biolink/predicate>=<http://purl.obolibrary.org/obo/GO_0005759>
+// is normalized to `biolink:predicate>=<http://purl.obolibrary.org/obo/GO_0005759`
+//
+// TODO: once we update compact_iris.sc to handle qualifier lists, we can get rid of those brackets, unless they're
+// useful for making sure that the qualifier list is well constructed.
+
 qualified_quad(s, BIOLINK_AFFECTS, o, g, cat(cat("(", cat(ANATOMICAL_CONTEXT_QUALIFIER, "=")), cat(location, ")"))) :-
     biolink_quad(s, BIOLINK_AFFECTS, o, g),
     biolink_quad(s, BIOLINK_ACTIVE_IN, l, g),
