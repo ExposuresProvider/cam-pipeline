@@ -145,7 +145,7 @@ nonredundant_quad(s, pred, o, g) :- biolink_quad(s, pred, o, g), !redundant_quad
 .decl qualified_quad_list(s: symbol, p: symbol, o: symbol, g: symbol, qualifiers: symbol)
 
 ordered_qualified_quad(s, p, o, g, qualifier, autoinc()) :- qualified_quad(s, p, o, g, qualifier).
-build_concat(s, p, o, g, first, qualifier) :- first = min index : { ordered_qualified_quad(_, _, _, _, _, index) },
+build_concat(_, _, _, _, first, qualifier) :- first = min index : { ordered_qualified_quad(_, _, _, _, _, index) },
                                               ordered_qualified_quad(_, _, _, _, qualifier, first).
 build_concat(s, p, o, g, index + 1, cat(built, ",", qualifier)) :- build_concat(s, p, o, g, index, built),
                                                                    ordered_qualified_quad(_, _, _, _, qualifier, index + 1).
