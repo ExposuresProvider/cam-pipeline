@@ -144,12 +144,15 @@ nonredundant_quad(s, pred, o, g) :- biolink_quad(s, pred, o, g), !redundant_quad
 .decl build_concat(s: symbol, p: symbol, o: symbol, g: symbol, index: number, qualifier: symbol)
 .decl qualified_quad_list(s: symbol, p: symbol, o: symbol, g: symbol, qualifiers: symbol)
 
+// Order quads in autoincrement order.
 ordered_qualified_quad(s, p, o, g, qualifier, autoinc()) :- qualified_quad(s, p, o, g, qualifier).
+// Pick the qualifier with the smallest index.
 build_concat(s, p, o, g, first, qualifier) :- first = min index : { ordered_qualified_quad(s, p, o, g, _, index) },
                                               ordered_qualified_quad(s, p, o, g, qualifier, first).
+// You can build qualifier[index, index + 1] by concatenating the two together.
 build_concat(s, p, o, g, index + 1, cat(built, ",", qualifier)) :- build_concat(s, p, o, g, index, built),
                                                                    ordered_qualified_quad(s, p, o, g, qualifier, index + 1).
-
+// Generate the full list by starting with the last index and working backwards.
 qualified_quad_list(s, p, o, g, qualifiers) :- last = max index : { ordered_qualified_quad(s, p, o, g, _, index) },
                                                build_concat(s, p, o, g, last, qualifiers).
 
@@ -169,4 +172,5 @@ kg_edge(subj, pred, obj, prov, ps, "") :-
     direct_type(s, subj),
     direct_type(o, obj),
     primary_source(g, ps),
+    !qualified_quad_list(s, pred, o, g, _),     // Only print the unqualified edge if there are no known qualifiers.
     prov=substr(g, 1, strlen(g) - 2).
