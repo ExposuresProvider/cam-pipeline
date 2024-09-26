@@ -159,16 +159,14 @@ kg_edge(subj, pred, obj, prov, ps, qualifier_list) :-
     direct_type(s, subj),
     direct_type(o, obj),
     primary_source(g, ps),
-    // qualified_quad(s, pred, o, g, qualifier),
+    // qualified_quad(s, pred, o, g, qualifier), -- you can use this to generate one edge per qualifier, if that's useful.
     qualified_quad_list(s, pred, o, g, qualifier_list),
     prov=substr(g, 1, strlen(g) - 2).
 
 // Unqualified kg_edge
-/*
 kg_edge(subj, pred, obj, prov, ps, "") :-
     nonredundant_quad(s, pred, o, g),
     direct_type(s, subj),
     direct_type(o, obj),
     primary_source(g, ps),
     prov=substr(g, 1, strlen(g) - 2).
-*/
