@@ -40,7 +40,7 @@ object Script extends ZIOAppDefault {
         val iriPattern = "^<(.+)>$".r
         val qualifierPatternWithIRI = raw"\(<(.*?)>=\(\(<(.*?)>\)\)\)".r
         val qualifierPatternWithString = raw"\(<(.*?)>=\(\((.*?)\)\)\)".r
-        val qualifierListPattern = s"${qualifierPattern.regex}(?:,${qualifierPattern.regex})*$$".r
+        val qualifierListPattern = s"${qualifierPatternWithString.regex}(?:,${qualifierPatternWithString.regex})*$$".r
         line.split("\t", -1).map {
             case iriPattern(iri) => compactIRI(iri, namespaces)
             case qualifierListPattern(iri) => iri.split(",", -1).map {
