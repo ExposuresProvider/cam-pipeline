@@ -47,7 +47,7 @@ object Script extends ZIOAppDefault {
                 case qualifierPatternWithIRI(qualifierIRI, valueIRI) =>
                     s"(${compactIRI(qualifierIRI, namespaces)}=((${compactIRI(valueIRI, namespaces)})))"
                 case qualifierPatternWithString(qualifierIRI, value) =>
-                    s"(${compactIRI(qualifierIRI, namespaces)}=((${value})))"
+                    s"(${compactIRI(qualifierIRI, namespaces)}=(($value)))"
                 case other => other
             }
             case other => other
