@@ -84,22 +84,18 @@ direct_type(i, uniprot) :- quad(i, SESAME_DIRECT_TYPE, reacto, _), canonical_rec
 #define ANATOMICAL_CONTEXT_QUALIFIER "<https://w3id.org/biolink/vocab/anatomical_context_qualifier>"
 
 // We currently represent individual qualifiers as:
-//  (<predicate>=<value>,<predicate2>=<value2>,...)
+//  (<predicate>=((<value>))),(<predicate2>=((<value2>))),...
 // Example:
-//  (<https://w3id.org/biolink/vocab/anatomical_context_qualifier>=<http://purl.obolibrary.org/obo/GO_0005759>)
-//
-// The only reason we need the rounded brackets is because otherwise `compact_iris.sc` will treat it as an IRI and
-// normalize it in a strange way: <https://w3id.org/biolink/predicate>=<http://purl.obolibrary.org/obo/GO_0005759>
-// is normalized to `biolink:predicate>=<http://purl.obolibrary.org/obo/GO_0005759`
-//
-// TODO: once we update compact_iris.sc to handle qualifier lists, we can get rid of those brackets, unless they're
-// useful for making sure that the qualifier list is well constructed.
+//  (<https://w3id.org/biolink/vocab/anatomical_context_qualifier>=((<http://purl.obolibrary.org/obo/GO_0005759>)))
+// The hope is that the value is unlikely to contain a ')))' character sequence, which would cause anyone trying to
+// read this file to parse it incorrectly. Ideally we would replace '"' with ''' in the value instead, but
+// Souffle doesn't currently support string replacement AFAICT.
 
-qualified_quad(s, BIOLINK_AFFECTS, o, g, cat("(", ANATOMICAL_CONTEXT_QUALIFIER, "=", location, ")")) :-
+qualified_quad(s, BIOLINK_AFFECTS, o, g, cat("(", ANATOMICAL_CONTEXT_QUALIFIER, "=((", location, ")))")) :-
     biolink_quad(s, BIOLINK_AFFECTS, o, g),
     biolink_quad(s, BIOLINK_ACTIVE_IN, l, g),
     direct_type(l, location).
-qualified_quad(s, BIOLINK_AFFECTS, o, g, cat("(", ANATOMICAL_CONTEXT_QUALIFIER, "=", location, ")")) :-
+qualified_quad(s, BIOLINK_AFFECTS, o, g, cat("(", ANATOMICAL_CONTEXT_QUALIFIER, "=((", location, ")))")) :-
     biolink_quad(s, BIOLINK_AFFECTS, o, g),
     biolink_quad(o, BIOLINK_ACTIVE_IN, l, g),
     direct_type(l, location).
