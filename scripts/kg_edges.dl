@@ -146,7 +146,7 @@ ordered_qualified_quad(s, p, o, g, qualifier, autoinc()) :- qualified_quad(s, p,
 build_concat(s, p, o, g, first, qualifier) :- first = min index : { ordered_qualified_quad(s, p, o, g, _, index) },
                                               ordered_qualified_quad(s, p, o, g, qualifier, first).
 // You can build qualifier[index, index + 1] by concatenating the two together.
-build_concat(s, p, o, g, index + 1, cat(built, ",", qualifier)) :- build_concat(s, p, o, g, index, built),
+build_concat(s, p, o, g, index + 1, cat(built, "||", qualifier)) :- build_concat(s, p, o, g, index, built),
                                                                    ordered_qualified_quad(s, p, o, g, qualifier, index + 1).
 // Generate the full list by starting with the last index and working backwards.
 qualified_quad_list(s, p, o, g, qualifiers) :- last = max index : { ordered_qualified_quad(s, p, o, g, _, index) },
