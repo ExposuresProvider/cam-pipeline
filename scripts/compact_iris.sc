@@ -38,9 +38,9 @@ object Script extends ZIOAppDefault {
 
     def compactIRIs(line: String, namespaces: List[(String, String)]) = {
         val iriPattern = "^<(.+)>$".r
-        val qualifierPatternWithIRI = raw"\(<(.*?)>=\(\(<(.*?)>\)\)\)".r
-        val qualifierPatternWithString = raw"\(<(.*?)>=\(\((.*?)\)\)\)".r
-        val qualifierListPattern = s"${qualifierPatternWithString.regex}(?:\\|\\|${qualifierPatternWithString.regex})*$$".r
+        val qualifierPatternWithIRI = raw"\(<(.+?)>=\(\(<(.+?)>\)\)\)".r
+        val qualifierPatternWithString = raw"\(<(.+?)>=\(\((.+?)\)\)\)".r
+        val qualifierListPattern = s"${qualifierPatternWithString.regex}(?:\\|\\|${qualifierPatternWithString.regex})*$".r
         line.split("\t", -1).map {
             case iriPattern(iri) => compactIRI(iri, namespaces)
             case qualifierListPattern(iri) => iri.split("\\|\\|").map {
