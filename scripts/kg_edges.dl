@@ -84,7 +84,7 @@ direct_type(i, uniprot) :- quad(i, SESAME_DIRECT_TYPE, reacto, _), canonical_rec
 #define ANATOMICAL_CONTEXT_QUALIFIER "<https://w3id.org/biolink/vocab/anatomical_context_qualifier>"
 
 // We currently represent individual qualifiers as:
-//  (<predicate>=((<value>))),(<predicate2>=((<value2>))),...
+//  (<predicate>=((<value>)))||(<predicate2>=((<value2>))),...
 // Example:
 //  (<https://w3id.org/biolink/vocab/anatomical_context_qualifier>=((<http://purl.obolibrary.org/obo/GO_0005759>)))
 // The hope is that the value is unlikely to contain a ')))' character sequence, which would cause anyone trying to
