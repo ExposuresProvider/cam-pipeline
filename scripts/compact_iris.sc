@@ -10,6 +10,12 @@ import zio.json._
 import scala.io.Source
 import java.io.File
 
+case class Qualifier(qualifier_type_id: String, qualifier_value: String)
+
+object Qualifier {
+    implicit val encoder: JsonEncoder[Qualifier] = DeriveJsonEncoder.gen[Qualifier]
+}
+
 object Script extends ZIOAppDefault {
 
     override def run = for {
@@ -46,11 +52,13 @@ object Script extends ZIOAppDefault {
             case iriPattern(iri) => compactIRI(iri, namespaces)
             case qualifierListPattern(list, _*) => list.split("\\|\\|").map {
                 case qualifierPatternWithIRI(qualifierIRI, valueIRI) =>
-                    s"(${compactIRI(qualifierIRI, namespaces)}=${compactIRI(valueIRI, namespaces)})"
+                    Qualifier(compactIRI(qualifierIRI, namespaces), compactIRI(valueIRI, namespaces))
                 case qualifierPatternWithString(qualifierIRI, value) =>
-                    s"(${compactIRI(qualifierIRI, namespaces)}=(($value)))"
-                case other => other
-            }.mkString("&&")
+                    Qualifier(compactIRI(qualifierIRI, namespaces), value)
+                case other => {
+                    throw new RuntimeException(s"Could not parse qualifier '$other' in line '$line'.")
+                }
+            }.toList.toJsonPretty
             case other => other
         }.mkString("\t")
     }
