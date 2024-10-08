@@ -58,7 +58,7 @@ object Script extends ZIOAppDefault {
                 case other => {
                     throw new RuntimeException(s"Could not parse qualifier '$other' in line '$line'.")
                 }
-            }.toList.toJsonPretty
+            }.toList.toJson
             case other => other
         }.mkString("\t")
     }
