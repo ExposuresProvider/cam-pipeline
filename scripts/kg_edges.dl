@@ -37,7 +37,7 @@
 .decl subprop(sub: symbol, super: symbol)
 .decl primary_source(graph: symbol, source: symbol)
 .decl direct_type(ind: symbol, type: symbol)
-.decl kg_edge(s: symbol, p: symbol, o: symbol, prov: symbol, primary_source: symbol)
+.decl kg_edge(s: symbol, p: symbol, o: symbol, prov: symbol, primary_source: symbol, qualifier: symbol)
 
 canonical_record(reacto, uniprot) :- ontology(reacto, CANONICAL_RECORD, uniprot).
 
@@ -74,13 +74,99 @@ direct_type(i, t) :-
 
 direct_type(i, uniprot) :- quad(i, SESAME_DIRECT_TYPE, reacto, _), canonical_record(reacto, uniprot).
 
+// Add qualified_quads with qualifiers. We then concatenate all the qualifiers together using MaGiC.
+.decl qualified_quad(s: symbol, p: symbol, o: symbol, g: symbol, qualifier: symbol)
+
+// biolink:anatomical_context_qualifier
+#define BIOLINK_AFFECTS "<https://w3id.org/biolink/vocab/affects>"
+#define BIOLINK_ACTIVE_IN "<https://w3id.org/biolink/vocab/active_in>"
+#define BIOLINK_PART_OF "<https://w3id.org/biolink/vocab/part_of>"
+#define ANATOMICAL_CONTEXT_QUALIFIER "<https://w3id.org/biolink/vocab/anatomical_context_qualifier>"
+
+// We currently represent individual qualifiers as:
+//  (<predicate>=((<value>)))||(<predicate2>=((<value2>))),...
+// Example:
+//  (<https://w3id.org/biolink/vocab/anatomical_context_qualifier>=((<http://purl.obolibrary.org/obo/GO_0005759>)))
+// The hope is that the value is unlikely to contain a ')))' character sequence, which would cause anyone trying to
+// read this file to parse it incorrectly. Ideally we would replace '"' with ''' in the value instead, but
+// Souffle doesn't currently support string replacement AFAICT.
+
+qualified_quad(s, BIOLINK_AFFECTS, o, g, cat("(", ANATOMICAL_CONTEXT_QUALIFIER, "=((", location, ")))")) :-
+    biolink_quad(s, BIOLINK_AFFECTS, o, g),
+    biolink_quad(s, BIOLINK_ACTIVE_IN, l, g),
+    direct_type(l, location).
+qualified_quad(s, BIOLINK_AFFECTS, o, g, cat("(", ANATOMICAL_CONTEXT_QUALIFIER, "=((", location, ")))")) :-
+    biolink_quad(s, BIOLINK_AFFECTS, o, g),
+    biolink_quad(o, BIOLINK_ACTIVE_IN, l, g),
+    direct_type(l, location).
+
+// TODO: biolink:location_of
+// TODO sometimes proteins overlap locations, e.g.:
+// UniProtKB:Q9NYG2	biolink:overlaps	GO:0005794	http://model.geneontology.org/586fc17a00000528	infores:go-cam
+// UniProtKB:Q9NYG2	biolink:overlaps	CL:0000210	http://model.geneontology.org/586fc17a00000528	infores:go-cam
+// UniProtKB:Q9NYG2	biolink:overlaps	UBERON:0000966	http://model.geneontology.org/586fc17a00000528	infores:go-cam
+// This is probably redundant.
+
+/*
+TODO: BUT not all quads will make it into biolink_quad if there's a mapping problem. So we should stay with instances as
+long as possible. So let's try to create qualified quads in the same way we create quads.
+
+This is what that looks like in quad.facts:
+
+<http://model.geneontology.org/586fc17a00000528/586fc17a00000530>	<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>	<http://purl.obolibrary.org/obo/GO_0016409>	<http://model.geneontology.org/586fc17a00000528>
+- http://purl.obolibrary.org/obo/GO_0016409: palmitoyltransferase activity
+<http://model.geneontology.org/586fc17a00000528/586fc17a00000530>	<http://purl.obolibrary.org/obo/RO_0002333>	<http://model.geneontology.org/586fc17a00000528/586fc17a00000529>	<http://model.geneontology.org/586fc17a00000528>
+- http://purl.obolibrary.org/obo/RO_0002233: has input
+- http://model.geneontology.org/586fc17a00000528/586fc17a00000529 has direct type http://identifiers.org/uniprot/Q9NYG2
+<http://model.geneontology.org/586fc17a00000528/586fc17a00000530>	<http://purl.obolibrary.org/obo/RO_0002233>	<http://model.geneontology.org/586fc17a00000528/586fc17a00000551>	<http://model.geneontology.org/586fc17a00000528>
+- http://purl.obolibrary.org/obo/RO_0002233: has input
+- http://model.geneontology.org/586fc17a00000528/586fc17a00000551 has direct type http://identifiers.org/uniprot/Q00LT1
+<http://model.geneontology.org/586fc17a00000528/586fc17a00000530>	<http://purl.obolibrary.org/obo/RO_0002234>	<http://model.geneontology.org/586fc17a00000528/586fc17a00000541>	<http://model.geneontology.org/586fc17a00000528>
+- http://purl.obolibrary.org/obo/RO_0002234: has output
+- http://model.geneontology.org/586fc17a00000528/586fc17a00000541 has direct type UniProtKB:Q00LT1
+<http://model.geneontology.org/586fc17a00000528/586fc17a00000530>	<http://purl.obolibrary.org/obo/BFO_0000066>	<http://model.geneontology.org/586fc17a00000528/586fc17a00000532>	<http://model.geneontology.org/586fc17a00000528>
+- http://purl.obolibrary.org/obo/BFO_0000066: occurs in
+<http://model.geneontology.org/586fc17a00000528/586fc17a00000532>	<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>	<http://purl.obolibrary.org/obo/GO_0005794>	<http://model.geneontology.org/586fc17a00000528>
+- http://purl.obolibrary.org/obo/GO_0005794: Golgi apparatus
+
+*/
+
 biolink_quad(s, pred, o, g) :- quad(s, p, o, g), mapped_to(pred, p), p != RDF_TYPE.
 redundant_quad(s, pred, o, g) :- biolink_quad(s, pred, o, g), subprop(other, pred), biolink_quad(s, other, o, g).
 nonredundant_quad(s, pred, o, g) :- biolink_quad(s, pred, o, g), !redundant_quad(s, pred, o, g).
 
-kg_edge(subj, pred, obj, prov, ps) :- 
-    nonredundant_quad(s, pred, o, g), 
-    direct_type(s, subj), 
-    direct_type(o, obj), 
+// @balhoff's method for concatenating qualifiers together, based on https://github.com/souffle-lang/souffle/issues/1322
+.decl ordered_qualified_quad(s: symbol, p: symbol, o: symbol, g: symbol, qualifier: symbol, index: number)
+.decl build_concat(s: symbol, p: symbol, o: symbol, g: symbol, index: number, qualifier: symbol)
+.decl qualified_quad_list(s: symbol, p: symbol, o: symbol, g: symbol, qualifiers: symbol)
+
+// Order quads in autoincrement order.
+ordered_qualified_quad(s, p, o, g, qualifier, autoinc()) :- qualified_quad(s, p, o, g, qualifier).
+// Pick the qualifier with the smallest index.
+build_concat(s, p, o, g, first, qualifier) :- first = min index : { ordered_qualified_quad(s, p, o, g, _, index) },
+                                              ordered_qualified_quad(s, p, o, g, qualifier, first).
+// You can build qualifier[index, index + 1] by concatenating the two together.
+build_concat(s, p, o, g, index + 1, cat(built, "||", qualifier)) :- build_concat(s, p, o, g, index, built),
+                                                                   ordered_qualified_quad(s, p, o, g, qualifier, index + 1).
+// Generate the full list by starting with the last index and working backwards.
+qualified_quad_list(s, p, o, g, qualifiers) :- last = max index : { ordered_qualified_quad(s, p, o, g, _, index) },
+                                               build_concat(s, p, o, g, last, qualifiers).
+
+// Qualified kg_edge
+kg_edge(subj, pred, obj, prov, ps, qualifier_list) :-
+    nonredundant_quad(s, pred, o, g),
+    direct_type(s, subj),
+    direct_type(o, obj),
     primary_source(g, ps),
+    // qualified_quad(s, pred, o, g, qualifier), -- you can use this to generate one edge per qualifier, if that's useful.
+    qualified_quad_list(s, pred, o, g, qualifier_list),
+    prov=substr(g, 1, strlen(g) - 2).
+
+// Unqualified kg_edge
+kg_edge(subj, pred, obj, prov, ps, "") :-
+    nonredundant_quad(s, pred, o, g),
+    direct_type(s, subj),
+    direct_type(o, obj),
+    primary_source(g, ps),
+    !qualified_quad_list(s, pred, o, g, _),     // Only print the unqualified edge if there are no known qualifiers.
     prov=substr(g, 1, strlen(g) - 2).
