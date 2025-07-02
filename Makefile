@@ -11,12 +11,14 @@ ARQ=$(JVM_ARGS) arq
 
 SCALA_RUN=$(JAVA_ENV) COURSIER_CACHE=/data/coursier-cache scala-cli run --server=false
 
+PYTHON_RUN=python
+
 BIOLINK=v4.2.1
 
 # Phony targets
 .PHONY: all
 
-all: kg.tsv
+all: kg_duplicated.tsv
 	echo All done.
 
 owlrl-datalog:
@@ -155,3 +157,7 @@ kg_edge.csv: scripts/kg_edges inferred.csv quad.facts biolink.facts ontology.fac
 # Step 16. Compact IRIs in the kg_edge.csv file using the specified prefixes.
 kg.tsv: kg_edge.csv scripts/compact_iris.sc biolink-model-prefix-map.json supplemental-namespaces.json
 	$(SCALA_RUN) scripts/compact_iris.sc --  biolink-model-prefix-map.json supplemental-namespaces.json kg_edge.csv $@
+
+# Step 17. Duplicate s/p/o/g for
+kg_duplicated.tsv: kg.tsv
+	$(PYTHON_RUN) scripts/duplicate-spog-for-multivalued-qualifiers.py $< $@
